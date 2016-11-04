@@ -5,6 +5,7 @@ import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
+import Set exposing (Set)
 
 
 -- MODEL
@@ -27,14 +28,21 @@ type alias Model =
 
 model : Model
 model =
-    [ { time = "1pm", station = "Back Bay" }
-    , { time = "2pm", station = "Back Bay" }
-    , { time = "3pm", station = "Back Bay" }
-    , { time = "4pm", station = "Back Bay" }
-    , { time = "5pm", station = "Back Bay" }
-    , { time = "6pm", station = "Back Bay" }
+    [ { time = "1pm", station = "Davis Square" }
+    , { time = "2pm", station = "Alewife" }
+    , { time = "3pm", station = "Central Square" }
+    , { time = "4pm", station = "Downtown Crossing" }
+    , { time = "4pm", station = "Alewife" }
+    , { time = "5pm", station = "Park St." }
+    , { time = "6pm", station = "Park St." }
     ]
 
+
+stations : Schedule -> List Station
+stations schedule =
+    List.map .station schedule
+    |> Set.fromList
+    |> Set.toList
 
 
 -- UPDATE
@@ -58,7 +66,20 @@ view schedule =
         [ Ui.style [ Style.alignItems "center" ]
         ]
         [ trains schedule
+        , stationPicker schedule
         ]
+
+stationButton : Station -> Node Msg
+stationButton station =
+    text
+      []
+      [ Ui.string station ]
+
+stationPicker : Schedule -> Node Msg
+stationPicker schedule =
+    Elements.view
+        []
+        ( List.map stationButton <| stations schedule )
 
 trains : Schedule -> Node Msg
 trains schedule =
