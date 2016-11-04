@@ -7468,7 +7468,7 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxOnly = 
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsNone = {ctor: 'ViewPointerEventsNone'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxNone = {ctor: 'ViewPointerEventsBoxNone'};
 
-var _user$project$Main$train = function (train) {
+var _user$project$Main$upcomingTrain = function (train) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 		_elm_lang$core$Native_List.fromArray(
@@ -7478,12 +7478,26 @@ var _user$project$Main$train = function (train) {
 				_elm_native_ui$elm_native_ui$NativeUi$string(train.time)
 			]));
 };
-var _user$project$Main$trains = function (schedule) {
+var _user$project$Main$stationFilter = F2(
+	function (selectedStation, train) {
+		var _p0 = selectedStation;
+		if (_p0.ctor === 'Nothing') {
+			return _elm_lang$core$Maybe$Just(
+				_user$project$Main$upcomingTrain(train));
+		} else {
+			return _elm_lang$core$Native_Utils.eq(_p0._0, train.station) ? _elm_lang$core$Maybe$Just(
+				_user$project$Main$upcomingTrain(train)) : _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _user$project$Main$upcomingTrains = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
-		A2(_elm_lang$core$List$map, _user$project$Main$train, schedule));
+		A2(
+			_elm_lang$core$List$filterMap,
+			_user$project$Main$stationFilter(model.selectedStation),
+			model.schedule));
 };
 var _user$project$Main$stationStyle = F2(
 	function (selectedStation, station) {
@@ -7497,13 +7511,13 @@ var _user$project$Main$stationStyle = F2(
 	});
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
+		var _p1 = msg;
 		return {
 			ctor: '_Tuple2',
 			_0: _elm_lang$core$Native_Utils.update(
 				model,
 				{
-					selectedStation: _elm_lang$core$Maybe$Just(_p0._0)
+					selectedStation: _elm_lang$core$Maybe$Just(_p1._0)
 				}),
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
@@ -7556,16 +7570,16 @@ var _user$project$Main$stationButton = F2(
 					_elm_native_ui$elm_native_ui$NativeUi$string(station)
 				]));
 	});
-var _user$project$Main$stationPicker = function (_p1) {
-	var _p2 = _p1;
+var _user$project$Main$stationPicker = function (_p2) {
+	var _p3 = _p2;
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		A2(
 			_elm_lang$core$List$map,
-			_user$project$Main$stationButton(_p2.selectedStation),
-			_user$project$Main$stations(_p2.schedule)));
+			_user$project$Main$stationButton(_p3.selectedStation),
+			_user$project$Main$stations(_p3.schedule)));
 };
 var _user$project$Main$view = function (model) {
 	return A2(
@@ -7580,7 +7594,7 @@ var _user$project$Main$view = function (model) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$Main$trains(model.schedule),
+				_user$project$Main$upcomingTrains(model),
 				_user$project$Main$stationPicker(model)
 			]));
 };
@@ -7589,7 +7603,7 @@ var _user$project$Main$main = _elm_native_ui$elm_native_ui$NativeUi$program(
 		init: {ctor: '_Tuple2', _0: _user$project$Main$model, _1: _elm_lang$core$Platform_Cmd$none},
 		view: _user$project$Main$view,
 		update: _user$project$Main$update,
-		subscriptions: function (_p3) {
+		subscriptions: function (_p4) {
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();

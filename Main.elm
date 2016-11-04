@@ -76,7 +76,7 @@ view model =
     Elements.view
         [ Ui.style [ Style.alignItems "center" ]
         ]
-        [ trains model.schedule
+        [ upcomingTrains model
         , stationPicker model
         ]
 
@@ -102,16 +102,27 @@ stationPicker {schedule, selectedStation} =
         []
         ( List.map (stationButton selectedStation) <| stations schedule )
 
-trains : Schedule -> Node Msg
-trains schedule =
+
+stationFilter : Maybe Station -> Train -> Maybe (Node Msg)
+stationFilter selectedStation train =
+    case selectedStation of
+        Nothing -> Just (upcomingTrain train)
+        Just station ->
+            if station == train.station then
+                Just (upcomingTrain train)
+            else
+                Nothing
+
+upcomingTrains : Model -> Node Msg
+upcomingTrains model =
     Elements.view
         [
         ]
-        ( List.map train schedule )
+        ( List.filterMap (stationFilter model.selectedStation) model.schedule)
 
 
-train : Train -> Node Msg
-train train =
+upcomingTrain : Train -> Node Msg
+upcomingTrain train =
     text
         []
         [ Ui.string train.time
