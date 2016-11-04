@@ -23,11 +23,20 @@ type alias Schedule = List Train
 
 
 type alias Model =
-    Schedule
+    { schedule : Schedule
+    , selectedStation : Maybe Station
+    }
 
 
 model : Model
 model =
+    { schedule = initialSchedule
+    , selectedStation = Nothing
+    }
+
+
+initialSchedule : Schedule
+initialSchedule =
     [ { time = "1pm", station = "Davis Square" }
     , { time = "2pm", station = "Alewife" }
     , { time = "3pm", station = "Central Square" }
@@ -49,37 +58,49 @@ stations schedule =
 
 
 type Msg
-    = Increment
-    | Decrement
+    = PickStation Station
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model = ( model, Cmd.none )
+update msg model =
+    case msg of
+        PickStation station ->
+          ( { model | selectedStation = Just station }, Cmd.none )
 
 
 -- VIEW
 
 
 view : Model -> Node Msg
-view schedule =
+view model =
     Elements.view
         [ Ui.style [ Style.alignItems "center" ]
         ]
-        [ trains schedule
-        , stationPicker schedule
+        [ trains model.schedule
+        , stationPicker model
         ]
 
-stationButton : Station -> Node Msg
-stationButton station =
+stationStyle : Maybe Station -> Station -> List Style.Style
+stationStyle selectedStation station =
+    if selectedStation == Just station then
+        [ Style.color "red"
+        ]
+    else
+        []
+
+stationButton : Maybe Station -> Station -> Node Msg
+stationButton selectedStation station =
     text
-      []
+      [ Ui.style <| stationStyle selectedStation station
+      , onPress (PickStation station)
+      ]
       [ Ui.string station ]
 
-stationPicker : Schedule -> Node Msg
-stationPicker schedule =
+stationPicker : Model -> Node Msg
+stationPicker {schedule, selectedStation} =
     Elements.view
         []
-        ( List.map stationButton <| stations schedule )
+        ( List.map (stationButton selectedStation) <| stations schedule )
 
 trains : Schedule -> Node Msg
 trains schedule =
