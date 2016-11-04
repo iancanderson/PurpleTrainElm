@@ -1,0 +1,106 @@
+var _user$project$View$upcomingTrain = function (train) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$string(train.time)
+			]));
+};
+var _user$project$View$welcomeScreen = A2(
+	_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_native_ui$elm_native_ui$NativeUi$string('Select your home station')
+				]))
+		]));
+var _user$project$View$stationFilter = F2(
+	function (selectedStation, train) {
+		return _elm_lang$core$Native_Utils.eq(selectedStation, train.station) ? _elm_lang$core$Maybe$Just(
+			_user$project$View$upcomingTrain(train)) : _elm_lang$core$Maybe$Nothing;
+	});
+var _user$project$View$upcomingTrains = F2(
+	function (selectedStation, schedule) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			A2(
+				_elm_lang$core$List$filterMap,
+				_user$project$View$stationFilter(selectedStation),
+				schedule));
+	});
+var _user$project$View$maybeUpcomingTrains = function (model) {
+	var _p0 = model.selectedStation;
+	if (_p0.ctor === 'Nothing') {
+		return _user$project$View$welcomeScreen;
+	} else {
+		return A2(_user$project$View$upcomingTrains, _p0._0, model.schedule);
+	}
+};
+var _user$project$View$stationStyle = F2(
+	function (selectedStation, station) {
+		return _elm_lang$core$Native_Utils.eq(
+			selectedStation,
+			_elm_lang$core$Maybe$Just(station)) ? _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi_Style$color('red')
+			]) : _elm_lang$core$Native_List.fromArray(
+			[]);
+	});
+var _user$project$View$stationButton = F2(
+	function (selectedStation, station) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_native_ui$elm_native_ui$NativeUi$style(
+					A2(_user$project$View$stationStyle, selectedStation, station)),
+					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+					_user$project$Update$PickStation(station))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_native_ui$elm_native_ui$NativeUi$string(station)
+				]));
+	});
+var _user$project$View$stationPicker = function (_p1) {
+	var _p2 = _p1;
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$View$stationButton(_p2.selectedStation),
+			_user$project$Model$stations(_p2.schedule)));
+};
+var _user$project$View$view = function (model) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center')
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$View$maybeUpcomingTrains(model),
+				_user$project$View$stationPicker(model)
+			]));
+};
