@@ -1,16 +1,40 @@
+var _user$project$Update$Route = function (a) {
+	return {name: a};
+};
+var _user$project$Update$decodeRoute = A2(
+	_elm_lang$core$Json_Decode$map,
+	_user$project$Update$Route,
+	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string));
+var _user$project$Update$decodeRoutes = A2(
+	_elm_lang$core$Json_Decode$map,
+	_elm_lang$core$List$map(_elm_lang$core$Basics$snd),
+	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$Update$decodeRoute));
+var _user$project$Update$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$Update$decodeRoutes);
+var _user$project$Update$LoadRoutes = function (a) {
+	return {ctor: 'LoadRoutes', _0: a};
+};
+var _user$project$Update$send = A2(_elm_lang$http$Http$send, _user$project$Update$LoadRoutes, _user$project$Update$getRoutes);
 var _user$project$Update$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					selectedStation: _elm_lang$core$Maybe$Just(_p0._0)
-				}),
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
+		switch (_p0.ctor) {
+			case 'PickStation':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							selectedStation: _elm_lang$core$Maybe$Just(_p0._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'FetchRoutes':
+				return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
 	});
+var _user$project$Update$FetchRoutes = {ctor: 'FetchRoutes'};
 var _user$project$Update$PickStation = function (a) {
 	return {ctor: 'PickStation', _0: a};
 };

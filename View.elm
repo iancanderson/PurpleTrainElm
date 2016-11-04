@@ -20,6 +20,7 @@ view model =
             ]
         ]
         [ maybeUpcomingTrains model
+        , text [ onPress FetchRoutes ] [ Ui.string "Fetch" ]
         , stationPicker model
         ]
 

@@ -101,6 +101,16 @@ var _user$project$View$view = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_user$project$View$maybeUpcomingTrains(model),
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Update$FetchRoutes)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string('Fetch')
+					])),
 				_user$project$View$stationPicker(model)
 			]));
 };
