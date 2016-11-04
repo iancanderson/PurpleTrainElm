@@ -1,0 +1,911 @@
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$needsOffscreenAlphaCompositing = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'needsOffscreenAlphaCompositing',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$collapsable = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'collapsable',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$shouldRasterizeIOS = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'shouldRasterizeIOS',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$renderToHardwareTextureAndroid = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'renderToHardwareTextureAndroid',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$pointerEvents = function (val) {
+	var stringValue = function () {
+		var _p0 = val;
+		switch (_p0.ctor) {
+			case 'ViewPointerEventsBoxNone':
+				return 'box-none';
+			case 'ViewPointerEventsNone':
+				return 'none';
+			case 'ViewPointerEventsBoxOnly':
+				return 'box-only';
+			default:
+				return 'auto';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'pointerEvents', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$importantForAccessibility = function (val) {
+	var stringValue = function () {
+		var _p1 = val;
+		switch (_p1.ctor) {
+			case 'ViewImportantForAccessibilityAuto':
+				return 'auto';
+			case 'ViewImportantForAccessibilityYes':
+				return 'yes';
+			case 'ViewImportantForAccessibilityNo':
+				return 'no';
+			default:
+				return 'no-hide-descendants';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'importantForAccessibility', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$accessibilityLiveRegion = function (val) {
+	var stringValue = function () {
+		var _p2 = val;
+		switch (_p2.ctor) {
+			case 'ViewAccessibilityLiveRegionNone':
+				return 'none';
+			case 'ViewAccessibilityLiveRegionPolite':
+				return 'polite';
+			default:
+				return 'assertive';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'accessibilityLiveRegion', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$rtl = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'rtl',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$contentInsetEnd = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'contentInsetEnd',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$contentInsetStart = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'contentInsetStart',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$subtitle = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'subtitle',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$underlineColorAndroid = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'underlineColorAndroid',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$blurOnSubmit = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'blurOnSubmit',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$selectTextOnFocus = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'selectTextOnFocus',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$clearTextOnFocus = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'clearTextOnFocus',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$clearButtonMode = function (val) {
+	var stringValue = function () {
+		var _p3 = val;
+		switch (_p3.ctor) {
+			case 'TextInputClearButtonModeNever':
+				return 'never';
+			case 'TextInputClearButtonModeWhileEditing':
+				return 'while-editing';
+			case 'TextInputClearButtonModeUnlessEditing':
+				return 'unless-editing';
+			default:
+				return 'always';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'clearButtonMode', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$defaultValue = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'defaultValue',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$value = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'value',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$selectionColor = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'selectionColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$secureTextEntry = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'secureTextEntry',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$placeholderTextColor = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'placeholderTextColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$placeholder = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'placeholder',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$multiline = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'multiline',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$enablesReturnKeyAutomatically = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'enablesReturnKeyAutomatically',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$maxLength = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'maxLength',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$returnKeyType = function (val) {
+	var stringValue = function () {
+		var _p4 = val;
+		switch (_p4.ctor) {
+			case 'TextInputReturnKeyTypeDefault':
+				return 'default';
+			case 'TextInputReturnKeyTypeGo':
+				return 'go';
+			case 'TextInputReturnKeyTypeGoogle':
+				return 'google';
+			case 'TextInputReturnKeyTypeJoin':
+				return 'join';
+			case 'TextInputReturnKeyTypeNext':
+				return 'next';
+			case 'TextInputReturnKeyTypeRoute':
+				return 'route';
+			case 'TextInputReturnKeyTypeSearch':
+				return 'search';
+			case 'TextInputReturnKeyTypeSend':
+				return 'send';
+			case 'TextInputReturnKeyTypeYahoo':
+				return 'yahoo';
+			case 'TextInputReturnKeyTypeDone':
+				return 'done';
+			default:
+				return 'emergency-call';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'returnKeyType', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$keyboardAppearance = function (val) {
+	var stringValue = function () {
+		var _p5 = val;
+		switch (_p5.ctor) {
+			case 'TextInputKeyboardAppearanceDefault':
+				return 'default';
+			case 'TextInputKeyboardAppearanceLight':
+				return 'light';
+			default:
+				return 'dark';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'keyboardAppearance', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$keyboardType = function (val) {
+	var stringValue = function () {
+		var _p6 = val;
+		switch (_p6.ctor) {
+			case 'TextInputKeyboardTypeDefault':
+				return 'default';
+			case 'TextInputKeyboardTypeEmailAddress':
+				return 'email-address';
+			case 'TextInputKeyboardTypeNumeric':
+				return 'numeric';
+			case 'TextInputKeyboardTypePhonePad':
+				return 'phone-pad';
+			case 'TextInputKeyboardTypeAsciiCapable':
+				return 'ascii-capable';
+			case 'TextInputKeyboardTypeNumbersAndPunctuation':
+				return 'numbers-and-punctuation';
+			case 'TextInputKeyboardTypeUrl':
+				return 'url';
+			case 'TextInputKeyboardTypeNumberPad':
+				return 'number-pad';
+			case 'TextInputKeyboardTypeNamePhonePad':
+				return 'name-phone-pad';
+			case 'TextInputKeyboardTypeDecimalPad':
+				return 'decimal-pad';
+			case 'TextInputKeyboardTypeTwitter':
+				return 'twitter';
+			default:
+				return 'web-search';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'keyboardType', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$editable = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'editable',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$autoFocus = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'autoFocus',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$autoCorrect = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'autoCorrect',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$autoCapitalize = function (val) {
+	var stringValue = function () {
+		var _p7 = val;
+		switch (_p7.ctor) {
+			case 'TextInputAutoCapitalizeNone':
+				return 'none';
+			case 'TextInputAutoCapitalizeSentences':
+				return 'sentences';
+			case 'TextInputAutoCapitalizeWords':
+				return 'words';
+			default:
+				return 'characters';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'autoCapitalize', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$showHideTransition = function (val) {
+	var stringValue = function () {
+		var _p8 = val;
+		if (_p8.ctor === 'StatusBarShowHideTransitionFade') {
+			return 'fade';
+		} else {
+			return 'slide';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'showHideTransition', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$networkActivityIndicatorVisible = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'networkActivityIndicatorVisible',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$barStyle = function (val) {
+	var stringValue = function () {
+		var _p9 = val;
+		if (_p9.ctor === 'StatusBarBarStyleDefault') {
+			return 'default';
+		} else {
+			return 'light-content';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'barStyle', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$translucent = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'translucent',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$animated = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'animated',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$hidden = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'hidden',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$disabled = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'disabled',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$maximumTrackTintColor = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'maximumTrackTintColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$minimumTrackTintColor = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'minimumTrackTintColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$maximumValue = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'maximumValue',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$minimumValue = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'minimumValue',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$step = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'step',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$sliderValue = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'sliderValue',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$momentary = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'momentary',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$tintColor = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'tintColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$selectedIndex = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'selectedIndex',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$zoomScale = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'zoomScale',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$removeClippedSubviews = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'removeClippedSubviews',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$snapToAlignment = function (val) {
+	var stringValue = function () {
+		var _p10 = val;
+		switch (_p10.ctor) {
+			case 'ScrollViewSnapToAlignmentStart':
+				return 'start';
+			case 'ScrollViewSnapToAlignmentCenter':
+				return 'center';
+			default:
+				return 'end';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'snapToAlignment', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$snapToInterval = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'snapToInterval',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$showsVerticalScrollIndicator = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'showsVerticalScrollIndicator',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$showsHorizontalScrollIndicator = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'showsHorizontalScrollIndicator',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$sendMomentumEvents = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'sendMomentumEvents',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$scrollsToTop = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'scrollsToTop',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$scrollEventThrottle = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'scrollEventThrottle',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$pagingEnabled = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'pagingEnabled',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$minimumZoomScale = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'minimumZoomScale',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$maximumZoomScale = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'maximumZoomScale',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$keyboardShouldPersistTaps = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'keyboardShouldPersistTaps',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$keyboardDismissMode = function (val) {
+	var stringValue = function () {
+		var _p11 = val;
+		switch (_p11.ctor) {
+			case 'ScrollViewKeyboardDismissModeNone':
+				return 'none';
+			case 'ScrollViewKeyboardDismissModeInteractive':
+				return 'interactive';
+			default:
+				return 'on-drag';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'keyboardDismissMode', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$canCancelContentTouches = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'canCancelContentTouches',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$directionalLockEnabled = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'directionalLockEnabled',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$indicatorStyle = function (val) {
+	var stringValue = function () {
+		var _p12 = val;
+		switch (_p12.ctor) {
+			case 'ScrollViewIndicatorStyleDefault':
+				return 'default';
+			case 'ScrollViewIndicatorStyleBlack':
+				return 'black';
+			default:
+				return 'white';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'indicatorStyle', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$horizontal = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'horizontal',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$centerContent = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'centerContent',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$alwaysBounceVertical = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'alwaysBounceVertical',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$alwaysBounceHorizontal = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'alwaysBounceHorizontal',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$bouncesZoom = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'bouncesZoom',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$bounces = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'bounces',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$automaticallyAdjustContentInsets = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'automaticallyAdjustContentInsets',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$title = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'title',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$refreshing = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'refreshing',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$trackTintColor = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'trackTintColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$progressTintColor = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'progressTintColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$progressViewStyle = function (val) {
+	var stringValue = function () {
+		var _p13 = val;
+		if (_p13.ctor === 'ProgressViewProgressViewStyleDefault') {
+			return 'default';
+		} else {
+			return 'bar';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'progressViewStyle', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$progress = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'progress',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$prompt = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'prompt',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$mode = function (val) {
+	var stringValue = function () {
+		var _p14 = val;
+		if (_p14.ctor === 'PickerModeDialog') {
+			return 'dialog';
+		} else {
+			return 'dropdown';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'mode', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$enabled = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'enabled',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$active = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'active',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$minDelta = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'minDelta',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$maxDelta = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'maxDelta',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$mapType = function (val) {
+	var stringValue = function () {
+		var _p15 = val;
+		switch (_p15.ctor) {
+			case 'MapViewMapTypeStandard':
+				return 'standard';
+			case 'MapViewMapTypeSatellite':
+				return 'satellite';
+			default:
+				return 'hybrid';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'mapType', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$scrollEnabled = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'scrollEnabled',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$pitchEnabled = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'pitchEnabled',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$rotateEnabled = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'rotateEnabled',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$zoomEnabled = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'zoomEnabled',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$showsCompass = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'showsCompass',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$showsPointsOfInterest = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'showsPointsOfInterest',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$followUserLocation = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'followUserLocation',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$showsUserLocation = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'showsUserLocation',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$size = function (val) {
+	var stringValue = function () {
+		var _p16 = val;
+		if (_p16.ctor === 'ActivityIndicatorSizeSmall') {
+			return 'small';
+		} else {
+			return 'large';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'size', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$hidesWhenStopped = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'hidesWhenStopped',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$color = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'color',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$animating = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'animating',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$resizeMode = function (val) {
+	var stringValue = function () {
+		var _p17 = val;
+		switch (_p17.ctor) {
+			case 'ImageResizeModeCover':
+				return 'cover';
+			case 'ImageResizeModeContain':
+				return 'contain';
+			default:
+				return 'stretch';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'resizeMode', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$accessibilityLabel = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'accessibilityLabel',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$accessible = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'accessible',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$defaultSource = function (uri) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'defaultSource',
+		_elm_lang$core$Json_Encode$object(
+			_elm_lang$core$Native_List.fromArray(
+				[
+					{
+					ctor: '_Tuple2',
+					_0: 'uri',
+					_1: _elm_lang$core$Json_Encode$string(uri)
+				}
+				])));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$source = function (uri) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'source',
+		_elm_lang$core$Json_Encode$object(
+			_elm_lang$core$Native_List.fromArray(
+				[
+					{
+					ctor: '_Tuple2',
+					_0: 'uri',
+					_1: _elm_lang$core$Json_Encode$string(uri)
+				}
+				])));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$allowFontScaling = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'allowFontScaling',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$testID = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'testID',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$suppressHighlighting = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'suppressHighlighting',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$numberOfLines = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'numberOfLines',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ImageResizeModeStretch = {ctor: 'ImageResizeModeStretch'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ImageResizeModeContain = {ctor: 'ImageResizeModeContain'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ImageResizeModeCover = {ctor: 'ImageResizeModeCover'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ActivityIndicatorSizeLarge = {ctor: 'ActivityIndicatorSizeLarge'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ActivityIndicatorSizeSmall = {ctor: 'ActivityIndicatorSizeSmall'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$MapViewMapTypeHybrid = {ctor: 'MapViewMapTypeHybrid'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$MapViewMapTypeSatellite = {ctor: 'MapViewMapTypeSatellite'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$MapViewMapTypeStandard = {ctor: 'MapViewMapTypeStandard'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$PickerModeDropdown = {ctor: 'PickerModeDropdown'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$PickerModeDialog = {ctor: 'PickerModeDialog'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ProgressViewProgressViewStyleBar = {ctor: 'ProgressViewProgressViewStyleBar'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ProgressViewProgressViewStyleDefault = {ctor: 'ProgressViewProgressViewStyleDefault'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewIndicatorStyleWhite = {ctor: 'ScrollViewIndicatorStyleWhite'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewIndicatorStyleBlack = {ctor: 'ScrollViewIndicatorStyleBlack'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewIndicatorStyleDefault = {ctor: 'ScrollViewIndicatorStyleDefault'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewKeyboardDismissModeOnDrag = {ctor: 'ScrollViewKeyboardDismissModeOnDrag'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewKeyboardDismissModeInteractive = {ctor: 'ScrollViewKeyboardDismissModeInteractive'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewKeyboardDismissModeNone = {ctor: 'ScrollViewKeyboardDismissModeNone'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewSnapToAlignmentEnd = {ctor: 'ScrollViewSnapToAlignmentEnd'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewSnapToAlignmentCenter = {ctor: 'ScrollViewSnapToAlignmentCenter'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewSnapToAlignmentStart = {ctor: 'ScrollViewSnapToAlignmentStart'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$StatusBarBarStyleLightContent = {ctor: 'StatusBarBarStyleLightContent'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$StatusBarBarStyleDefault = {ctor: 'StatusBarBarStyleDefault'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$StatusBarShowHideTransitionSlide = {ctor: 'StatusBarShowHideTransitionSlide'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$StatusBarShowHideTransitionFade = {ctor: 'StatusBarShowHideTransitionFade'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputAutoCapitalizeCharacters = {ctor: 'TextInputAutoCapitalizeCharacters'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputAutoCapitalizeWords = {ctor: 'TextInputAutoCapitalizeWords'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputAutoCapitalizeSentences = {ctor: 'TextInputAutoCapitalizeSentences'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputAutoCapitalizeNone = {ctor: 'TextInputAutoCapitalizeNone'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeWebSearch = {ctor: 'TextInputKeyboardTypeWebSearch'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeTwitter = {ctor: 'TextInputKeyboardTypeTwitter'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeDecimalPad = {ctor: 'TextInputKeyboardTypeDecimalPad'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeNamePhonePad = {ctor: 'TextInputKeyboardTypeNamePhonePad'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeNumberPad = {ctor: 'TextInputKeyboardTypeNumberPad'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeUrl = {ctor: 'TextInputKeyboardTypeUrl'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeNumbersAndPunctuation = {ctor: 'TextInputKeyboardTypeNumbersAndPunctuation'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeAsciiCapable = {ctor: 'TextInputKeyboardTypeAsciiCapable'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypePhonePad = {ctor: 'TextInputKeyboardTypePhonePad'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeNumeric = {ctor: 'TextInputKeyboardTypeNumeric'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeEmailAddress = {ctor: 'TextInputKeyboardTypeEmailAddress'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeDefault = {ctor: 'TextInputKeyboardTypeDefault'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardAppearanceDark = {ctor: 'TextInputKeyboardAppearanceDark'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardAppearanceLight = {ctor: 'TextInputKeyboardAppearanceLight'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardAppearanceDefault = {ctor: 'TextInputKeyboardAppearanceDefault'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeEmergencyCall = {ctor: 'TextInputReturnKeyTypeEmergencyCall'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeDone = {ctor: 'TextInputReturnKeyTypeDone'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeYahoo = {ctor: 'TextInputReturnKeyTypeYahoo'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeSend = {ctor: 'TextInputReturnKeyTypeSend'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeSearch = {ctor: 'TextInputReturnKeyTypeSearch'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeRoute = {ctor: 'TextInputReturnKeyTypeRoute'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeNext = {ctor: 'TextInputReturnKeyTypeNext'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeJoin = {ctor: 'TextInputReturnKeyTypeJoin'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeGoogle = {ctor: 'TextInputReturnKeyTypeGoogle'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeGo = {ctor: 'TextInputReturnKeyTypeGo'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeDefault = {ctor: 'TextInputReturnKeyTypeDefault'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputClearButtonModeAlways = {ctor: 'TextInputClearButtonModeAlways'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputClearButtonModeUnlessEditing = {ctor: 'TextInputClearButtonModeUnlessEditing'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputClearButtonModeWhileEditing = {ctor: 'TextInputClearButtonModeWhileEditing'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputClearButtonModeNever = {ctor: 'TextInputClearButtonModeNever'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewAccessibilityLiveRegionAssertive = {ctor: 'ViewAccessibilityLiveRegionAssertive'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewAccessibilityLiveRegionPolite = {ctor: 'ViewAccessibilityLiveRegionPolite'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewAccessibilityLiveRegionNone = {ctor: 'ViewAccessibilityLiveRegionNone'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewImportantForAccessibilityNoHideDescendants = {ctor: 'ViewImportantForAccessibilityNoHideDescendants'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewImportantForAccessibilityNo = {ctor: 'ViewImportantForAccessibilityNo'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewImportantForAccessibilityYes = {ctor: 'ViewImportantForAccessibilityYes'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewImportantForAccessibilityAuto = {ctor: 'ViewImportantForAccessibilityAuto'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsAuto = {ctor: 'ViewPointerEventsAuto'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxOnly = {ctor: 'ViewPointerEventsBoxOnly'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsNone = {ctor: 'ViewPointerEventsNone'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxNone = {ctor: 'ViewPointerEventsBoxNone'};

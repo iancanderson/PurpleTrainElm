@@ -1,0 +1,73 @@
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onChangeText = function (tagger) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$on,
+		'ChangeText',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$string));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onSwitchValueChange = function (tagger) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$on,
+		'SwitchValueChange',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$int));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onSliderValueChange = function (tagger) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$on,
+		'SliderValueChange',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$float));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onSegmentedControlValueChange = function (tagger) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$on,
+		'SegmentedControlValueChange',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$int));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onPickerValueChange = function (tagger) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$on,
+		'PickerValueChange',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$string));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent = F2(
+	function (name, msg) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi$on,
+			name,
+			_elm_lang$core$Json_Decode$succeed(msg));
+	});
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onLayout = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Layout');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onPress = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Press');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onLoadStart = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('LoadStart');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onProgress = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Progress');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onError = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Error');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onLoad = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Load');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onLoadEnd = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('LoadEnd');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onRegionChange = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('RegionChange');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onRegionChangeComplete = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('RegionChangeComplete');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onAnnotationPress = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('AnnotationPress');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onRefresh = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Refresh');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onScroll = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Scroll');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onScrollAnimationEnd = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ScrollAnimationEnd');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onContentSizeChange = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ContentSizeChange');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onChange = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Change');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onSlidingComplete = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('SlidingComplete');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onBlur = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Blur');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onFocus = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Focus');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onEndEditing = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('EndEditing');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onSelectionChange = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('SelectionChange');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onSubmitEditing = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('SubmitEditing');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onKeyPress = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('KeyPress');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onActionSelected = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ActionSelected');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onIconClicked = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('IconClicked');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onAccessibilityTap = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('AccessibilityTap');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onMagicTap = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('MagicTap');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderGrant = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderGrant');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderMove = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderMove');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderReject = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderReject');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderRelease = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderRelease');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderTerminate = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderTerminate');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderTerminationRequest = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderTerminationRequest');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onStartShouldSetResponder = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('StartShouldSetResponder');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onStartShouldSetResponderCapture = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('StartShouldSetResponderCapture');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onMoveShouldSetResponder = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('MoveShouldSetResponder');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onMoveShouldSetResponderCapture = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('MoveShouldSetResponderCapture');

@@ -1,0 +1,23 @@
+var _elm_native_ui$elm_native_ui$NativeUi$program = function (stuff) {
+	return _elm_native_ui$elm_native_ui$Native_NativeUi.program(stuff);
+};
+var _elm_native_ui$elm_native_ui$NativeUi$map = F2(
+	function (tagger, element) {
+		return A2(_elm_native_ui$elm_native_ui$Native_NativeUi.map, tagger, element);
+	});
+var _elm_native_ui$elm_native_ui$NativeUi$on = function (eventName) {
+	var realEventName = A2(_elm_lang$core$Basics_ops['++'], 'on', eventName);
+	return _elm_native_ui$elm_native_ui$Native_NativeUi.on(realEventName);
+};
+var _elm_native_ui$elm_native_ui$NativeUi$style = function (styles) {
+	return _elm_native_ui$elm_native_ui$Native_NativeUi.style(
+		_elm_native_ui$elm_native_ui$NativeUi_Style$encode(styles));
+};
+var _elm_native_ui$elm_native_ui$NativeUi$property = F2(
+	function (name, value) {
+		return _elm_native_ui$elm_native_ui$Native_NativeUi.property;
+	});
+var _elm_native_ui$elm_native_ui$NativeUi$string = _elm_native_ui$elm_native_ui$Native_NativeUi.string;
+var _elm_native_ui$elm_native_ui$NativeUi$node = _elm_native_ui$elm_native_ui$Native_NativeUi.node;
+var _elm_native_ui$elm_native_ui$NativeUi$Node = {ctor: 'Node'};
+var _elm_native_ui$elm_native_ui$NativeUi$Property = {ctor: 'Property'};
