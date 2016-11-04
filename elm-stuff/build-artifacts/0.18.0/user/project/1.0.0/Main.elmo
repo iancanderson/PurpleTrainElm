@@ -8,26 +8,44 @@ var _user$project$Main$upcomingTrain = function (train) {
 				_elm_native_ui$elm_native_ui$NativeUi$string(train.time)
 			]));
 };
+var _user$project$Main$noSelectedStation = A2(
+	_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_native_ui$elm_native_ui$NativeUi$string('Select your station')
+				]))
+		]));
 var _user$project$Main$stationFilter = F2(
 	function (selectedStation, train) {
-		var _p0 = selectedStation;
-		if (_p0.ctor === 'Nothing') {
-			return _elm_lang$core$Maybe$Just(
-				_user$project$Main$upcomingTrain(train));
-		} else {
-			return _elm_lang$core$Native_Utils.eq(_p0._0, train.station) ? _elm_lang$core$Maybe$Just(
-				_user$project$Main$upcomingTrain(train)) : _elm_lang$core$Maybe$Nothing;
-		}
+		return _elm_lang$core$Native_Utils.eq(selectedStation, train.station) ? _elm_lang$core$Maybe$Just(
+			_user$project$Main$upcomingTrain(train)) : _elm_lang$core$Maybe$Nothing;
 	});
-var _user$project$Main$upcomingTrains = function (model) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		A2(
-			_elm_lang$core$List$filterMap,
-			_user$project$Main$stationFilter(model.selectedStation),
-			model.schedule));
+var _user$project$Main$upcomingTrains = F2(
+	function (selectedStation, schedule) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			A2(
+				_elm_lang$core$List$filterMap,
+				_user$project$Main$stationFilter(selectedStation),
+				schedule));
+	});
+var _user$project$Main$maybeUpcomingTrains = function (model) {
+	var _p0 = model.selectedStation;
+	if (_p0.ctor === 'Nothing') {
+		return _user$project$Main$noSelectedStation;
+	} else {
+		return A2(_user$project$Main$upcomingTrains, _p0._0, model.schedule);
+	}
 };
 var _user$project$Main$stationStyle = F2(
 	function (selectedStation, station) {
@@ -119,12 +137,15 @@ var _user$project$Main$view = function (model) {
 				_elm_native_ui$elm_native_ui$NativeUi$style(
 				_elm_lang$core$Native_List.fromArray(
 					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
 						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center')
 					]))
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$Main$upcomingTrains(model),
+				_user$project$Main$maybeUpcomingTrains(model),
 				_user$project$Main$stationPicker(model)
 			]));
 };

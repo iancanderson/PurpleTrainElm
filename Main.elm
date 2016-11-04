@@ -74,9 +74,14 @@ update msg model =
 view : Model -> Node Msg
 view model =
     Elements.view
-        [ Ui.style [ Style.alignItems "center" ]
+        [ Ui.style
+            [ Style.flex 1
+            , Style.flexDirection "column"
+            , Style.justifyContent "center"
+            , Style.alignItems "center"
+            ]
         ]
-        [ upcomingTrains model
+        [ maybeUpcomingTrains model
         , stationPicker model
         ]
 
@@ -103,22 +108,34 @@ stationPicker {schedule, selectedStation} =
         ( List.map (stationButton selectedStation) <| stations schedule )
 
 
-stationFilter : Maybe Station -> Train -> Maybe (Node Msg)
+stationFilter : Station -> Train -> Maybe (Node Msg)
 stationFilter selectedStation train =
-    case selectedStation of
-        Nothing -> Just (upcomingTrain train)
-        Just station ->
-            if station == train.station then
-                Just (upcomingTrain train)
-            else
-                Nothing
+    if selectedStation == train.station then
+        Just (upcomingTrain train)
+    else
+        Nothing
 
-upcomingTrains : Model -> Node Msg
-upcomingTrains model =
+maybeUpcomingTrains : Model -> Node Msg
+maybeUpcomingTrains model =
+    case model.selectedStation of
+        Nothing ->
+            noSelectedStation
+        Just station ->
+            upcomingTrains station model.schedule
+
+noSelectedStation : Node Msg
+noSelectedStation =
+    Elements.view
+        []
+        [ text [] [ Ui.string "Select your station" ]
+        ]
+
+upcomingTrains : Station -> Schedule -> Node Msg
+upcomingTrains selectedStation schedule =
     Elements.view
         [
         ]
-        ( List.filterMap (stationFilter model.selectedStation) model.schedule)
+        ( List.filterMap (stationFilter selectedStation) schedule)
 
 
 upcomingTrain : Train -> Node Msg
