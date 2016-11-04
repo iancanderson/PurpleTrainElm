@@ -7337,53 +7337,24 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxOnly = 
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsNone = {ctor: 'ViewPointerEventsNone'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxNone = {ctor: 'ViewPointerEventsBoxNone'};
 
-var _user$project$Main$button = F3(
-	function (msg, color, content) {
-		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi$style(
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi_Style$color('white'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(color),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$paddingTop(5),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$paddingBottom(5),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$width(30),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('bold'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$shadowColor('#000'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$shadowOpacity(0.25),
-							A2(_elm_native_ui$elm_native_ui$NativeUi_Style$shadowOffset, 1, 1),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$shadowRadius(5),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$transform(
-							_elm_lang$core$Native_Utils.update(
-								_elm_native_ui$elm_native_ui$NativeUi_Style$defaultTransform,
-								{
-									rotate: _elm_lang$core$Maybe$Just('10deg')
-								}))
-						])),
-					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(msg)
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi$string(content)
-				]));
-	});
-var _user$project$Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'Increment') {
-			return {ctor: '_Tuple2', _0: model + 1, _1: _elm_lang$core$Platform_Cmd$none};
-		} else {
-			return {ctor: '_Tuple2', _0: model - 1, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _user$project$Main$model = 9000;
-var _user$project$Main$Decrement = {ctor: 'Decrement'};
-var _user$project$Main$Increment = {ctor: 'Increment'};
-var _user$project$Main$view = function (count) {
+var _user$project$Main$train = function (train) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$string(train.time)
+			]));
+};
+var _user$project$Main$trains = function (schedule) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(_elm_lang$core$List$map, _user$project$Main$train, schedule));
+};
+var _user$project$Main$view = function (schedule) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
@@ -7396,68 +7367,37 @@ var _user$project$Main$view = function (count) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$image,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$height(64),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$width(64),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(30)
-							])),
-						_elm_native_ui$elm_native_ui$NativeUi_Properties$source('https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[])),
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(30)
-							]))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string(
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'Counter: ',
-							_elm_lang$core$Basics$toString(count)))
-					])),
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$width(80),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between')
-							]))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A3(_user$project$Main$button, _user$project$Main$Decrement, '#d33', '-'),
-						A3(_user$project$Main$button, _user$project$Main$Increment, '#3d3', '+')
-					]))
+				_user$project$Main$trains(schedule)
 			]));
 };
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _user$project$Main$model = _elm_lang$core$Native_List.fromArray(
+	[
+		{time: '1pm', station: 'Back Bay'},
+		{time: '2pm', station: 'Back Bay'},
+		{time: '3pm', station: 'Back Bay'},
+		{time: '4pm', station: 'Back Bay'},
+		{time: '5pm', station: 'Back Bay'},
+		{time: '6pm', station: 'Back Bay'}
+	]);
 var _user$project$Main$main = _elm_native_ui$elm_native_ui$NativeUi$program(
 	{
 		init: {ctor: '_Tuple2', _0: _user$project$Main$model, _1: _elm_lang$core$Platform_Cmd$none},
 		view: _user$project$Main$view,
 		update: _user$project$Main$update,
-		subscriptions: function (_p1) {
+		subscriptions: function (_p0) {
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();
+var _user$project$Main$Train = F2(
+	function (a, b) {
+		return {time: a, station: b};
+	});
+var _user$project$Main$Decrement = {ctor: 'Decrement'};
+var _user$project$Main$Increment = {ctor: 'Increment'};
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
