@@ -8302,7 +8302,16 @@ var _user$project$Update$update = F2(
 			case 'FetchRoutes':
 				return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
 			default:
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Basics$snd(
+						{
+							ctor: '_Tuple2',
+							_0: A2(_elm_lang$core$Debug$log, 'result: ', _p0._0),
+							_1: model
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
 var _user$project$Update$FetchRoutes = {ctor: 'FetchRoutes'};

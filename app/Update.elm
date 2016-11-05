@@ -1,6 +1,7 @@
 module Update exposing (..)
 
 import Http
+import Debug
 import Json.Decode as Decode
 
 import Model exposing (Station, Model)
@@ -26,7 +27,7 @@ update msg model =
         FetchRoutes ->
             ( model, send )
         LoadRoutes result ->
-            ( model, Cmd.none )
+            (snd ( Debug.log "result: " result , model ), Cmd.none)
 
 
 getRoutes : Http.Request Routes
