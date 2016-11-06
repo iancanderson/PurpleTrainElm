@@ -18,12 +18,21 @@ var _user$project$Model$initialSchedule = _elm_lang$core$Native_List.fromArray(
 		{time: '5pm', station: 'Park St.'},
 		{time: '6pm', station: 'Park St.'}
 	]);
-var _user$project$Model$initialModel = {schedule: _user$project$Model$initialSchedule, selectedStation: _elm_lang$core$Maybe$Nothing};
+var _user$project$Model$initialModel = {
+	schedule: _user$project$Model$initialSchedule,
+	selectedStation: _elm_lang$core$Maybe$Nothing,
+	routes: _elm_lang$core$Native_List.fromArray(
+		[])
+};
 var _user$project$Model$Train = F2(
 	function (a, b) {
 		return {time: a, station: b};
 	});
-var _user$project$Model$Model = F2(
+var _user$project$Model$Route = F2(
 	function (a, b) {
-		return {schedule: a, selectedStation: b};
+		return {name: a, stops: b};
+	});
+var _user$project$Model$Model = F3(
+	function (a, b, c) {
+		return {schedule: a, selectedStation: b, routes: c};
 	});

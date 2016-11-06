@@ -1,10 +1,10 @@
-var _user$project$Update$Route = function (a) {
-	return {name: a};
-};
-var _user$project$Update$decodeRoute = A2(
-	_elm_lang$core$Json_Decode$map,
-	_user$project$Update$Route,
-	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string));
+var _user$project$Update$decodeStop = _elm_lang$core$Json_Decode$string;
+var _user$project$Update$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$Update$decodeStop);
+var _user$project$Update$decodeRoute = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$Model$Route,
+	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$Update$decodeStops));
 var _user$project$Update$decodeRoutes = A2(
 	_elm_lang$core$Json_Decode$map,
 	_elm_lang$core$List$map(_elm_lang$core$Basics$snd),
@@ -31,16 +31,17 @@ var _user$project$Update$update = F2(
 			case 'FetchRoutes':
 				return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
 			default:
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Basics$snd(
-						{
-							ctor: '_Tuple2',
-							_0: A2(_elm_lang$core$Debug$log, 'result: ', _p0._0),
-							_1: model
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				if (_p0._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{routes: _p0._0._0}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
+				}
 		}
 	});
 var _user$project$Update$FetchRoutes = {ctor: 'FetchRoutes'};
