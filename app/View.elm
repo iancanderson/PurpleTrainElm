@@ -6,6 +6,7 @@ import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
 
+import App.Color as Color
 import Model exposing (..)
 import Message exposing (..)
 import Types exposing (..)
@@ -18,8 +19,9 @@ view model =
         [ Ui.style
             [ Style.flex 1
             , Style.flexDirection "column"
-            , Style.justifyContent "center"
+            , Style.justifyContent "space-between"
             , Style.alignItems "center"
+            , Style.backgroundColor Color.darkPurple
             ]
         ]
         [ directionPicker model.direction
@@ -41,10 +43,21 @@ trainElement train =
         [ Ui.style
             [ Style.flexDirection "row"
             , Style.alignItems "center"
+            , Style.backgroundColor "white"
             ]
         ]
-        [ text [] [ Ui.string (prettyTime train.scheduledArrival) ]
-        , text [] [ Ui.string (prettyTime train.predictedArrival) ]
+        [ text
+            [ Ui.style
+              [ Style.color Color.darkPurple
+              ]
+            ]
+            [ Ui.string (prettyTime train.scheduledArrival) ]
+        , text
+            [ Ui.style
+              [ Style.color Color.darkPurple
+              ]
+            ]
+            [ Ui.string (prettyTime train.predictedArrival) ]
         ]
 
 
@@ -54,6 +67,8 @@ directionPicker direction =
         [ Ui.style
             [ Style.flexDirection "row"
             , Style.alignItems "center"
+            , Style.alignSelf "stretch"
+            , Style.marginTop 20
             ]
         ]
         [ text
@@ -71,11 +86,23 @@ directionPicker direction =
 
 directionStyle : Direction -> Direction -> List Style.Style
 directionStyle direction currentDirection =
-    if direction == currentDirection then
-        [ Style.color "red"
-        ]
-    else
-        []
+    let activeStyle =
+        if direction == currentDirection then
+            [ Style.color Color.white
+            ]
+        else
+            [ Style.color Color.lightHeader
+            ]
+    in
+        List.append defaultDirectionStyle activeStyle
+
+
+defaultDirectionStyle : List Style.Style
+defaultDirectionStyle =
+    [ Style.flex 1
+    , Style.padding 20
+    , Style.textAlign "center"
+    ]
 
 
 routeAndStop : Model -> Node Msg
@@ -89,7 +116,20 @@ routeAndStop model =
                 ]
         Just routeStop ->
             Elements.view
-                []
-                [ text [ ] [ Ui.string ("Route: " ++ routeStop.route.name) ]
-                , text [ ] [ Ui.string ("Stop: " ++ routeStop.stop) ]
-                ]
+                  [ Ui.style
+                      [ Style.backgroundColor Color.purple
+                      , Style.borderRadius 40
+                      , Style.height 56
+                      , Style.justifyContent "center"
+                      , Style.alignItems "center"
+                      , Style.width 270
+                      , Style.marginBottom 20
+                      ]
+                  ]
+                  [ text
+                      [ Ui.style
+                          [ Style.color Color.lightGray
+                          ]
+                      ]
+                      [ Ui.string routeStop.stop ]
+                  ]

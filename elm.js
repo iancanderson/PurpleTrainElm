@@ -8309,6 +8309,15 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxOnly = 
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsNone = {ctor: 'ViewPointerEventsNone'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxNone = {ctor: 'ViewPointerEventsBoxNone'};
 
+var _user$project$App_Color$defaultUnderlay = 'rgba(0,0,0,0.05)';
+var _user$project$App_Color$lightHeader = '#9F8AB3';
+var _user$project$App_Color$lightGray = '#f8f8f8';
+var _user$project$App_Color$black = '#000';
+var _user$project$App_Color$white = '#fff';
+var _user$project$App_Color$red = '#FF666B';
+var _user$project$App_Color$darkPurple = '#402D51';
+var _user$project$App_Color$purple = '#5C4570';
+
 var _user$project$Date_Format$padWith = function (c) {
 	return function (_p0) {
 		return A3(
@@ -8828,41 +8837,57 @@ var _user$project$View$routeAndStop = function (model) {
 					A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker))
 				]));
 	} else {
-		var _p1 = _p0._0;
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 			_elm_lang$core$Native_List.fromArray(
-				[]),
+				[
+					_elm_native_ui$elm_native_ui$NativeUi$style(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$purple),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(20)
+						]))
+				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
 					A2(
 					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 					_elm_lang$core$Native_List.fromArray(
-						[]),
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightGray)
+								]))
+						]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_native_ui$elm_native_ui$NativeUi$string(
-							A2(_elm_lang$core$Basics_ops['++'], 'Route: ', _p1.route.name))
-						])),
-					A2(
-					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$string(
-							A2(_elm_lang$core$Basics_ops['++'], 'Stop: ', _p1.stop))
+							_elm_native_ui$elm_native_ui$NativeUi$string(_p0._0.stop)
 						]))
 				]));
 	}
 };
+var _user$project$View$defaultDirectionStyle = _elm_lang$core$Native_List.fromArray(
+	[
+		_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
+		_elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
+		_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center')
+	]);
 var _user$project$View$directionStyle = F2(
 	function (direction, currentDirection) {
-		return _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? _elm_lang$core$Native_List.fromArray(
+		var activeStyle = _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? _elm_lang$core$Native_List.fromArray(
 			[
-				_elm_native_ui$elm_native_ui$NativeUi_Style$color('red')
+				_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white)
 			]) : _elm_lang$core$Native_List.fromArray(
-			[]);
+			[
+				_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightHeader)
+			]);
+		return A2(_elm_lang$core$List$append, _user$project$View$defaultDirectionStyle, activeStyle);
 	});
 var _user$project$View$directionPicker = function (direction) {
 	return A2(
@@ -8873,7 +8898,9 @@ var _user$project$View$directionPicker = function (direction) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center')
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(20)
 					]))
 			]),
 		_elm_lang$core$Native_List.fromArray(
@@ -8915,7 +8942,8 @@ var _user$project$View$trainElement = function (train) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center')
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white')
 					]))
 			]),
 		_elm_lang$core$Native_List.fromArray(
@@ -8923,7 +8951,13 @@ var _user$project$View$trainElement = function (train) {
 				A2(
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple)
+							]))
+					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_native_ui$elm_native_ui$NativeUi$string(
@@ -8932,7 +8966,13 @@ var _user$project$View$trainElement = function (train) {
 				A2(
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple)
+							]))
+					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_native_ui$elm_native_ui$NativeUi$string(
@@ -8957,8 +8997,9 @@ var _user$project$View$view = function (model) {
 					[
 						_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
 						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center')
+						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$darkPurple)
 					]))
 			]),
 		_elm_lang$core$Native_List.fromArray(

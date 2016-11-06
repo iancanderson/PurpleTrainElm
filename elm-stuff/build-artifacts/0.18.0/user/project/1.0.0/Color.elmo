@@ -1,0 +1,7 @@
+var _user$project$Color$defaultUnderlay = _elm_native_ui$elm_native_ui$NativeUi_Style$color('rgba(0,0,0,0.05)');
+var _user$project$Color$lightGray = _elm_native_ui$elm_native_ui$NativeUi_Style$color('#f8f8f8');
+var _user$project$Color$black = _elm_native_ui$elm_native_ui$NativeUi_Style$color('#000');
+var _user$project$Color$white = _elm_native_ui$elm_native_ui$NativeUi_Style$color('#fff');
+var _user$project$Color$red = _elm_native_ui$elm_native_ui$NativeUi_Style$color('#FF666B');
+var _user$project$Color$darkPurple = _elm_native_ui$elm_native_ui$NativeUi_Style$color('#402D51');
+var _user$project$Color$purple = _elm_native_ui$elm_native_ui$NativeUi_Style$color('#5C4570');
