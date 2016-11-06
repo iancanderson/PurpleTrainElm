@@ -8239,50 +8239,51 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxOnly = 
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsNone = {ctor: 'ViewPointerEventsNone'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxNone = {ctor: 'ViewPointerEventsBoxNone'};
 
-var _user$project$Model$stations = function (schedule) {
-	return _elm_lang$core$Set$toList(
-		_elm_lang$core$Set$fromList(
-			A2(
-				_elm_lang$core$List$map,
-				function (_) {
-					return _.station;
-				},
-				schedule)));
-};
-var _user$project$Model$initialSchedule = _elm_lang$core$Native_List.fromArray(
-	[
-		{time: '1pm', station: 'Davis Square'},
-		{time: '2pm', station: 'Alewife'},
-		{time: '3pm', station: 'Central Square'},
-		{time: '4pm', station: 'Downtown Crossing'},
-		{time: '4pm', station: 'Alewife'},
-		{time: '5pm', station: 'Park St.'},
-		{time: '6pm', station: 'Park St.'}
-	]);
-var _user$project$Model$initialModel = {
-	schedule: _user$project$Model$initialSchedule,
-	selectedStation: _elm_lang$core$Maybe$Nothing,
-	routes: _elm_lang$core$Native_List.fromArray(
-		[])
-};
-var _user$project$Model$Train = F2(
+var _user$project$Types$Train = F2(
 	function (a, b) {
 		return {time: a, station: b};
 	});
-var _user$project$Model$Route = F2(
+var _user$project$Types$Route = F2(
 	function (a, b) {
 		return {name: a, stops: b};
 	});
-var _user$project$Model$Model = F3(
-	function (a, b, c) {
-		return {schedule: a, selectedStation: b, routes: c};
+
+var _user$project$StopPicker$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					selectedRoute: _elm_lang$core$Maybe$Just(_p0._0)
+				}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _user$project$StopPicker$initialModel = {selectedRoute: _elm_lang$core$Maybe$Nothing};
+var _user$project$StopPicker$Model = function (a) {
+	return {selectedRoute: a};
+};
+var _user$project$StopPicker$PickRoute = function (a) {
+	return {ctor: 'PickRoute', _0: a};
+};
+
+var _user$project$Model$initialModel = {
+	routes: _elm_lang$core$Native_List.fromArray(
+		[]),
+	stopPicker: _user$project$StopPicker$initialModel
+};
+var _user$project$Model$Model = F2(
+	function (a, b) {
+		return {routes: a, stopPicker: b};
 	});
 
 var _user$project$Update$decodeStop = _elm_lang$core$Json_Decode$string;
 var _user$project$Update$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$Update$decodeStop);
 var _user$project$Update$decodeRoute = A3(
 	_elm_lang$core$Json_Decode$map2,
-	_user$project$Model$Route,
+	_user$project$Types$Route,
 	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
 	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$Update$decodeStops));
 var _user$project$Update$decodeRoutes = A2(
@@ -8294,19 +8295,24 @@ var _user$project$Update$LoadRoutes = function (a) {
 	return {ctor: 'LoadRoutes', _0: a};
 };
 var _user$project$Update$send = A2(_elm_lang$http$Http$send, _user$project$Update$LoadRoutes, _user$project$Update$getRoutes);
+var _user$project$Update$FetchRoutes = {ctor: 'FetchRoutes'};
+var _user$project$Update$StopPickerMsg = function (a) {
+	return {ctor: 'StopPickerMsg', _0: a};
+};
 var _user$project$Update$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
-			case 'PickStation':
+			case 'StopPickerMsg':
+				var _p1 = A2(_user$project$StopPicker$update, _p0._0, model.stopPicker);
+				var updatedStopPicker = _p1._0;
+				var stopPickerCmd = _p1._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{
-							selectedStation: _elm_lang$core$Maybe$Just(_p0._0)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
+						{stopPicker: updatedStopPicker}),
+					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Update$StopPickerMsg, stopPickerCmd)
 				};
 			case 'FetchRoutes':
 				return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
@@ -8324,41 +8330,44 @@ var _user$project$Update$update = F2(
 				}
 		}
 	});
-var _user$project$Update$FetchRoutes = {ctor: 'FetchRoutes'};
-var _user$project$Update$PickStation = function (a) {
-	return {ctor: 'PickStation', _0: a};
-};
 
-var _user$project$StopPicker$view = function (routes) {
+var _user$project$StopPicker_View$routeStyle = F2(
+	function (selectedRoute, route) {
+		return _elm_lang$core$Native_Utils.eq(
+			selectedRoute,
+			_elm_lang$core$Maybe$Just(route)) ? _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi_Style$color('red')
+			]) : _elm_lang$core$Native_List.fromArray(
+			[]);
+	});
+var _user$project$StopPicker_View$routePicker = F2(
+	function (selectedRoute, route) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+					_user$project$StopPicker$PickRoute(route)),
+					_elm_native_ui$elm_native_ui$NativeUi$style(
+					A2(_user$project$StopPicker_View$routeStyle, selectedRoute, route))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_native_ui$elm_native_ui$NativeUi$string(route.name)
+				]));
+	});
+var _user$project$StopPicker_View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		A2(
 			_elm_lang$core$List$map,
-			function (r) {
-				return A2(
-					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$string(r.name)
-						]));
-			},
-			routes));
+			_user$project$StopPicker_View$routePicker(model.stopPicker.selectedRoute),
+			model.routes));
 };
 
-var _user$project$View$upcomingTrain = function (train) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$string(train.time)
-			]));
-};
 var _user$project$View$welcomeScreen = A2(
 	_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 	_elm_lang$core$Native_List.fromArray(
@@ -8374,67 +8383,6 @@ var _user$project$View$welcomeScreen = A2(
 					_elm_native_ui$elm_native_ui$NativeUi$string('Select your home station')
 				]))
 		]));
-var _user$project$View$stationFilter = F2(
-	function (selectedStation, train) {
-		return _elm_lang$core$Native_Utils.eq(selectedStation, train.station) ? _elm_lang$core$Maybe$Just(
-			_user$project$View$upcomingTrain(train)) : _elm_lang$core$Maybe$Nothing;
-	});
-var _user$project$View$upcomingTrains = F2(
-	function (selectedStation, schedule) {
-		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			A2(
-				_elm_lang$core$List$filterMap,
-				_user$project$View$stationFilter(selectedStation),
-				schedule));
-	});
-var _user$project$View$maybeUpcomingTrains = function (model) {
-	var _p0 = model.selectedStation;
-	if (_p0.ctor === 'Nothing') {
-		return _user$project$View$welcomeScreen;
-	} else {
-		return A2(_user$project$View$upcomingTrains, _p0._0, model.schedule);
-	}
-};
-var _user$project$View$stationStyle = F2(
-	function (selectedStation, station) {
-		return _elm_lang$core$Native_Utils.eq(
-			selectedStation,
-			_elm_lang$core$Maybe$Just(station)) ? _elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi_Style$color('red')
-			]) : _elm_lang$core$Native_List.fromArray(
-			[]);
-	});
-var _user$project$View$stationButton = F2(
-	function (selectedStation, station) {
-		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi$style(
-					A2(_user$project$View$stationStyle, selectedStation, station)),
-					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-					_user$project$Update$PickStation(station))
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi$string(station)
-				]));
-	});
-var _user$project$View$stationPicker = function (_p1) {
-	var _p2 = _p1;
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		A2(
-			_elm_lang$core$List$map,
-			_user$project$View$stationButton(_p2.selectedStation),
-			_user$project$Model$stations(_p2.schedule)));
-};
 var _user$project$View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -8451,7 +8399,7 @@ var _user$project$View$view = function (model) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$View$maybeUpcomingTrains(model),
+				_user$project$View$welcomeScreen,
 				A2(
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 				_elm_lang$core$Native_List.fromArray(
@@ -8462,8 +8410,10 @@ var _user$project$View$view = function (model) {
 					[
 						_elm_native_ui$elm_native_ui$NativeUi$string('Fetch')
 					])),
-				_user$project$View$stationPicker(model),
-				_user$project$StopPicker$view(model.routes)
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi$map,
+				_user$project$Update$StopPickerMsg,
+				_user$project$StopPicker_View$view(model))
 			]));
 };
 

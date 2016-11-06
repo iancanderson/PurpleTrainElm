@@ -7,8 +7,10 @@ import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
 
 import Model exposing (..)
+import Types exposing (..)
 import Update exposing (..)
-import StopPicker exposing (..)
+import StopPicker
+import StopPicker.View as StopPicker
 
 view : Model -> Node Msg
 view model =
@@ -20,68 +22,15 @@ view model =
             , Style.alignItems "center"
             ]
         ]
-        [ maybeUpcomingTrains model
+        [ welcomeScreen
         , text [ onPress FetchRoutes ] [ Ui.string "Fetch" ]
-        , stationPicker model
-        , StopPicker.view model.routes
+        , Ui.map StopPickerMsg (StopPicker.view model)
         ]
 
-stationStyle : Maybe Station -> Station -> List Style.Style
-stationStyle selectedStation station =
-    if selectedStation == Just station then
-        [ Style.color "red"
-        ]
-    else
-        []
-
-stationButton : Maybe Station -> Station -> Node Msg
-stationButton selectedStation station =
-    text
-      [ Ui.style <| stationStyle selectedStation station
-      , onPress (PickStation station)
-      ]
-      [ Ui.string station ]
-
-stationPicker : Model -> Node Msg
-stationPicker {schedule, selectedStation} =
-    Elements.view
-        []
-        ( List.map (stationButton selectedStation) <| stations schedule )
-
-
-stationFilter : Station -> Train -> Maybe (Node Msg)
-stationFilter selectedStation train =
-    if selectedStation == train.station then
-        Just (upcomingTrain train)
-    else
-        Nothing
-
-maybeUpcomingTrains : Model -> Node Msg
-maybeUpcomingTrains model =
-    case model.selectedStation of
-        Nothing ->
-            welcomeScreen
-        Just station ->
-            upcomingTrains station model.schedule
 
 welcomeScreen : Node Msg
 welcomeScreen =
     Elements.view
         []
         [ text [] [ Ui.string "Select your home station" ]
-        ]
-
-upcomingTrains : Station -> Schedule -> Node Msg
-upcomingTrains selectedStation schedule =
-    Elements.view
-        [
-        ]
-        ( List.filterMap (stationFilter selectedStation) schedule)
-
-
-upcomingTrain : Train -> Node Msg
-upcomingTrain train =
-    text
-        []
-        [ Ui.string train.time
         ]

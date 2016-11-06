@@ -1,17 +1,29 @@
 module StopPicker exposing (..)
 
-import NativeUi as Ui exposing (Node)
-import NativeUi.Style as Style exposing (defaultTransform)
-import NativeUi.Elements as Elements exposing (..)
-import NativeUi.Properties exposing (..)
-import NativeUi.Events exposing (..)
+import Types exposing (..)
 
-import Model exposing (..)
-import Update exposing (..)
+-- MODEL
 
-view : Routes -> Node Msg
-view routes =
-    Elements.view
-        [
-        ]
-        ( List.map (\r -> text [] [ Ui.string r.name ]) routes)
+
+type alias Model =
+    { selectedRoute : Maybe Route
+    }
+
+
+initialModel : Model
+initialModel =
+    { selectedRoute = Nothing
+    }
+
+-- UPDATE
+
+
+type Msg
+    = PickRoute Route
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        PickRoute route ->
+            ( { model | selectedRoute = Just route }, Cmd.none )

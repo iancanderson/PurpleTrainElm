@@ -4,10 +4,12 @@ import Http
 import Debug
 import Json.Decode as Decode
 
+import StopPicker
+import Types exposing (..)
 import Model exposing (..)
 
 type Msg
-    = PickStation Station
+    = StopPickerMsg StopPicker.Msg
     | FetchRoutes
     | LoadRoutes (Result Http.Error Routes)
 
@@ -15,8 +17,13 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        PickStation station ->
-            ( { model | selectedStation = Just station }, Cmd.none )
+        StopPickerMsg subMsg ->
+            let
+                ( updatedStopPicker, stopPickerCmd ) =
+                    StopPicker.update subMsg model.stopPicker
+            in
+                ( { model | stopPicker = updatedStopPicker }
+                , Cmd.map StopPickerMsg stopPickerCmd )
         FetchRoutes ->
             ( model, send )
         LoadRoutes (Ok routes) ->

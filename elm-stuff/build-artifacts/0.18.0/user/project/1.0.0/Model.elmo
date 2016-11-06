@@ -1,38 +1,9 @@
-var _user$project$Model$stations = function (schedule) {
-	return _elm_lang$core$Set$toList(
-		_elm_lang$core$Set$fromList(
-			A2(
-				_elm_lang$core$List$map,
-				function (_) {
-					return _.station;
-				},
-				schedule)));
-};
-var _user$project$Model$initialSchedule = _elm_lang$core$Native_List.fromArray(
-	[
-		{time: '1pm', station: 'Davis Square'},
-		{time: '2pm', station: 'Alewife'},
-		{time: '3pm', station: 'Central Square'},
-		{time: '4pm', station: 'Downtown Crossing'},
-		{time: '4pm', station: 'Alewife'},
-		{time: '5pm', station: 'Park St.'},
-		{time: '6pm', station: 'Park St.'}
-	]);
 var _user$project$Model$initialModel = {
-	schedule: _user$project$Model$initialSchedule,
-	selectedStation: _elm_lang$core$Maybe$Nothing,
 	routes: _elm_lang$core$Native_List.fromArray(
-		[])
+		[]),
+	stopPicker: _user$project$StopPicker$initialModel
 };
-var _user$project$Model$Train = F2(
+var _user$project$Model$Model = F2(
 	function (a, b) {
-		return {time: a, station: b};
-	});
-var _user$project$Model$Route = F2(
-	function (a, b) {
-		return {name: a, stops: b};
-	});
-var _user$project$Model$Model = F3(
-	function (a, b, c) {
-		return {schedule: a, selectedStation: b, routes: c};
+		return {routes: a, stopPicker: b};
 	});

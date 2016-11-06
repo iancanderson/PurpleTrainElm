@@ -1,0 +1,8 @@
+var _user$project$Types$Train = F2(
+	function (a, b) {
+		return {time: a, station: b};
+	});
+var _user$project$Types$Route = F2(
+	function (a, b) {
+		return {name: a, stops: b};
+	});
