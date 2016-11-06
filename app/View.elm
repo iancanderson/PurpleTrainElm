@@ -1,13 +1,14 @@
 module View exposing (view)
 
-import Model exposing (..)
-import Update exposing (..)
-
 import NativeUi as Ui exposing (Node)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
+
+import Model exposing (..)
+import Update exposing (..)
+import StopPicker exposing (..)
 
 view : Model -> Node Msg
 view model =
@@ -22,15 +23,8 @@ view model =
         [ maybeUpcomingTrains model
         , text [ onPress FetchRoutes ] [ Ui.string "Fetch" ]
         , stationPicker model
-        , routesList model.routes
+        , StopPicker.view model.routes
         ]
-
-routesList : Routes -> Node Msg
-routesList routes =
-    Elements.view
-        [
-        ]
-        ( List.map (\r -> text [] [ Ui.string r.name ]) routes)
 
 stationStyle : Maybe Station -> Station -> List Style.Style
 stationStyle selectedStation station =

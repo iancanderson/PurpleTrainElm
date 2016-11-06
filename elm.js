@@ -8329,6 +8329,26 @@ var _user$project$Update$PickStation = function (a) {
 	return {ctor: 'PickStation', _0: a};
 };
 
+var _user$project$StopPicker$view = function (routes) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(
+			_elm_lang$core$List$map,
+			function (r) {
+				return A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string(r.name)
+						]));
+			},
+			routes));
+};
+
 var _user$project$View$upcomingTrain = function (train) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
@@ -8415,25 +8435,6 @@ var _user$project$View$stationPicker = function (_p1) {
 			_user$project$View$stationButton(_p2.selectedStation),
 			_user$project$Model$stations(_p2.schedule)));
 };
-var _user$project$View$routesList = function (routes) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		A2(
-			_elm_lang$core$List$map,
-			function (r) {
-				return A2(
-					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$string(r.name)
-						]));
-			},
-			routes));
-};
 var _user$project$View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -8462,7 +8463,7 @@ var _user$project$View$view = function (model) {
 						_elm_native_ui$elm_native_ui$NativeUi$string('Fetch')
 					])),
 				_user$project$View$stationPicker(model),
-				_user$project$View$routesList(model.routes)
+				_user$project$StopPicker$view(model.routes)
 			]));
 };
 
