@@ -117,11 +117,7 @@ routeAndStop : Model -> Node Msg
 routeAndStop model =
     case model.selectedRouteStop of
         Nothing ->
-            Elements.view
-                []
-                [ text [] [ Ui.string "Select your home stop" ]
-                , Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
-                ]
+            Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
         Just routeStop ->
             Elements.view
                   [ Ui.style

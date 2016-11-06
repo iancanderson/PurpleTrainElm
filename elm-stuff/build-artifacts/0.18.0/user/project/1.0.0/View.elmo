@@ -2,24 +2,9 @@ var _user$project$View$routeAndStop = function (model) {
 	var _p0 = model.selectedRouteStop;
 	if (_p0.ctor === 'Nothing') {
 		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$string('Select your home stop')
-						])),
-					A2(
-					_elm_native_ui$elm_native_ui$NativeUi$map,
-					_user$project$Message$StopPickerMsg,
-					A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker))
-				]));
+			_elm_native_ui$elm_native_ui$NativeUi$map,
+			_user$project$Message$StopPickerMsg,
+			A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker));
 	} else {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
