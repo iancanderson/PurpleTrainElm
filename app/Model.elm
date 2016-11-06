@@ -1,6 +1,7 @@
 module Model exposing (..)
 
-import Set exposing (Set)
+import Date.Format as Date
+import Date exposing (Date)
 
 import Types exposing (..)
 import StopPicker.Model as StopPicker
@@ -29,3 +30,6 @@ directionName direction =
     case direction of
         Inbound -> "Inbound"
         Outbound -> "Outbound"
+
+prettyTime : Date -> String
+prettyTime = Date.format "%l:%M %P"

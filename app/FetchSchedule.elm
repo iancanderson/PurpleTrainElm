@@ -1,6 +1,7 @@
 module FetchSchedule exposing (fetchSchedule)
 
 import Http
+import Date exposing (Date)
 import Json.Decode as Decode
 
 import Model exposing (..)
@@ -36,5 +37,14 @@ decodeSchedule = Decode.list decodeTrain
 decodeTrain : Decode.Decoder Train
 decodeTrain =
   Decode.map2 Train
-    (Decode.field "scheduled_arrival_utc" Decode.string)
-    (Decode.field "predicted_arrival_utc" Decode.string)
+    (Decode.field "scheduled_arrival_utc" stringToDate)
+    (Decode.field "predicted_arrival_utc" stringToDate)
+
+stringToDate : Decode.Decoder Date
+stringToDate =
+  Decode.string
+  |> Decode.andThen (\val ->
+    case Date.fromString val of
+      Err err -> Decode.fail err
+      Ok date -> Decode.succeed date
+  )

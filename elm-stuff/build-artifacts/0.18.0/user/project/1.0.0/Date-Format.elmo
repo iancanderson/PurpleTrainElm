@@ -1,0 +1,202 @@
+var _user$project$Date_Format$padWith = function (c) {
+	return function (_p0) {
+		return A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			c,
+			_elm_lang$core$Basics$toString(_p0));
+	};
+};
+var _user$project$Date_Format$zero2twelve = function (n) {
+	return _elm_lang$core$Native_Utils.eq(n, 0) ? 12 : n;
+};
+var _user$project$Date_Format$mod12 = function (h) {
+	return A2(_elm_lang$core$Basics_ops['%'], h, 12);
+};
+var _user$project$Date_Format$fullDayOfWeek = function (dow) {
+	var _p1 = dow;
+	switch (_p1.ctor) {
+		case 'Mon':
+			return 'Monday';
+		case 'Tue':
+			return 'Tuesday';
+		case 'Wed':
+			return 'Wednesday';
+		case 'Thu':
+			return 'Thursday';
+		case 'Fri':
+			return 'Friday';
+		case 'Sat':
+			return 'Saturday';
+		default:
+			return 'Sunday';
+	}
+};
+var _user$project$Date_Format$monthToFullName = function (m) {
+	var _p2 = m;
+	switch (_p2.ctor) {
+		case 'Jan':
+			return 'January';
+		case 'Feb':
+			return 'February';
+		case 'Mar':
+			return 'March';
+		case 'Apr':
+			return 'April';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'June';
+		case 'Jul':
+			return 'July';
+		case 'Aug':
+			return 'August';
+		case 'Sep':
+			return 'September';
+		case 'Oct':
+			return 'October';
+		case 'Nov':
+			return 'November';
+		default:
+			return 'December';
+	}
+};
+var _user$project$Date_Format$monthToInt = function (m) {
+	var _p3 = m;
+	switch (_p3.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
+};
+var _user$project$Date_Format$formatToken = F2(
+	function (d, m) {
+		var symbol = function () {
+			var _p4 = m.submatches;
+			if (((_p4.ctor === '::') && (_p4._0.ctor === 'Just')) && (_p4._1.ctor === '[]')) {
+				return _p4._0._0;
+			} else {
+				return ' ';
+			}
+		}();
+		var _p5 = symbol;
+		switch (_p5) {
+			case '%':
+				return '%';
+			case 'Y':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$year(d));
+			case 'y':
+				return A2(
+					_elm_lang$core$String$right,
+					2,
+					_elm_lang$core$Basics$toString(
+						_elm_lang$core$Date$year(d)));
+			case 'm':
+				return A3(
+					_elm_lang$core$String$padLeft,
+					2,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Basics$toString(
+						_user$project$Date_Format$monthToInt(
+							_elm_lang$core$Date$month(d))));
+			case 'B':
+				return _user$project$Date_Format$monthToFullName(
+					_elm_lang$core$Date$month(d));
+			case 'b':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$month(d));
+			case 'd':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$day(d));
+			case 'e':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_elm_lang$core$Date$day(d));
+			case 'a':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$dayOfWeek(d));
+			case 'A':
+				return _user$project$Date_Format$fullDayOfWeek(
+					_elm_lang$core$Date$dayOfWeek(d));
+			case 'H':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$hour(d));
+			case 'k':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_elm_lang$core$Date$hour(d));
+			case 'I':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_user$project$Date_Format$zero2twelve(
+						_user$project$Date_Format$mod12(
+							_elm_lang$core$Date$hour(d))));
+			case 'l':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_user$project$Date_Format$zero2twelve(
+						_user$project$Date_Format$mod12(
+							_elm_lang$core$Date$hour(d))));
+			case 'p':
+				return (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$Date$hour(d),
+					12) < 0) ? 'AM' : 'PM';
+			case 'P':
+				return (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$Date$hour(d),
+					12) < 0) ? 'am' : 'pm';
+			case 'M':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$minute(d));
+			case 'S':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$second(d));
+			default:
+				return '';
+		}
+	});
+var _user$project$Date_Format$re = _elm_lang$core$Regex$regex('%(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)');
+var _user$project$Date_Format$format = F2(
+	function (s, d) {
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_user$project$Date_Format$re,
+			_user$project$Date_Format$formatToken(d),
+			s);
+	});
+var _user$project$Date_Format$formatISO8601 = _user$project$Date_Format$format('%Y-%m-%dT%H:%M:%SZ');

@@ -1,5 +1,7 @@
 module Types exposing (..)
 
+import Date exposing (Date)
+
 
 type Direction
     = Inbound
@@ -10,8 +12,8 @@ type alias Schedule = List Train
 
 
 type alias Train =
-    { scheduledArrival : String
-    , predictedArrival : String
+    { scheduledArrival : Date
+    , predictedArrival : Date
     }
 
 

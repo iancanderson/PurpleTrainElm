@@ -1,3 +1,4 @@
+var _user$project$Model$prettyTime = _user$project$Date_Format$format('%l:%M %P');
 var _user$project$Model$directionName = function (direction) {
 	var _p0 = direction;
 	if (_p0.ctor === 'Inbound') {

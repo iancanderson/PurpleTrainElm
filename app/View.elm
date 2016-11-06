@@ -38,15 +38,24 @@ schedule trains =
 trainElement : Train -> Node Msg
 trainElement train =
     Elements.view
-        []
-        [ text [] [ Ui.string train.scheduledArrival ]
+        [ Ui.style
+            [ Style.flexDirection "row"
+            , Style.alignItems "center"
+            ]
+        ]
+        [ text [] [ Ui.string (prettyTime train.scheduledArrival) ]
+        , text [] [ Ui.string (prettyTime train.predictedArrival) ]
         ]
 
 
 directionPicker : Direction -> Node Msg
 directionPicker direction =
     Elements.view
-        []
+        [ Ui.style
+            [ Style.flexDirection "row"
+            , Style.alignItems "center"
+            ]
+        ]
         [ text
             [ onPress (ChangeDirection Inbound)
             , Ui.style (directionStyle Inbound direction)

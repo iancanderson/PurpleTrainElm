@@ -61,7 +61,14 @@ var _user$project$View$directionPicker = function (direction) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center')
+					]))
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -96,7 +103,14 @@ var _user$project$View$trainElement = function (train) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center')
+					]))
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -105,7 +119,17 @@ var _user$project$View$trainElement = function (train) {
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_native_ui$elm_native_ui$NativeUi$string(train.scheduledArrival)
+						_elm_native_ui$elm_native_ui$NativeUi$string(
+						_user$project$Model$prettyTime(train.scheduledArrival))
+					])),
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string(
+						_user$project$Model$prettyTime(train.predictedArrival))
 					]))
 			]));
 };

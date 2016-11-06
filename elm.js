@@ -2715,6 +2715,39 @@ var _elm_lang$core$Char$isHexDigit = function ($char) {
 		$char));
 };
 
+//import Result //
+
+var _elm_lang$core$Native_Date = function() {
+
+function fromString(str)
+{
+	var date = new Date(str);
+	return isNaN(date.getTime())
+		? _elm_lang$core$Result$Err('Unable to parse \'' + str + '\' as a date. Dates must be in the ISO 8601 format.')
+		: _elm_lang$core$Result$Ok(date);
+}
+
+var dayTable = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+var monthTable =
+	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+	 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+
+return {
+	fromString: fromString,
+	year: function(d) { return d.getFullYear(); },
+	month: function(d) { return { ctor: monthTable[d.getMonth()] }; },
+	day: function(d) { return d.getDate(); },
+	hour: function(d) { return d.getHours(); },
+	minute: function(d) { return d.getMinutes(); },
+	second: function(d) { return d.getSeconds(); },
+	millisecond: function(d) { return d.getMilliseconds(); },
+	toTime: function(d) { return d.getTime(); },
+	fromTime: function(t) { return new Date(t); },
+	dayOfWeek: function(d) { return { ctor: dayTable[d.getDay()] }; }
+};
+
+}();
 //import Native.Utils //
 
 var _elm_lang$core$Native_Scheduler = function() {
@@ -5447,6 +5480,39 @@ var _elm_lang$core$Time$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
 
+var _elm_lang$core$Date$millisecond = _elm_lang$core$Native_Date.millisecond;
+var _elm_lang$core$Date$second = _elm_lang$core$Native_Date.second;
+var _elm_lang$core$Date$minute = _elm_lang$core$Native_Date.minute;
+var _elm_lang$core$Date$hour = _elm_lang$core$Native_Date.hour;
+var _elm_lang$core$Date$dayOfWeek = _elm_lang$core$Native_Date.dayOfWeek;
+var _elm_lang$core$Date$day = _elm_lang$core$Native_Date.day;
+var _elm_lang$core$Date$month = _elm_lang$core$Native_Date.month;
+var _elm_lang$core$Date$year = _elm_lang$core$Native_Date.year;
+var _elm_lang$core$Date$fromTime = _elm_lang$core$Native_Date.fromTime;
+var _elm_lang$core$Date$toTime = _elm_lang$core$Native_Date.toTime;
+var _elm_lang$core$Date$fromString = _elm_lang$core$Native_Date.fromString;
+var _elm_lang$core$Date$now = A2(_elm_lang$core$Task$map, _elm_lang$core$Date$fromTime, _elm_lang$core$Time$now);
+var _elm_lang$core$Date$Date = {ctor: 'Date'};
+var _elm_lang$core$Date$Sun = {ctor: 'Sun'};
+var _elm_lang$core$Date$Sat = {ctor: 'Sat'};
+var _elm_lang$core$Date$Fri = {ctor: 'Fri'};
+var _elm_lang$core$Date$Thu = {ctor: 'Thu'};
+var _elm_lang$core$Date$Wed = {ctor: 'Wed'};
+var _elm_lang$core$Date$Tue = {ctor: 'Tue'};
+var _elm_lang$core$Date$Mon = {ctor: 'Mon'};
+var _elm_lang$core$Date$Dec = {ctor: 'Dec'};
+var _elm_lang$core$Date$Nov = {ctor: 'Nov'};
+var _elm_lang$core$Date$Oct = {ctor: 'Oct'};
+var _elm_lang$core$Date$Sep = {ctor: 'Sep'};
+var _elm_lang$core$Date$Aug = {ctor: 'Aug'};
+var _elm_lang$core$Date$Jul = {ctor: 'Jul'};
+var _elm_lang$core$Date$Jun = {ctor: 'Jun'};
+var _elm_lang$core$Date$May = {ctor: 'May'};
+var _elm_lang$core$Date$Apr = {ctor: 'Apr'};
+var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
+var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
+var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
+
 var _elm_lang$core$Debug$crash = _elm_lang$core$Native_Debug.crash;
 var _elm_lang$core$Debug$log = _elm_lang$core$Native_Debug.log;
 
@@ -6101,136 +6167,140 @@ var _elm_lang$core$Json_Decode$bool = _elm_lang$core$Native_Json.decodePrimitive
 var _elm_lang$core$Json_Decode$string = _elm_lang$core$Native_Json.decodePrimitive('string');
 var _elm_lang$core$Json_Decode$Decoder = {ctor: 'Decoder'};
 
-var _elm_lang$core$Set$foldr = F3(
-	function (f, b, _p0) {
-		var _p1 = _p0;
-		return A3(
-			_elm_lang$core$Dict$foldr,
-			F3(
-				function (k, _p2, b) {
-					return A2(f, k, b);
-				}),
-			b,
-			_p1._0);
-	});
-var _elm_lang$core$Set$foldl = F3(
-	function (f, b, _p3) {
-		var _p4 = _p3;
-		return A3(
-			_elm_lang$core$Dict$foldl,
-			F3(
-				function (k, _p5, b) {
-					return A2(f, k, b);
-				}),
-			b,
-			_p4._0);
-	});
-var _elm_lang$core$Set$toList = function (_p6) {
-	var _p7 = _p6;
-	return _elm_lang$core$Dict$keys(_p7._0);
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[i - 1],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
 };
-var _elm_lang$core$Set$size = function (_p8) {
-	var _p9 = _p8;
-	return _elm_lang$core$Dict$size(_p9._0);
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
 };
-var _elm_lang$core$Set$member = F2(
-	function (k, _p10) {
-		var _p11 = _p10;
-		return A2(_elm_lang$core$Dict$member, k, _p11._0);
-	});
-var _elm_lang$core$Set$isEmpty = function (_p12) {
-	var _p13 = _p12;
-	return _elm_lang$core$Dict$isEmpty(_p13._0);
-};
-var _elm_lang$core$Set$Set_elm_builtin = function (a) {
-	return {ctor: 'Set_elm_builtin', _0: a};
-};
-var _elm_lang$core$Set$empty = _elm_lang$core$Set$Set_elm_builtin(_elm_lang$core$Dict$empty);
-var _elm_lang$core$Set$singleton = function (k) {
-	return _elm_lang$core$Set$Set_elm_builtin(
-		A2(
-			_elm_lang$core$Dict$singleton,
-			k,
-			{ctor: '_Tuple0'}));
-};
-var _elm_lang$core$Set$insert = F2(
-	function (k, _p14) {
-		var _p15 = _p14;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A3(
-				_elm_lang$core$Dict$insert,
-				k,
-				{ctor: '_Tuple0'},
-				_p15._0));
-	});
-var _elm_lang$core$Set$fromList = function (xs) {
-	return A3(_elm_lang$core$List$foldl, _elm_lang$core$Set$insert, _elm_lang$core$Set$empty, xs);
-};
-var _elm_lang$core$Set$map = F2(
-	function (f, s) {
-		return _elm_lang$core$Set$fromList(
-			A2(
-				_elm_lang$core$List$map,
-				f,
-				_elm_lang$core$Set$toList(s)));
-	});
-var _elm_lang$core$Set$remove = F2(
-	function (k, _p16) {
-		var _p17 = _p16;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$remove, k, _p17._0));
-	});
-var _elm_lang$core$Set$union = F2(
-	function (_p19, _p18) {
-		var _p20 = _p19;
-		var _p21 = _p18;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$union, _p20._0, _p21._0));
-	});
-var _elm_lang$core$Set$intersect = F2(
-	function (_p23, _p22) {
-		var _p24 = _p23;
-		var _p25 = _p22;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$intersect, _p24._0, _p25._0));
-	});
-var _elm_lang$core$Set$diff = F2(
-	function (_p27, _p26) {
-		var _p28 = _p27;
-		var _p29 = _p26;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$diff, _p28._0, _p29._0));
-	});
-var _elm_lang$core$Set$filter = F2(
-	function (p, _p30) {
-		var _p31 = _p30;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(
-				_elm_lang$core$Dict$filter,
-				F2(
-					function (k, _p32) {
-						return p(k);
-					}),
-				_p31._0));
-	});
-var _elm_lang$core$Set$partition = F2(
-	function (p, _p33) {
-		var _p34 = _p33;
-		var _p35 = A2(
-			_elm_lang$core$Dict$partition,
-			F2(
-				function (k, _p36) {
-					return p(k);
-				}),
-			_p34._0);
-		var p1 = _p35._0;
-		var p2 = _p35._1;
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Set$Set_elm_builtin(p1),
-			_1: _elm_lang$core$Set$Set_elm_builtin(p2)
-		};
-	});
+var _elm_lang$core$Regex$All = {ctor: 'All'};
 
 var _elm_lang$http$Native_Http = function() {
 
@@ -6348,7 +6418,6 @@ function send(xhr, body)
 function handleResponse(xhr, responseToResult)
 {
 	var response = toResponse(xhr);
-  console.log("handling response");
 
 	if (xhr.status < 200 || 300 <= xhr.status)
 	{
@@ -8240,6 +8309,209 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxOnly = 
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsNone = {ctor: 'ViewPointerEventsNone'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxNone = {ctor: 'ViewPointerEventsBoxNone'};
 
+var _user$project$Date_Format$padWith = function (c) {
+	return function (_p0) {
+		return A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			c,
+			_elm_lang$core$Basics$toString(_p0));
+	};
+};
+var _user$project$Date_Format$zero2twelve = function (n) {
+	return _elm_lang$core$Native_Utils.eq(n, 0) ? 12 : n;
+};
+var _user$project$Date_Format$mod12 = function (h) {
+	return A2(_elm_lang$core$Basics_ops['%'], h, 12);
+};
+var _user$project$Date_Format$fullDayOfWeek = function (dow) {
+	var _p1 = dow;
+	switch (_p1.ctor) {
+		case 'Mon':
+			return 'Monday';
+		case 'Tue':
+			return 'Tuesday';
+		case 'Wed':
+			return 'Wednesday';
+		case 'Thu':
+			return 'Thursday';
+		case 'Fri':
+			return 'Friday';
+		case 'Sat':
+			return 'Saturday';
+		default:
+			return 'Sunday';
+	}
+};
+var _user$project$Date_Format$monthToFullName = function (m) {
+	var _p2 = m;
+	switch (_p2.ctor) {
+		case 'Jan':
+			return 'January';
+		case 'Feb':
+			return 'February';
+		case 'Mar':
+			return 'March';
+		case 'Apr':
+			return 'April';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'June';
+		case 'Jul':
+			return 'July';
+		case 'Aug':
+			return 'August';
+		case 'Sep':
+			return 'September';
+		case 'Oct':
+			return 'October';
+		case 'Nov':
+			return 'November';
+		default:
+			return 'December';
+	}
+};
+var _user$project$Date_Format$monthToInt = function (m) {
+	var _p3 = m;
+	switch (_p3.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
+};
+var _user$project$Date_Format$formatToken = F2(
+	function (d, m) {
+		var symbol = function () {
+			var _p4 = m.submatches;
+			if (((_p4.ctor === '::') && (_p4._0.ctor === 'Just')) && (_p4._1.ctor === '[]')) {
+				return _p4._0._0;
+			} else {
+				return ' ';
+			}
+		}();
+		var _p5 = symbol;
+		switch (_p5) {
+			case '%':
+				return '%';
+			case 'Y':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$year(d));
+			case 'y':
+				return A2(
+					_elm_lang$core$String$right,
+					2,
+					_elm_lang$core$Basics$toString(
+						_elm_lang$core$Date$year(d)));
+			case 'm':
+				return A3(
+					_elm_lang$core$String$padLeft,
+					2,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Basics$toString(
+						_user$project$Date_Format$monthToInt(
+							_elm_lang$core$Date$month(d))));
+			case 'B':
+				return _user$project$Date_Format$monthToFullName(
+					_elm_lang$core$Date$month(d));
+			case 'b':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$month(d));
+			case 'd':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$day(d));
+			case 'e':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_elm_lang$core$Date$day(d));
+			case 'a':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$dayOfWeek(d));
+			case 'A':
+				return _user$project$Date_Format$fullDayOfWeek(
+					_elm_lang$core$Date$dayOfWeek(d));
+			case 'H':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$hour(d));
+			case 'k':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_elm_lang$core$Date$hour(d));
+			case 'I':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_user$project$Date_Format$zero2twelve(
+						_user$project$Date_Format$mod12(
+							_elm_lang$core$Date$hour(d))));
+			case 'l':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_user$project$Date_Format$zero2twelve(
+						_user$project$Date_Format$mod12(
+							_elm_lang$core$Date$hour(d))));
+			case 'p':
+				return (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$Date$hour(d),
+					12) < 0) ? 'AM' : 'PM';
+			case 'P':
+				return (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$Date$hour(d),
+					12) < 0) ? 'am' : 'pm';
+			case 'M':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$minute(d));
+			case 'S':
+				return A2(
+					_user$project$Date_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$second(d));
+			default:
+				return '';
+		}
+	});
+var _user$project$Date_Format$re = _elm_lang$core$Regex$regex('%(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)');
+var _user$project$Date_Format$format = F2(
+	function (s, d) {
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_user$project$Date_Format$re,
+			_user$project$Date_Format$formatToken(d),
+			s);
+	});
+var _user$project$Date_Format$formatISO8601 = _user$project$Date_Format$format('%Y-%m-%dT%H:%M:%SZ');
+
 var _user$project$Types$Train = F2(
 	function (a, b) {
 		return {scheduledArrival: a, predictedArrival: b};
@@ -8320,6 +8592,7 @@ var _user$project$FetchRoutes$decodeRoutes = A2(
 var _user$project$FetchRoutes$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$FetchRoutes$decodeRoutes);
 var _user$project$FetchRoutes$fetchRoutes = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$FetchRoutes$getRoutes);
 
+var _user$project$Model$prettyTime = _user$project$Date_Format$format('%l:%M %P');
 var _user$project$Model$directionName = function (direction) {
 	var _p0 = direction;
 	if (_p0.ctor === 'Inbound') {
@@ -8342,15 +8615,26 @@ var _user$project$Model$Model = F5(
 		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e};
 	});
 
+var _user$project$FetchSchedule$stringToDate = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (val) {
+		var _p0 = _elm_lang$core$Date$fromString(val);
+		if (_p0.ctor === 'Err') {
+			return _elm_lang$core$Json_Decode$fail(_p0._0);
+		} else {
+			return _elm_lang$core$Json_Decode$succeed(_p0._0);
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
 var _user$project$FetchSchedule$decodeTrain = A3(
 	_elm_lang$core$Json_Decode$map2,
 	_user$project$Types$Train,
-	A2(_elm_lang$core$Json_Decode$field, 'scheduled_arrival_utc', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'predicted_arrival_utc', _elm_lang$core$Json_Decode$string));
+	A2(_elm_lang$core$Json_Decode$field, 'scheduled_arrival_utc', _user$project$FetchSchedule$stringToDate),
+	A2(_elm_lang$core$Json_Decode$field, 'predicted_arrival_utc', _user$project$FetchSchedule$stringToDate));
 var _user$project$FetchSchedule$decodeSchedule = _elm_lang$core$Json_Decode$list(_user$project$FetchSchedule$decodeTrain);
 var _user$project$FetchSchedule$getSchedule = F2(
-	function (direction, _p0) {
-		var _p1 = _p0;
+	function (direction, _p1) {
+		var _p2 = _p1;
 		return A2(
 			_elm_lang$http$Http$get,
 			A2(
@@ -8364,20 +8648,20 @@ var _user$project$FetchSchedule$getSchedule = F2(
 						'&route_id=',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_p1.route.id,
-							A2(_elm_lang$core$Basics_ops['++'], '&stop_id=', _p1.stop))))),
+							_p2.route.id,
+							A2(_elm_lang$core$Basics_ops['++'], '&stop_id=', _p2.stop))))),
 			_user$project$FetchSchedule$decodeSchedule);
 	});
 var _user$project$FetchSchedule$fetchSchedule = F2(
 	function (direction, maybeRouteStop) {
-		var _p2 = maybeRouteStop;
-		if (_p2.ctor === 'Nothing') {
+		var _p3 = maybeRouteStop;
+		if (_p3.ctor === 'Nothing') {
 			return _elm_lang$core$Platform_Cmd$none;
 		} else {
 			return A2(
 				_elm_lang$http$Http$send,
 				_user$project$Message$LoadSchedule,
-				A2(_user$project$FetchSchedule$getSchedule, direction, _p2._0));
+				A2(_user$project$FetchSchedule$getSchedule, direction, _p3._0));
 		}
 	});
 
@@ -8584,7 +8868,14 @@ var _user$project$View$directionPicker = function (direction) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center')
+					]))
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -8619,7 +8910,14 @@ var _user$project$View$trainElement = function (train) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center')
+					]))
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -8628,7 +8926,17 @@ var _user$project$View$trainElement = function (train) {
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_native_ui$elm_native_ui$NativeUi$string(train.scheduledArrival)
+						_elm_native_ui$elm_native_ui$NativeUi$string(
+						_user$project$Model$prettyTime(train.scheduledArrival))
+					])),
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string(
+						_user$project$Model$prettyTime(train.predictedArrival))
 					]))
 			]));
 };
