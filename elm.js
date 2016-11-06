@@ -8247,6 +8247,10 @@ var _user$project$Types$Route = F2(
 	function (a, b) {
 		return {name: a, stops: b};
 	});
+var _user$project$Types$RouteStop = F2(
+	function (a, b) {
+		return {route: a, stop: b};
+	});
 
 var _user$project$StopPicker$update = F2(
 	function (msg, model) {
@@ -8265,6 +8269,15 @@ var _user$project$StopPicker$initialModel = {selectedRoute: _elm_lang$core$Maybe
 var _user$project$StopPicker$Model = function (a) {
 	return {selectedRoute: a};
 };
+var _user$project$StopPicker$External = function (a) {
+	return {ctor: 'External', _0: a};
+};
+var _user$project$StopPicker$Internal = function (a) {
+	return {ctor: 'Internal', _0: a};
+};
+var _user$project$StopPicker$PickStop = function (a) {
+	return {ctor: 'PickStop', _0: a};
+};
 var _user$project$StopPicker$PickRoute = function (a) {
 	return {ctor: 'PickRoute', _0: a};
 };
@@ -8272,12 +8285,29 @@ var _user$project$StopPicker$PickRoute = function (a) {
 var _user$project$Model$initialModel = {
 	routes: _elm_lang$core$Native_List.fromArray(
 		[]),
-	stopPicker: _user$project$StopPicker$initialModel
+	stopPicker: _user$project$StopPicker$initialModel,
+	selectedRouteStop: _elm_lang$core$Maybe$Nothing
 };
-var _user$project$Model$Model = F2(
-	function (a, b) {
-		return {routes: a, stopPicker: b};
+var _user$project$Model$Model = F3(
+	function (a, b, c) {
+		return {routes: a, stopPicker: b, selectedRouteStop: c};
 	});
+
+var _user$project$Message$LoadRoutes = function (a) {
+	return {ctor: 'LoadRoutes', _0: a};
+};
+var _user$project$Message$FetchRoutes = {ctor: 'FetchRoutes'};
+var _user$project$Message$PickStop = function (a) {
+	return {ctor: 'PickStop', _0: a};
+};
+var _user$project$Message$StopPickerMsg = function (a) {
+	return {ctor: 'StopPickerMsg', _0: a};
+};
+
+var _user$project$StopPicker_Translate$translate = function (_p0) {
+	var _p1 = _p0;
+	return _user$project$Message$PickStop(_p1._0);
+};
 
 var _user$project$Update$decodeStop = _elm_lang$core$Json_Decode$string;
 var _user$project$Update$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$Update$decodeStop);
@@ -8291,82 +8321,116 @@ var _user$project$Update$decodeRoutes = A2(
 	_elm_lang$core$List$map(_elm_lang$core$Basics$snd),
 	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$Update$decodeRoute));
 var _user$project$Update$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$Update$decodeRoutes);
-var _user$project$Update$LoadRoutes = function (a) {
-	return {ctor: 'LoadRoutes', _0: a};
-};
-var _user$project$Update$send = A2(_elm_lang$http$Http$send, _user$project$Update$LoadRoutes, _user$project$Update$getRoutes);
-var _user$project$Update$FetchRoutes = {ctor: 'FetchRoutes'};
-var _user$project$Update$StopPickerMsg = function (a) {
-	return {ctor: 'StopPickerMsg', _0: a};
-};
+var _user$project$Update$send = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$Update$getRoutes);
 var _user$project$Update$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'StopPickerMsg':
-				var _p1 = A2(_user$project$StopPicker$update, _p0._0, model.stopPicker);
-				var updatedStopPicker = _p1._0;
-				var stopPickerCmd = _p1._1;
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{stopPicker: updatedStopPicker}),
-					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Update$StopPickerMsg, stopPickerCmd)
-				};
-			case 'FetchRoutes':
-				return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
-			default:
-				if (_p0._0.ctor === 'Ok') {
+		update:
+		while (true) {
+			var _p0 = msg;
+			switch (_p0.ctor) {
+				case 'StopPickerMsg':
+					if (_p0._0.ctor === 'External') {
+						var _v1 = _user$project$StopPicker_Translate$translate(_p0._0._0),
+							_v2 = model;
+						msg = _v1;
+						model = _v2;
+						continue update;
+					} else {
+						var _p1 = A2(_user$project$StopPicker$update, _p0._0._0, model.stopPicker);
+						var updatedStopPicker = _p1._0;
+						var stopPickerCmd = _p1._1;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{stopPicker: updatedStopPicker}),
+							_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Message$StopPickerMsg, stopPickerCmd)
+						};
+					}
+				case 'PickStop':
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{routes: _p0._0._0}),
+							{
+								selectedRouteStop: _elm_lang$core$Maybe$Just(_p0._0)
+							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
-				} else {
+				case 'FetchRoutes':
 					return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
-				}
+				default:
+					if (_p0._0.ctor === 'Ok') {
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{routes: _p0._0._0}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
+					}
+			}
 		}
 	});
 
-var _user$project$StopPicker_View$routeStyle = F2(
-	function (selectedRoute, route) {
-		return _elm_lang$core$Native_Utils.eq(
-			selectedRoute,
-			_elm_lang$core$Maybe$Just(route)) ? _elm_lang$core$Native_List.fromArray(
+var _user$project$StopPicker_View$routeButton = function (route) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_native_ui$elm_native_ui$NativeUi_Style$color('red')
-			]) : _elm_lang$core$Native_List.fromArray(
-			[]);
-	});
-var _user$project$StopPicker_View$routePicker = F2(
-	function (selectedRoute, route) {
+				_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+				_user$project$StopPicker$Internal(
+					_user$project$StopPicker$PickRoute(route)))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$string(route.name)
+			]));
+};
+var _user$project$StopPicker_View$routePicker = function (routes) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(_elm_lang$core$List$map, _user$project$StopPicker_View$routeButton, routes));
+};
+var _user$project$StopPicker_View$stopButton = F2(
+	function (route, stop) {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-					_user$project$StopPicker$PickRoute(route)),
-					_elm_native_ui$elm_native_ui$NativeUi$style(
-					A2(_user$project$StopPicker_View$routeStyle, selectedRoute, route))
+					_user$project$StopPicker$External(
+						_user$project$StopPicker$PickStop(
+							A2(_user$project$Types$RouteStop, route, stop))))
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_native_ui$elm_native_ui$NativeUi$string(route.name)
+					_elm_native_ui$elm_native_ui$NativeUi$string(stop)
 				]));
 	});
-var _user$project$StopPicker_View$view = function (model) {
+var _user$project$StopPicker_View$stopPicker = function (route) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		A2(
 			_elm_lang$core$List$map,
-			_user$project$StopPicker_View$routePicker(model.stopPicker.selectedRoute),
-			model.routes));
+			_user$project$StopPicker_View$stopButton(route),
+			route.stops));
 };
+var _user$project$StopPicker_View$view = F2(
+	function (routes, model) {
+		var _p0 = model.selectedRoute;
+		if (_p0.ctor === 'Just') {
+			return _user$project$StopPicker_View$stopPicker(_p0._0);
+		} else {
+			return _user$project$StopPicker_View$routePicker(routes);
+		}
+	});
 
 var _user$project$View$welcomeScreen = A2(
 	_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -8383,6 +8447,42 @@ var _user$project$View$welcomeScreen = A2(
 					_elm_native_ui$elm_native_ui$NativeUi$string('Select your home station')
 				]))
 		]));
+var _user$project$View$routeAndStop = function (model) {
+	var _p0 = model.selectedRouteStop;
+	if (_p0.ctor === 'Nothing') {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi$map,
+			_user$project$Message$StopPickerMsg,
+			A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker));
+	} else {
+		var _p1 = _p0._0;
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string(
+							A2(_elm_lang$core$Basics_ops['++'], 'Route: ', _p1.route.name))
+						])),
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string(
+							A2(_elm_lang$core$Basics_ops['++'], 'Stop: ', _p1.stop))
+						]))
+				]));
+	}
+};
 var _user$project$View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -8404,16 +8504,13 @@ var _user$project$View$view = function (model) {
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Update$FetchRoutes)
+						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$FetchRoutes)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_native_ui$elm_native_ui$NativeUi$string('Fetch')
 					])),
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi$map,
-				_user$project$Update$StopPickerMsg,
-				_user$project$StopPicker_View$view(model))
+				_user$project$View$routeAndStop(model)
 			]));
 };
 

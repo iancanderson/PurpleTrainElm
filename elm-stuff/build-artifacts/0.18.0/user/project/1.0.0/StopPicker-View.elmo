@@ -1,36 +1,56 @@
-var _user$project$StopPicker_View$routeStyle = F2(
-	function (selectedRoute, route) {
-		return _elm_lang$core$Native_Utils.eq(
-			selectedRoute,
-			_elm_lang$core$Maybe$Just(route)) ? _elm_lang$core$Native_List.fromArray(
+var _user$project$StopPicker_View$routeButton = function (route) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_native_ui$elm_native_ui$NativeUi_Style$color('red')
-			]) : _elm_lang$core$Native_List.fromArray(
-			[]);
-	});
-var _user$project$StopPicker_View$routePicker = F2(
-	function (selectedRoute, route) {
+				_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+				_user$project$StopPicker$Internal(
+					_user$project$StopPicker$PickRoute(route)))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$string(route.name)
+			]));
+};
+var _user$project$StopPicker_View$routePicker = function (routes) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(_elm_lang$core$List$map, _user$project$StopPicker_View$routeButton, routes));
+};
+var _user$project$StopPicker_View$stopButton = F2(
+	function (route, stop) {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-					_user$project$StopPicker$PickRoute(route)),
-					_elm_native_ui$elm_native_ui$NativeUi$style(
-					A2(_user$project$StopPicker_View$routeStyle, selectedRoute, route))
+					_user$project$StopPicker$External(
+						_user$project$StopPicker$PickStop(
+							A2(_user$project$Types$RouteStop, route, stop))))
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_native_ui$elm_native_ui$NativeUi$string(route.name)
+					_elm_native_ui$elm_native_ui$NativeUi$string(stop)
 				]));
 	});
-var _user$project$StopPicker_View$view = function (model) {
+var _user$project$StopPicker_View$stopPicker = function (route) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		A2(
 			_elm_lang$core$List$map,
-			_user$project$StopPicker_View$routePicker(model.stopPicker.selectedRoute),
-			model.routes));
+			_user$project$StopPicker_View$stopButton(route),
+			route.stops));
 };
+var _user$project$StopPicker_View$view = F2(
+	function (routes, model) {
+		var _p0 = model.selectedRoute;
+		if (_p0.ctor === 'Just') {
+			return _user$project$StopPicker_View$stopPicker(_p0._0);
+		} else {
+			return _user$project$StopPicker_View$routePicker(routes);
+		}
+	});

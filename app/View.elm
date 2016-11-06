@@ -7,6 +7,7 @@ import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
 
 import Model exposing (..)
+import Message exposing (..)
 import Types exposing (..)
 import Update exposing (..)
 import StopPicker
@@ -24,8 +25,20 @@ view model =
         ]
         [ welcomeScreen
         , text [ onPress FetchRoutes ] [ Ui.string "Fetch" ]
-        , Ui.map StopPickerMsg (StopPicker.view model)
+        , routeAndStop model
         ]
+
+routeAndStop : Model -> Node Msg
+routeAndStop model =
+    case model.selectedRouteStop of
+        Nothing ->
+            Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
+        Just routeStop ->
+            Elements.view
+                []
+                [ text [ ] [ Ui.string ("Route: " ++ routeStop.route.name) ]
+                , text [ ] [ Ui.string ("Stop: " ++ routeStop.stop) ]
+                ]
 
 
 welcomeScreen : Node Msg

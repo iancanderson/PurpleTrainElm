@@ -15,6 +15,15 @@ var _user$project$StopPicker$initialModel = {selectedRoute: _elm_lang$core$Maybe
 var _user$project$StopPicker$Model = function (a) {
 	return {selectedRoute: a};
 };
+var _user$project$StopPicker$External = function (a) {
+	return {ctor: 'External', _0: a};
+};
+var _user$project$StopPicker$Internal = function (a) {
+	return {ctor: 'Internal', _0: a};
+};
+var _user$project$StopPicker$PickStop = function (a) {
+	return {ctor: 'PickStop', _0: a};
+};
 var _user$project$StopPicker$PickRoute = function (a) {
 	return {ctor: 'PickRoute', _0: a};
 };

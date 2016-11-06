@@ -9,6 +9,7 @@ import StopPicker
 type alias Model =
     { routes : Routes
     , stopPicker : StopPicker.Model
+    , selectedRouteStop : Maybe RouteStop
     }
 
 
@@ -16,4 +17,5 @@ initialModel : Model
 initialModel =
     { routes = []
     , stopPicker = StopPicker.initialModel
+    , selectedRouteStop = Nothing
     }

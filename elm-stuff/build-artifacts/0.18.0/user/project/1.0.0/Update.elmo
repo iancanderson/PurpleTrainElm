@@ -10,42 +10,56 @@ var _user$project$Update$decodeRoutes = A2(
 	_elm_lang$core$List$map(_elm_lang$core$Basics$snd),
 	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$Update$decodeRoute));
 var _user$project$Update$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$Update$decodeRoutes);
-var _user$project$Update$LoadRoutes = function (a) {
-	return {ctor: 'LoadRoutes', _0: a};
-};
-var _user$project$Update$send = A2(_elm_lang$http$Http$send, _user$project$Update$LoadRoutes, _user$project$Update$getRoutes);
-var _user$project$Update$FetchRoutes = {ctor: 'FetchRoutes'};
-var _user$project$Update$StopPickerMsg = function (a) {
-	return {ctor: 'StopPickerMsg', _0: a};
-};
+var _user$project$Update$send = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$Update$getRoutes);
 var _user$project$Update$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'StopPickerMsg':
-				var _p1 = A2(_user$project$StopPicker$update, _p0._0, model.stopPicker);
-				var updatedStopPicker = _p1._0;
-				var stopPickerCmd = _p1._1;
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{stopPicker: updatedStopPicker}),
-					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Update$StopPickerMsg, stopPickerCmd)
-				};
-			case 'FetchRoutes':
-				return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
-			default:
-				if (_p0._0.ctor === 'Ok') {
+		update:
+		while (true) {
+			var _p0 = msg;
+			switch (_p0.ctor) {
+				case 'StopPickerMsg':
+					if (_p0._0.ctor === 'External') {
+						var _v1 = _user$project$StopPicker_Translate$translate(_p0._0._0),
+							_v2 = model;
+						msg = _v1;
+						model = _v2;
+						continue update;
+					} else {
+						var _p1 = A2(_user$project$StopPicker$update, _p0._0._0, model.stopPicker);
+						var updatedStopPicker = _p1._0;
+						var stopPickerCmd = _p1._1;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{stopPicker: updatedStopPicker}),
+							_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Message$StopPickerMsg, stopPickerCmd)
+						};
+					}
+				case 'PickStop':
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{routes: _p0._0._0}),
+							{
+								selectedRouteStop: _elm_lang$core$Maybe$Just(_p0._0)
+							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
-				} else {
+				case 'FetchRoutes':
 					return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
-				}
+				default:
+					if (_p0._0.ctor === 'Ok') {
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{routes: _p0._0._0}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
+					}
+			}
 		}
 	});

@@ -5,25 +5,25 @@ import Debug
 import Json.Decode as Decode
 
 import StopPicker
+import StopPicker.Translate as StopPicker
 import Types exposing (..)
 import Model exposing (..)
-
-type Msg
-    = StopPickerMsg StopPicker.Msg
-    | FetchRoutes
-    | LoadRoutes (Result Http.Error Routes)
-
+import Message exposing (..)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        StopPickerMsg subMsg ->
+        StopPickerMsg (StopPicker.External msg) -> update (StopPicker.translate msg) model
+        StopPickerMsg (StopPicker.Internal subMsg) ->
             let
                 ( updatedStopPicker, stopPickerCmd ) =
                     StopPicker.update subMsg model.stopPicker
             in
                 ( { model | stopPicker = updatedStopPicker }
                 , Cmd.map StopPickerMsg stopPickerCmd )
+        PickStop routeStop ->
+            ( { model | selectedRouteStop = Just routeStop }
+            , Cmd.none )
         FetchRoutes ->
             ( model, send )
         LoadRoutes (Ok routes) ->

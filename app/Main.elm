@@ -3,7 +3,8 @@ module Main exposing (..)
 import NativeUi
 
 import Model exposing (Model, initialModel)
-import Update exposing (Msg, update)
+import Update exposing (update)
+import Message exposing (Msg)
 import View exposing (view)
 
 

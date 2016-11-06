@@ -20,3 +20,8 @@ type alias Route =
 
 type alias Stops = List Stop
 type alias Stop = String
+
+type alias RouteStop =
+    { route : Route
+    , stop : Stop
+    }

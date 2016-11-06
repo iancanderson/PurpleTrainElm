@@ -13,6 +13,42 @@ var _user$project$View$welcomeScreen = A2(
 					_elm_native_ui$elm_native_ui$NativeUi$string('Select your home station')
 				]))
 		]));
+var _user$project$View$routeAndStop = function (model) {
+	var _p0 = model.selectedRouteStop;
+	if (_p0.ctor === 'Nothing') {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi$map,
+			_user$project$Message$StopPickerMsg,
+			A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker));
+	} else {
+		var _p1 = _p0._0;
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string(
+							A2(_elm_lang$core$Basics_ops['++'], 'Route: ', _p1.route.name))
+						])),
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string(
+							A2(_elm_lang$core$Basics_ops['++'], 'Stop: ', _p1.stop))
+						]))
+				]));
+	}
+};
 var _user$project$View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -34,15 +70,12 @@ var _user$project$View$view = function (model) {
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Update$FetchRoutes)
+						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$FetchRoutes)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_native_ui$elm_native_ui$NativeUi$string('Fetch')
 					])),
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi$map,
-				_user$project$Update$StopPickerMsg,
-				_user$project$StopPicker_View$view(model))
+				_user$project$View$routeAndStop(model)
 			]));
 };

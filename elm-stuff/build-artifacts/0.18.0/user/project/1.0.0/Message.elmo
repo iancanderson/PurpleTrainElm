@@ -1,0 +1,10 @@
+var _user$project$Message$LoadRoutes = function (a) {
+	return {ctor: 'LoadRoutes', _0: a};
+};
+var _user$project$Message$FetchRoutes = {ctor: 'FetchRoutes'};
+var _user$project$Message$PickStop = function (a) {
+	return {ctor: 'PickStop', _0: a};
+};
+var _user$project$Message$StopPickerMsg = function (a) {
+	return {ctor: 'StopPickerMsg', _0: a};
+};

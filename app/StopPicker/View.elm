@@ -7,29 +7,39 @@ import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
 
 import StopPicker exposing (..)
-import Model as App
 import Types exposing (..)
 
-view : App.Model -> Node Msg
-view model =
+view : Routes -> Model -> Node Msg
+view routes model =
+    case model.selectedRoute of
+        Just route -> stopPicker route
+        Nothing -> routePicker routes
+
+
+stopPicker : Route -> Node Msg
+stopPicker route =
     Elements.view
-        [
-        ]
-        ( List.map (routePicker model.stopPicker.selectedRoute) model.routes)
+        []
+        ( List.map (stopButton route) route.stops)
 
-
-routePicker : Maybe Route -> Route -> Node Msg
-routePicker selectedRoute route =
+stopButton : Route -> Stop -> Node Msg
+stopButton route stop =
   text
-    [ onPress (PickRoute route)
-    , Ui.style <| routeStyle selectedRoute route
+    [ onPress (External (PickStop (RouteStop route stop)))
+    ]
+    [ Ui.string stop ]
+
+
+routePicker : Routes -> Node Msg
+routePicker routes =
+    Elements.view
+        []
+        ( List.map routeButton routes)
+
+
+routeButton : Route -> Node Msg
+routeButton route =
+  text
+    [ onPress (Internal (PickRoute route))
     ]
     [ Ui.string route.name ]
-
-routeStyle : Maybe Route -> Route -> List Style.Style
-routeStyle selectedRoute route =
-    if selectedRoute == Just route then
-        [ Style.color "red"
-        ]
-    else
-        []

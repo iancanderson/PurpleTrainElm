@@ -19,10 +19,19 @@ initialModel =
 
 
 type Msg
+    = Internal InternalMsg
+    | External ExternalMsg
+
+
+type ExternalMsg
+    = PickStop RouteStop
+
+
+type InternalMsg
     = PickRoute Route
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : InternalMsg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         PickRoute route ->

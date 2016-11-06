@@ -1,0 +1,4 @@
+var _user$project$StopPicker_Translate$translate = function (_p0) {
+	var _p1 = _p0;
+	return _user$project$Message$PickStop(_p1._0);
+};
