@@ -6,6 +6,7 @@ import StopPicker.Translate as StopPicker
 import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
+import FetchSchedule exposing (..)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -18,10 +19,17 @@ update msg model =
             in
                 ( { model | stopPicker = updatedStopPicker }
                 , Cmd.map StopPickerMsg stopPickerCmd )
+        ChangeDirection direction ->
+            ( { model | direction = direction }
+            , fetchSchedule direction model.selectedRouteStop )
         PickStop routeStop ->
             ( { model | selectedRouteStop = Just routeStop }
-            , Cmd.none )
-        LoadRoutes (Ok routes) ->
-            ( { model | routes = routes }, Cmd.none)
-        LoadRoutes (Result.Err _) ->
-            ( model, Cmd.none )
+            , fetchSchedule model.direction (Just routeStop) )
+        LoadRoutes result ->
+            case result of
+                Ok routes -> ( { model | routes = routes }, Cmd.none)
+                Result.Err _ -> ( model, Cmd.none )
+        LoadSchedule result ->
+            case result of
+                Ok schedule -> ( { model | schedule = schedule }, Cmd.none)
+                Result.Err _ -> ( model, Cmd.none )

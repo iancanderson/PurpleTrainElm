@@ -1,12 +1,14 @@
 var _user$project$Types$Train = F2(
 	function (a, b) {
-		return {time: a, station: b};
+		return {scheduledArrival: a, predictedArrival: b};
 	});
-var _user$project$Types$Route = F2(
-	function (a, b) {
-		return {name: a, stops: b};
+var _user$project$Types$Route = F3(
+	function (a, b, c) {
+		return {name: a, stops: b, id: c};
 	});
 var _user$project$Types$RouteStop = F2(
 	function (a, b) {
 		return {route: a, stop: b};
 	});
+var _user$project$Types$Outbound = {ctor: 'Outbound'};
+var _user$project$Types$Inbound = {ctor: 'Inbound'};

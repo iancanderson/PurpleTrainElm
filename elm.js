@@ -8241,16 +8241,18 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxNone = 
 
 var _user$project$Types$Train = F2(
 	function (a, b) {
-		return {time: a, station: b};
+		return {scheduledArrival: a, predictedArrival: b};
 	});
-var _user$project$Types$Route = F2(
-	function (a, b) {
-		return {name: a, stops: b};
+var _user$project$Types$Route = F3(
+	function (a, b, c) {
+		return {name: a, stops: b, id: c};
 	});
 var _user$project$Types$RouteStop = F2(
 	function (a, b) {
 		return {route: a, stop: b};
 	});
+var _user$project$Types$Outbound = {ctor: 'Outbound'};
+var _user$project$Types$Inbound = {ctor: 'Inbound'};
 
 var _user$project$StopPicker_Model$initialModel = {selectedRoute: _elm_lang$core$Maybe$Nothing};
 var _user$project$StopPicker_Model$Model = function (a) {
@@ -8283,11 +8285,17 @@ var _user$project$StopPicker_Update$PickRoute = function (a) {
 	return {ctor: 'PickRoute', _0: a};
 };
 
+var _user$project$Message$LoadSchedule = function (a) {
+	return {ctor: 'LoadSchedule', _0: a};
+};
 var _user$project$Message$LoadRoutes = function (a) {
 	return {ctor: 'LoadRoutes', _0: a};
 };
 var _user$project$Message$PickStop = function (a) {
 	return {ctor: 'PickStop', _0: a};
+};
+var _user$project$Message$ChangeDirection = function (a) {
+	return {ctor: 'ChangeDirection', _0: a};
 };
 var _user$project$Message$StopPickerMsg = function (a) {
 	return {ctor: 'StopPickerMsg', _0: a};
@@ -8302,20 +8310,74 @@ var _user$project$FetchRoutes$decodeRoute = A3(
 	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$FetchRoutes$decodeStops));
 var _user$project$FetchRoutes$decodeRoutes = A2(
 	_elm_lang$core$Json_Decode$map,
-	_elm_lang$core$List$map(_elm_lang$core$Basics$snd),
+	_elm_lang$core$List$map(
+		function (_p0) {
+			var _p1 = _p0;
+			return _p1._1(_p1._0);
+		}),
 	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$FetchRoutes$decodeRoute));
 var _user$project$FetchRoutes$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$FetchRoutes$decodeRoutes);
 var _user$project$FetchRoutes$fetchRoutes = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$FetchRoutes$getRoutes);
 
+var _user$project$Model$directionName = function (direction) {
+	var _p0 = direction;
+	if (_p0.ctor === 'Inbound') {
+		return 'Inbound';
+	} else {
+		return 'Outbound';
+	}
+};
 var _user$project$Model$initialModel = {
+	direction: _user$project$Types$Inbound,
+	schedule: _elm_lang$core$Native_List.fromArray(
+		[]),
 	routes: _elm_lang$core$Native_List.fromArray(
 		[]),
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing
 };
-var _user$project$Model$Model = F3(
-	function (a, b, c) {
-		return {routes: a, stopPicker: b, selectedRouteStop: c};
+var _user$project$Model$Model = F5(
+	function (a, b, c, d, e) {
+		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e};
+	});
+
+var _user$project$FetchSchedule$decodeTrain = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$Types$Train,
+	A2(_elm_lang$core$Json_Decode$field, 'scheduled_arrival_utc', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'predicted_arrival_utc', _elm_lang$core$Json_Decode$string));
+var _user$project$FetchSchedule$decodeSchedule = _elm_lang$core$Json_Decode$list(_user$project$FetchSchedule$decodeTrain);
+var _user$project$FetchSchedule$getSchedule = F2(
+	function (direction, _p0) {
+		var _p1 = _p0;
+		return A2(
+			_elm_lang$http$Http$get,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'http://commuter-api-production.herokuapp.com/api/v1/predictions?direction=',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_user$project$Model$directionName(direction),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'&route_id=',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_p1.route.id,
+							A2(_elm_lang$core$Basics_ops['++'], '&stop_id=', _p1.stop))))),
+			_user$project$FetchSchedule$decodeSchedule);
+	});
+var _user$project$FetchSchedule$fetchSchedule = F2(
+	function (direction, maybeRouteStop) {
+		var _p2 = maybeRouteStop;
+		if (_p2.ctor === 'Nothing') {
+			return _elm_lang$core$Platform_Cmd$none;
+		} else {
+			return A2(
+				_elm_lang$http$Http$send,
+				_user$project$Message$LoadSchedule,
+				A2(_user$project$FetchSchedule$getSchedule, direction, _p2._0));
+		}
 	});
 
 var _user$project$StopPicker_Translate$translate = function (_p0) {
@@ -8348,23 +8410,50 @@ var _user$project$Update$update = F2(
 							_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Message$StopPickerMsg, stopPickerCmd)
 						};
 					}
+				case 'ChangeDirection':
+					var _p2 = _p0._0;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{direction: _p2}),
+						_1: A2(_user$project$FetchSchedule$fetchSchedule, _p2, model.selectedRouteStop)
+					};
 				case 'PickStop':
+					var _p3 = _p0._0;
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								selectedRouteStop: _elm_lang$core$Maybe$Just(_p0._0)
+								selectedRouteStop: _elm_lang$core$Maybe$Just(_p3)
 							}),
-						_1: _elm_lang$core$Platform_Cmd$none
+						_1: A2(
+							_user$project$FetchSchedule$fetchSchedule,
+							model.direction,
+							_elm_lang$core$Maybe$Just(_p3))
 					};
-				default:
-					if (_p0._0.ctor === 'Ok') {
+				case 'LoadRoutes':
+					var _p4 = _p0._0;
+					if (_p4.ctor === 'Ok') {
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{routes: _p0._0._0}),
+								{routes: _p4._0}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					}
+				default:
+					var _p5 = _p0._0;
+					if (_p5.ctor === 'Ok') {
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{schedule: _p5._0}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
@@ -8446,7 +8535,7 @@ var _user$project$View$routeAndStop = function (model) {
 						[]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_native_ui$elm_native_ui$NativeUi$string('Select your home station')
+							_elm_native_ui$elm_native_ui$NativeUi$string('Select your home stop')
 						])),
 					A2(
 					_elm_native_ui$elm_native_ui$NativeUi$map,
@@ -8482,6 +8571,73 @@ var _user$project$View$routeAndStop = function (model) {
 				]));
 	}
 };
+var _user$project$View$directionStyle = F2(
+	function (direction, currentDirection) {
+		return _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi_Style$color('red')
+			]) : _elm_lang$core$Native_List.fromArray(
+			[]);
+	});
+var _user$project$View$directionPicker = function (direction) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+						_user$project$Message$ChangeDirection(_user$project$Types$Inbound)),
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						A2(_user$project$View$directionStyle, _user$project$Types$Inbound, direction))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string('Inbound')
+					])),
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+						_user$project$Message$ChangeDirection(_user$project$Types$Outbound)),
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						A2(_user$project$View$directionStyle, _user$project$Types$Outbound, direction))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string('Outbound')
+					]))
+			]));
+};
+var _user$project$View$trainElement = function (train) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string(train.scheduledArrival)
+					]))
+			]));
+};
+var _user$project$View$schedule = function (trains) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(_elm_lang$core$List$map, _user$project$View$trainElement, trains));
+};
 var _user$project$View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -8498,6 +8654,8 @@ var _user$project$View$view = function (model) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
+				_user$project$View$directionPicker(model.direction),
+				_user$project$View$schedule(model.schedule),
 				_user$project$View$routeAndStop(model)
 			]));
 };

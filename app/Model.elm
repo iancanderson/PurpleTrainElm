@@ -7,7 +7,9 @@ import StopPicker.Model as StopPicker
 
 
 type alias Model =
-    { routes : Routes
+    { direction : Direction
+    , schedule : Schedule
+    , routes : Routes
     , stopPicker : StopPicker.Model
     , selectedRouteStop : Maybe RouteStop
     }
@@ -15,7 +17,15 @@ type alias Model =
 
 initialModel : Model
 initialModel =
-    { routes = []
+    { direction = Inbound
+    , schedule = []
+    , routes = []
     , stopPicker = StopPicker.initialModel
     , selectedRouteStop = Nothing
     }
+
+directionName : Direction -> String
+directionName direction =
+    case direction of
+        Inbound -> "Inbound"
+        Outbound -> "Outbound"

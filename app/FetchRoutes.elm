@@ -20,7 +20,17 @@ getRoutes =
 
 decodeRoutes : Decode.Decoder Routes
 decodeRoutes =
-  Decode.map (List.map snd) (Decode.keyValuePairs decodeRoute)
+  Decode.map
+    ( List.map (\(routeId, partialRoute) -> partialRoute routeId ) )
+    ( Decode.keyValuePairs decodeRoute )
+
+
+decodeRoute : Decode.Decoder (String -> Route)
+decodeRoute =
+  Decode.map2 Route
+    ( Decode.field "route_name" Decode.string )
+    ( Decode.field "stops" decodeStops )
+
 
 decodeStops : Decode.Decoder Stops
 decodeStops = Decode.list decodeStop
@@ -28,9 +38,3 @@ decodeStops = Decode.list decodeStop
 
 decodeStop : Decode.Decoder Stop
 decodeStop = Decode.string
-
-decodeRoute : Decode.Decoder Route
-decodeRoute =
-  Decode.map2 Route
-    (Decode.field "route_name" Decode.string)
-    (Decode.field "stops" decodeStops)

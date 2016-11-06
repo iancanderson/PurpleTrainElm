@@ -1,10 +1,21 @@
+var _user$project$Model$directionName = function (direction) {
+	var _p0 = direction;
+	if (_p0.ctor === 'Inbound') {
+		return 'Inbound';
+	} else {
+		return 'Outbound';
+	}
+};
 var _user$project$Model$initialModel = {
+	direction: _user$project$Types$Inbound,
+	schedule: _elm_lang$core$Native_List.fromArray(
+		[]),
 	routes: _elm_lang$core$Native_List.fromArray(
 		[]),
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing
 };
-var _user$project$Model$Model = F3(
-	function (a, b, c) {
-		return {routes: a, stopPicker: b, selectedRouteStop: c};
+var _user$project$Model$Model = F5(
+	function (a, b, c, d, e) {
+		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e};
 	});

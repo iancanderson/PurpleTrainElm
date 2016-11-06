@@ -22,8 +22,52 @@ view model =
             , Style.alignItems "center"
             ]
         ]
-        [ routeAndStop model
+        [ directionPicker model.direction
+        , schedule model.schedule
+        , routeAndStop model
         ]
+
+
+schedule : Schedule -> Node Msg
+schedule trains =
+    Elements.view
+        []
+        ( List.map trainElement trains )
+
+
+trainElement : Train -> Node Msg
+trainElement train =
+    Elements.view
+        []
+        [ text [] [ Ui.string train.scheduledArrival ]
+        ]
+
+
+directionPicker : Direction -> Node Msg
+directionPicker direction =
+    Elements.view
+        []
+        [ text
+            [ onPress (ChangeDirection Inbound)
+            , Ui.style (directionStyle Inbound direction)
+            ]
+            [ Ui.string "Inbound" ]
+        , text
+            [ onPress (ChangeDirection Outbound)
+            , Ui.style (directionStyle Outbound direction)
+            ]
+            [ Ui.string "Outbound" ]
+        ]
+
+
+directionStyle : Direction -> Direction -> List Style.Style
+directionStyle direction currentDirection =
+    if direction == currentDirection then
+        [ Style.color "red"
+        ]
+    else
+        []
+
 
 routeAndStop : Model -> Node Msg
 routeAndStop model =
@@ -31,7 +75,7 @@ routeAndStop model =
         Nothing ->
             Elements.view
                 []
-                [ text [] [ Ui.string "Select your home station" ]
+                [ text [] [ Ui.string "Select your home stop" ]
                 , Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
                 ]
         Just routeStop ->

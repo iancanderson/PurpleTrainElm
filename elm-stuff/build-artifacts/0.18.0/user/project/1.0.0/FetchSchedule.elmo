@@ -1,0 +1,38 @@
+var _user$project$FetchSchedule$decodeTrain = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$Types$Train,
+	A2(_elm_lang$core$Json_Decode$field, 'scheduled_arrival_utc', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'predicted_arrival_utc', _elm_lang$core$Json_Decode$string));
+var _user$project$FetchSchedule$decodeSchedule = _elm_lang$core$Json_Decode$list(_user$project$FetchSchedule$decodeTrain);
+var _user$project$FetchSchedule$getSchedule = F2(
+	function (direction, _p0) {
+		var _p1 = _p0;
+		return A2(
+			_elm_lang$http$Http$get,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'http://commuter-api-production.herokuapp.com/api/v1/predictions?direction=',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_user$project$Model$directionName(direction),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'&route_id=',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_p1.route.id,
+							A2(_elm_lang$core$Basics_ops['++'], '&stop_id=', _p1.stop))))),
+			_user$project$FetchSchedule$decodeSchedule);
+	});
+var _user$project$FetchSchedule$fetchSchedule = F2(
+	function (direction, maybeRouteStop) {
+		var _p2 = maybeRouteStop;
+		if (_p2.ctor === 'Nothing') {
+			return _elm_lang$core$Platform_Cmd$none;
+		} else {
+			return A2(
+				_elm_lang$http$Http$send,
+				_user$project$Message$LoadSchedule,
+				A2(_user$project$FetchSchedule$getSchedule, direction, _p2._0));
+		}
+	});

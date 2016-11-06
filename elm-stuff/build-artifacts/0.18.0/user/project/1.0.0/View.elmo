@@ -13,7 +13,7 @@ var _user$project$View$routeAndStop = function (model) {
 						[]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_native_ui$elm_native_ui$NativeUi$string('Select your home station')
+							_elm_native_ui$elm_native_ui$NativeUi$string('Select your home stop')
 						])),
 					A2(
 					_elm_native_ui$elm_native_ui$NativeUi$map,
@@ -49,6 +49,73 @@ var _user$project$View$routeAndStop = function (model) {
 				]));
 	}
 };
+var _user$project$View$directionStyle = F2(
+	function (direction, currentDirection) {
+		return _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi_Style$color('red')
+			]) : _elm_lang$core$Native_List.fromArray(
+			[]);
+	});
+var _user$project$View$directionPicker = function (direction) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+						_user$project$Message$ChangeDirection(_user$project$Types$Inbound)),
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						A2(_user$project$View$directionStyle, _user$project$Types$Inbound, direction))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string('Inbound')
+					])),
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+						_user$project$Message$ChangeDirection(_user$project$Types$Outbound)),
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						A2(_user$project$View$directionStyle, _user$project$Types$Outbound, direction))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string('Outbound')
+					]))
+			]));
+};
+var _user$project$View$trainElement = function (train) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string(train.scheduledArrival)
+					]))
+			]));
+};
+var _user$project$View$schedule = function (trains) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(_elm_lang$core$List$map, _user$project$View$trainElement, trains));
+};
 var _user$project$View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -65,6 +132,8 @@ var _user$project$View$view = function (model) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
+				_user$project$View$directionPicker(model.direction),
+				_user$project$View$schedule(model.schedule),
 				_user$project$View$routeAndStop(model)
 			]));
 };

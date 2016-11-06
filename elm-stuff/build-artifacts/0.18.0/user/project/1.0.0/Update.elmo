@@ -23,23 +23,50 @@ var _user$project$Update$update = F2(
 							_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Message$StopPickerMsg, stopPickerCmd)
 						};
 					}
+				case 'ChangeDirection':
+					var _p2 = _p0._0;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{direction: _p2}),
+						_1: A2(_user$project$FetchSchedule$fetchSchedule, _p2, model.selectedRouteStop)
+					};
 				case 'PickStop':
+					var _p3 = _p0._0;
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								selectedRouteStop: _elm_lang$core$Maybe$Just(_p0._0)
+								selectedRouteStop: _elm_lang$core$Maybe$Just(_p3)
 							}),
-						_1: _elm_lang$core$Platform_Cmd$none
+						_1: A2(
+							_user$project$FetchSchedule$fetchSchedule,
+							model.direction,
+							_elm_lang$core$Maybe$Just(_p3))
 					};
-				default:
-					if (_p0._0.ctor === 'Ok') {
+				case 'LoadRoutes':
+					var _p4 = _p0._0;
+					if (_p4.ctor === 'Ok') {
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{routes: _p0._0._0}),
+								{routes: _p4._0}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					}
+				default:
+					var _p5 = _p0._0;
+					if (_p5.ctor === 'Ok') {
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{schedule: _p5._0}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
