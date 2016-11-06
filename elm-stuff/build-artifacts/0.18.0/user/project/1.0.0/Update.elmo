@@ -1,16 +1,3 @@
-var _user$project$Update$decodeStop = _elm_lang$core$Json_Decode$string;
-var _user$project$Update$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$Update$decodeStop);
-var _user$project$Update$decodeRoute = A3(
-	_elm_lang$core$Json_Decode$map2,
-	_user$project$Types$Route,
-	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$Update$decodeStops));
-var _user$project$Update$decodeRoutes = A2(
-	_elm_lang$core$Json_Decode$map,
-	_elm_lang$core$List$map(_elm_lang$core$Basics$snd),
-	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$Update$decodeRoute));
-var _user$project$Update$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$Update$decodeRoutes);
-var _user$project$Update$send = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$Update$getRoutes);
 var _user$project$Update$update = F2(
 	function (msg, model) {
 		update:
@@ -46,8 +33,6 @@ var _user$project$Update$update = F2(
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
-				case 'FetchRoutes':
-					return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
 				default:
 					if (_p0._0.ctor === 'Ok') {
 						return {
@@ -58,7 +43,7 @@ var _user$project$Update$update = F2(
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
-						return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
 			}
 		}

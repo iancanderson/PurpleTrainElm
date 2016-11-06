@@ -8257,17 +8257,6 @@ var _user$project$StopPicker_Model$Model = function (a) {
 	return {selectedRoute: a};
 };
 
-var _user$project$Model$initialModel = {
-	routes: _elm_lang$core$Native_List.fromArray(
-		[]),
-	stopPicker: _user$project$StopPicker_Model$initialModel,
-	selectedRouteStop: _elm_lang$core$Maybe$Nothing
-};
-var _user$project$Model$Model = F3(
-	function (a, b, c) {
-		return {routes: a, stopPicker: b, selectedRouteStop: c};
-	});
-
 var _user$project$StopPicker_Update$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -8297,7 +8286,6 @@ var _user$project$StopPicker_Update$PickRoute = function (a) {
 var _user$project$Message$LoadRoutes = function (a) {
 	return {ctor: 'LoadRoutes', _0: a};
 };
-var _user$project$Message$FetchRoutes = {ctor: 'FetchRoutes'};
 var _user$project$Message$PickStop = function (a) {
 	return {ctor: 'PickStop', _0: a};
 };
@@ -8305,24 +8293,36 @@ var _user$project$Message$StopPickerMsg = function (a) {
 	return {ctor: 'StopPickerMsg', _0: a};
 };
 
+var _user$project$FetchRoutes$decodeStop = _elm_lang$core$Json_Decode$string;
+var _user$project$FetchRoutes$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$FetchRoutes$decodeStop);
+var _user$project$FetchRoutes$decodeRoute = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$Types$Route,
+	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$FetchRoutes$decodeStops));
+var _user$project$FetchRoutes$decodeRoutes = A2(
+	_elm_lang$core$Json_Decode$map,
+	_elm_lang$core$List$map(_elm_lang$core$Basics$snd),
+	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$FetchRoutes$decodeRoute));
+var _user$project$FetchRoutes$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$FetchRoutes$decodeRoutes);
+var _user$project$FetchRoutes$fetchRoutes = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$FetchRoutes$getRoutes);
+
+var _user$project$Model$initialModel = {
+	routes: _elm_lang$core$Native_List.fromArray(
+		[]),
+	stopPicker: _user$project$StopPicker_Model$initialModel,
+	selectedRouteStop: _elm_lang$core$Maybe$Nothing
+};
+var _user$project$Model$Model = F3(
+	function (a, b, c) {
+		return {routes: a, stopPicker: b, selectedRouteStop: c};
+	});
+
 var _user$project$StopPicker_Translate$translate = function (_p0) {
 	var _p1 = _p0;
 	return _user$project$Message$PickStop(_p1._0);
 };
 
-var _user$project$Update$decodeStop = _elm_lang$core$Json_Decode$string;
-var _user$project$Update$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$Update$decodeStop);
-var _user$project$Update$decodeRoute = A3(
-	_elm_lang$core$Json_Decode$map2,
-	_user$project$Types$Route,
-	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$Update$decodeStops));
-var _user$project$Update$decodeRoutes = A2(
-	_elm_lang$core$Json_Decode$map,
-	_elm_lang$core$List$map(_elm_lang$core$Basics$snd),
-	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$Update$decodeRoute));
-var _user$project$Update$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$Update$decodeRoutes);
-var _user$project$Update$send = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$Update$getRoutes);
 var _user$project$Update$update = F2(
 	function (msg, model) {
 		update:
@@ -8358,8 +8358,6 @@ var _user$project$Update$update = F2(
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
-				case 'FetchRoutes':
-					return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
 				default:
 					if (_p0._0.ctor === 'Ok') {
 						return {
@@ -8370,7 +8368,7 @@ var _user$project$Update$update = F2(
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
-						return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
 			}
 		}
@@ -8433,28 +8431,28 @@ var _user$project$StopPicker_View$view = F2(
 		}
 	});
 
-var _user$project$View$welcomeScreen = A2(
-	_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-	_elm_lang$core$Native_List.fromArray(
-		[]),
-	_elm_lang$core$Native_List.fromArray(
-		[
-			A2(
-			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi$string('Select your home station')
-				]))
-		]));
 var _user$project$View$routeAndStop = function (model) {
 	var _p0 = model.selectedRouteStop;
 	if (_p0.ctor === 'Nothing') {
 		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi$map,
-			_user$project$Message$StopPickerMsg,
-			A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker));
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string('Select your home station')
+						])),
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi$map,
+					_user$project$Message$StopPickerMsg,
+					A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker))
+				]));
 	} else {
 		var _p1 = _p0._0;
 		return A2(
@@ -8500,24 +8498,13 @@ var _user$project$View$view = function (model) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$View$welcomeScreen,
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$FetchRoutes)
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string('Fetch')
-					])),
 				_user$project$View$routeAndStop(model)
 			]));
 };
 
 var _user$project$Main$main = _elm_native_ui$elm_native_ui$NativeUi$program(
 	{
-		init: {ctor: '_Tuple2', _0: _user$project$Model$initialModel, _1: _elm_lang$core$Platform_Cmd$none},
+		init: {ctor: '_Tuple2', _0: _user$project$Model$initialModel, _1: _user$project$FetchRoutes$fetchRoutes},
 		view: _user$project$View$view,
 		update: _user$project$Update$update,
 		subscriptions: function (_p0) {

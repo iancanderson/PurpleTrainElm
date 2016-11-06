@@ -7,5 +7,4 @@ import Types exposing (..)
 type Msg
     = StopPickerMsg StopPicker.Msg
     | PickStop RouteStop
-    | FetchRoutes
     | LoadRoutes (Result Http.Error Routes)

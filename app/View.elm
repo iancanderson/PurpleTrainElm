@@ -22,27 +22,21 @@ view model =
             , Style.alignItems "center"
             ]
         ]
-        [ welcomeScreen
-        , text [ onPress FetchRoutes ] [ Ui.string "Fetch" ]
-        , routeAndStop model
+        [ routeAndStop model
         ]
 
 routeAndStop : Model -> Node Msg
 routeAndStop model =
     case model.selectedRouteStop of
         Nothing ->
-            Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
+            Elements.view
+                []
+                [ text [] [ Ui.string "Select your home station" ]
+                , Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
+                ]
         Just routeStop ->
             Elements.view
                 []
                 [ text [ ] [ Ui.string ("Route: " ++ routeStop.route.name) ]
                 , text [ ] [ Ui.string ("Stop: " ++ routeStop.stop) ]
                 ]
-
-
-welcomeScreen : Node Msg
-welcomeScreen =
-    Elements.view
-        []
-        [ text [] [ Ui.string "Select your home station" ]
-        ]
