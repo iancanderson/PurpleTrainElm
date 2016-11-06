@@ -4,14 +4,7 @@ import Http
 import Debug
 import Json.Decode as Decode
 
-import Model exposing (Station, Model)
-
-type alias Routes = List Route
-
-type alias Route =
-    { name : String
-    }
-
+import Model exposing (..)
 
 type Msg
     = PickStation Station
@@ -26,8 +19,10 @@ update msg model =
             ( { model | selectedStation = Just station }, Cmd.none )
         FetchRoutes ->
             ( model, send )
-        LoadRoutes result ->
-            (snd ( Debug.log "result: " result , model ), Cmd.none)
+        LoadRoutes (Ok routes) ->
+            ( { model | routes = routes }, Cmd.none)
+        LoadRoutes (Result.Err _) ->
+            ( model, send )
 
 
 getRoutes : Http.Request Routes
@@ -41,11 +36,18 @@ decodeRoutes : Decode.Decoder Routes
 decodeRoutes =
   Decode.map (List.map snd) (Decode.keyValuePairs decodeRoute)
 
+decodeStops : Decode.Decoder Stops
+decodeStops = Decode.list decodeStop
+
+
+decodeStop : Decode.Decoder Stop
+decodeStop = Decode.string
 
 decodeRoute : Decode.Decoder Route
 decodeRoute =
-  Decode.map Route
+  Decode.map2 Route
     (Decode.field "route_name" Decode.string)
+    (Decode.field "stops" decodeStops)
 
 
 send : Cmd Msg

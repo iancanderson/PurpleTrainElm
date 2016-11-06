@@ -6319,7 +6319,7 @@ function configureRequest(xhr, request)
 
 	A2(_elm_lang$core$List$map, setHeader, request.headers);
 	xhr.responseType = request.expect.responseType;
-	xhr.timeout = request.timeout;
+  xhr.timeout = request.timeout._0;
 	xhr.withCredentials = request.withCredentials;
 }
 
@@ -8259,23 +8259,32 @@ var _user$project$Model$initialSchedule = _elm_lang$core$Native_List.fromArray(
 		{time: '5pm', station: 'Park St.'},
 		{time: '6pm', station: 'Park St.'}
 	]);
-var _user$project$Model$initialModel = {schedule: _user$project$Model$initialSchedule, selectedStation: _elm_lang$core$Maybe$Nothing};
+var _user$project$Model$initialModel = {
+	schedule: _user$project$Model$initialSchedule,
+	selectedStation: _elm_lang$core$Maybe$Nothing,
+	routes: _elm_lang$core$Native_List.fromArray(
+		[])
+};
 var _user$project$Model$Train = F2(
 	function (a, b) {
 		return {time: a, station: b};
 	});
-var _user$project$Model$Model = F2(
+var _user$project$Model$Route = F2(
 	function (a, b) {
-		return {schedule: a, selectedStation: b};
+		return {name: a, stops: b};
+	});
+var _user$project$Model$Model = F3(
+	function (a, b, c) {
+		return {schedule: a, selectedStation: b, routes: c};
 	});
 
-var _user$project$Update$Route = function (a) {
-	return {name: a};
-};
-var _user$project$Update$decodeRoute = A2(
-	_elm_lang$core$Json_Decode$map,
-	_user$project$Update$Route,
-	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string));
+var _user$project$Update$decodeStop = _elm_lang$core$Json_Decode$string;
+var _user$project$Update$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$Update$decodeStop);
+var _user$project$Update$decodeRoute = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$Model$Route,
+	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$Update$decodeStops));
 var _user$project$Update$decodeRoutes = A2(
 	_elm_lang$core$Json_Decode$map,
 	_elm_lang$core$List$map(_elm_lang$core$Basics$snd),
@@ -8302,16 +8311,17 @@ var _user$project$Update$update = F2(
 			case 'FetchRoutes':
 				return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
 			default:
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Basics$snd(
-						{
-							ctor: '_Tuple2',
-							_0: A2(_elm_lang$core$Debug$log, 'result: ', _p0._0),
-							_1: model
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				if (_p0._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{routes: _p0._0._0}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$send};
+				}
 		}
 	});
 var _user$project$Update$FetchRoutes = {ctor: 'FetchRoutes'};
@@ -8405,6 +8415,25 @@ var _user$project$View$stationPicker = function (_p1) {
 			_user$project$View$stationButton(_p2.selectedStation),
 			_user$project$Model$stations(_p2.schedule)));
 };
+var _user$project$View$routesList = function (routes) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(
+			_elm_lang$core$List$map,
+			function (r) {
+				return A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string(r.name)
+						]));
+			},
+			routes));
+};
 var _user$project$View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -8432,7 +8461,8 @@ var _user$project$View$view = function (model) {
 					[
 						_elm_native_ui$elm_native_ui$NativeUi$string('Fetch')
 					])),
-				_user$project$View$stationPicker(model)
+				_user$project$View$stationPicker(model),
+				_user$project$View$routesList(model.routes)
 			]));
 };
 

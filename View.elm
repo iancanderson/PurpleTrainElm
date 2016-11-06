@@ -22,7 +22,15 @@ view model =
         [ maybeUpcomingTrains model
         , text [ onPress FetchRoutes ] [ Ui.string "Fetch" ]
         , stationPicker model
+        , routesList model.routes
         ]
+
+routesList : Routes -> Node Msg
+routesList routes =
+    Elements.view
+        [
+        ]
+        ( List.map (\r -> text [] [ Ui.string r.name ]) routes)
 
 stationStyle : Maybe Station -> Station -> List Style.Style
 stationStyle selectedStation station =

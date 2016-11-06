@@ -15,9 +15,25 @@ type alias Train =
 type alias Schedule = List Train
 
 
+type alias Routes = List Route
+
+
+type alias Stops = List Stop
+
+
+type alias Stop = String
+
+
+type alias Route =
+    { name : String
+    , stops : Stops
+    }
+
+
 type alias Model =
     { schedule : Schedule
     , selectedStation : Maybe Station
+    , routes : List Route
     }
 
 
@@ -25,6 +41,7 @@ initialModel : Model
 initialModel =
     { schedule = initialSchedule
     , selectedStation = Nothing
+    , routes = []
     }
 
 
