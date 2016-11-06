@@ -33,7 +33,9 @@ view model =
 schedule : Schedule -> Node Msg
 schedule trains =
     Elements.view
-        []
+        [ Ui.style
+            [ Style.alignSelf "stretch" ]
+        ]
         ( List.map trainElement trains )
 
 
@@ -43,12 +45,18 @@ trainElement train =
         [ Ui.style
             [ Style.flexDirection "row"
             , Style.alignItems "center"
+            , Style.justifyContent "space-between"
             , Style.backgroundColor "white"
+            , Style.padding 20
+            , Style.borderBottomWidth 1
+            , Style.borderColor Color.lightGray
             ]
         ]
         [ text
             [ Ui.style
               [ Style.color Color.darkPurple
+              , Style.fontSize 20
+              , Style.fontWeight "300"
               ]
             ]
             [ Ui.string (prettyTime train.scheduledArrival) ]

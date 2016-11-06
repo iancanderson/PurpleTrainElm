@@ -8943,7 +8943,11 @@ var _user$project$View$trainElement = function (train) {
 					[
 						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
 						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white')
+						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomWidth(1),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$borderColor(_user$project$App_Color$lightGray)
 					]))
 			]),
 		_elm_lang$core$Native_List.fromArray(
@@ -8955,7 +8959,9 @@ var _user$project$View$trainElement = function (train) {
 						_elm_native_ui$elm_native_ui$NativeUi$style(
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple)
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(20),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('300')
 							]))
 					]),
 				_elm_lang$core$Native_List.fromArray(
@@ -8984,7 +8990,13 @@ var _user$project$View$schedule = function (trains) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch')
+					]))
+			]),
 		A2(_elm_lang$core$List$map, _user$project$View$trainElement, trains));
 };
 var _user$project$View$view = function (model) {
