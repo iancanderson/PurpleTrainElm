@@ -6348,6 +6348,7 @@ function send(xhr, body)
 function handleResponse(xhr, responseToResult)
 {
 	var response = toResponse(xhr);
+  console.log("handling response");
 
 	if (xhr.status < 200 || 300 <= xhr.status)
 	{
@@ -8354,7 +8355,7 @@ var _user$project$FetchSchedule$getSchedule = F2(
 			_elm_lang$http$Http$get,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				'http://commuter-api-production.herokuapp.com/api/v1/predictions?direction=',
+				'https://commuter-api-production.herokuapp.com/api/v1/predictions?direction=',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					_user$project$Model$directionName(direction),
