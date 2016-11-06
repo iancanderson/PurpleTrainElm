@@ -4,7 +4,8 @@ import Http
 import Debug
 import Json.Decode as Decode
 
-import StopPicker
+import StopPicker.Update as StopPicker
+import StopPicker.Model as StopPicker
 import StopPicker.Translate as StopPicker
 import Types exposing (..)
 import Model exposing (..)

@@ -8252,7 +8252,23 @@ var _user$project$Types$RouteStop = F2(
 		return {route: a, stop: b};
 	});
 
-var _user$project$StopPicker$update = F2(
+var _user$project$StopPicker_Model$initialModel = {selectedRoute: _elm_lang$core$Maybe$Nothing};
+var _user$project$StopPicker_Model$Model = function (a) {
+	return {selectedRoute: a};
+};
+
+var _user$project$Model$initialModel = {
+	routes: _elm_lang$core$Native_List.fromArray(
+		[]),
+	stopPicker: _user$project$StopPicker_Model$initialModel,
+	selectedRouteStop: _elm_lang$core$Maybe$Nothing
+};
+var _user$project$Model$Model = F3(
+	function (a, b, c) {
+		return {routes: a, stopPicker: b, selectedRouteStop: c};
+	});
+
+var _user$project$StopPicker_Update$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		return {
@@ -8265,33 +8281,18 @@ var _user$project$StopPicker$update = F2(
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
-var _user$project$StopPicker$initialModel = {selectedRoute: _elm_lang$core$Maybe$Nothing};
-var _user$project$StopPicker$Model = function (a) {
-	return {selectedRoute: a};
-};
-var _user$project$StopPicker$External = function (a) {
+var _user$project$StopPicker_Update$External = function (a) {
 	return {ctor: 'External', _0: a};
 };
-var _user$project$StopPicker$Internal = function (a) {
+var _user$project$StopPicker_Update$Internal = function (a) {
 	return {ctor: 'Internal', _0: a};
 };
-var _user$project$StopPicker$PickStop = function (a) {
+var _user$project$StopPicker_Update$PickStop = function (a) {
 	return {ctor: 'PickStop', _0: a};
 };
-var _user$project$StopPicker$PickRoute = function (a) {
+var _user$project$StopPicker_Update$PickRoute = function (a) {
 	return {ctor: 'PickRoute', _0: a};
 };
-
-var _user$project$Model$initialModel = {
-	routes: _elm_lang$core$Native_List.fromArray(
-		[]),
-	stopPicker: _user$project$StopPicker$initialModel,
-	selectedRouteStop: _elm_lang$core$Maybe$Nothing
-};
-var _user$project$Model$Model = F3(
-	function (a, b, c) {
-		return {routes: a, stopPicker: b, selectedRouteStop: c};
-	});
 
 var _user$project$Message$LoadRoutes = function (a) {
 	return {ctor: 'LoadRoutes', _0: a};
@@ -8336,7 +8337,7 @@ var _user$project$Update$update = F2(
 						model = _v2;
 						continue update;
 					} else {
-						var _p1 = A2(_user$project$StopPicker$update, _p0._0._0, model.stopPicker);
+						var _p1 = A2(_user$project$StopPicker_Update$update, _p0._0._0, model.stopPicker);
 						var updatedStopPicker = _p1._0;
 						var stopPickerCmd = _p1._1;
 						return {
@@ -8381,8 +8382,8 @@ var _user$project$StopPicker_View$routeButton = function (route) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-				_user$project$StopPicker$Internal(
-					_user$project$StopPicker$PickRoute(route)))
+				_user$project$StopPicker_Update$Internal(
+					_user$project$StopPicker_Update$PickRoute(route)))
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -8403,8 +8404,8 @@ var _user$project$StopPicker_View$stopButton = F2(
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-					_user$project$StopPicker$External(
-						_user$project$StopPicker$PickStop(
+					_user$project$StopPicker_Update$External(
+						_user$project$StopPicker_Update$PickStop(
 							A2(_user$project$Types$RouteStop, route, stop))))
 				]),
 			_elm_lang$core$Native_List.fromArray(

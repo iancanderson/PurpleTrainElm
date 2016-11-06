@@ -6,7 +6,8 @@ import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
 
-import StopPicker exposing (..)
+import StopPicker.Model exposing (..)
+import StopPicker.Update exposing (..)
 import Types exposing (..)
 
 view : Routes -> Model -> Node Msg

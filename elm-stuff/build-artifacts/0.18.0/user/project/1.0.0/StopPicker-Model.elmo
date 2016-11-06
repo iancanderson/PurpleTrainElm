@@ -1,6 +1,4 @@
-var _user$project$StopPicker_Model$initialModel = _elm_lang$core$Native_List.fromArray(
-	[]);
-var _user$project$StopPicker_Model$Route = F2(
-	function (a, b) {
-		return {name: a, stops: b};
-	});
+var _user$project$StopPicker_Model$initialModel = {selectedRoute: _elm_lang$core$Maybe$Nothing};
+var _user$project$StopPicker_Model$Model = function (a) {
+	return {selectedRoute: a};
+};

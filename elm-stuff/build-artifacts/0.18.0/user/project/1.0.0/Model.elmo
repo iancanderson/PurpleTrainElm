@@ -1,7 +1,7 @@
 var _user$project$Model$initialModel = {
 	routes: _elm_lang$core$Native_List.fromArray(
 		[]),
-	stopPicker: _user$project$StopPicker$initialModel,
+	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing
 };
 var _user$project$Model$Model = F3(

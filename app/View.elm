@@ -10,7 +10,6 @@ import Model exposing (..)
 import Message exposing (..)
 import Types exposing (..)
 import Update exposing (..)
-import StopPicker
 import StopPicker.View as StopPicker
 
 view : Model -> Node Msg

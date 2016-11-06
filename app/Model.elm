@@ -3,7 +3,7 @@ module Model exposing (..)
 import Set exposing (Set)
 
 import Types exposing (..)
-import StopPicker
+import StopPicker.Model as StopPicker
 
 
 type alias Model =

@@ -25,7 +25,7 @@ var _user$project$Update$update = F2(
 						model = _v2;
 						continue update;
 					} else {
-						var _p1 = A2(_user$project$StopPicker$update, _p0._0._0, model.stopPicker);
+						var _p1 = A2(_user$project$StopPicker_Update$update, _p0._0._0, model.stopPicker);
 						var updatedStopPicker = _p1._0;
 						var stopPickerCmd = _p1._1;
 						return {

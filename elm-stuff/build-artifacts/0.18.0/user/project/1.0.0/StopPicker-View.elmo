@@ -4,8 +4,8 @@ var _user$project$StopPicker_View$routeButton = function (route) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-				_user$project$StopPicker$Internal(
-					_user$project$StopPicker$PickRoute(route)))
+				_user$project$StopPicker_Update$Internal(
+					_user$project$StopPicker_Update$PickRoute(route)))
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -26,8 +26,8 @@ var _user$project$StopPicker_View$stopButton = F2(
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-					_user$project$StopPicker$External(
-						_user$project$StopPicker$PickStop(
+					_user$project$StopPicker_Update$External(
+						_user$project$StopPicker_Update$PickStop(
 							A2(_user$project$Types$RouteStop, route, stop))))
 				]),
 			_elm_lang$core$Native_List.fromArray(

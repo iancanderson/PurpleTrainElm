@@ -1,6 +1,6 @@
 module StopPicker.Translate exposing (..)
 
-import StopPicker exposing (..)
+import StopPicker.Update exposing (..)
 import Message as App
 
 translate : ExternalMsg -> App.Msg

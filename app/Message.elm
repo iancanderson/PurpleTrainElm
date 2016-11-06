@@ -1,7 +1,7 @@
 module Message exposing (..)
 
 import Http
-import StopPicker
+import StopPicker.Update as StopPicker
 import Types exposing (..)
 
 type Msg

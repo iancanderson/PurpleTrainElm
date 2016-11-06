@@ -1,22 +1,7 @@
-module StopPicker exposing (..)
+module StopPicker.Update exposing (..)
 
 import Types exposing (..)
-
--- MODEL
-
-
-type alias Model =
-    { selectedRoute : Maybe Route
-    }
-
-
-initialModel : Model
-initialModel =
-    { selectedRoute = Nothing
-    }
-
--- UPDATE
-
+import StopPicker.Model exposing (..)
 
 type Msg
     = Internal InternalMsg
