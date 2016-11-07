@@ -8820,7 +8820,11 @@ var _user$project$StopPicker_View$pickerContainer = _elm_native_ui$elm_native_ui
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(20)
+					_elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$bottom(96),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$shadowColor('rgb(49, 33, 64)'),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$shadowOpacity(0.2),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$shadowRadius(3)
 				]))
 		]));
 var _user$project$StopPicker_View$pickerHeader = function (label) {
@@ -8927,42 +8931,45 @@ var _user$project$StopPicker_View$view = F2(
 		}
 	});
 
-var _user$project$View$stopPickerButton = function (stop) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$purple),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(20)
-					]))
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightGray)
-							])),
-						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker)
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string(stop)
-					]))
-			]));
-};
+var _user$project$View$stopPickerButton = F2(
+	function (stopPickerOpen, stop) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_native_ui$elm_native_ui$NativeUi$style(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$purple),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$bottom(20),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$width(270)
+						]))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightGray)
+								])),
+							_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string(
+							stopPickerOpen ? 'Cancel' : stop)
+						]))
+				]));
+	});
 var _user$project$View$stopPicker = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$map,
@@ -8973,25 +8980,37 @@ var _user$project$View$maybeStopPicker = function (model) {
 	return model.stopPickerOpen ? _elm_lang$core$Maybe$Just(
 		_user$project$View$stopPicker(model)) : _elm_lang$core$Maybe$Nothing;
 };
-var _user$project$View$routeAndStop = function (model) {
+var _user$project$View$picker = function (model) {
 	var _p0 = model.selectedRouteStop;
 	if (_p0.ctor === 'Nothing') {
-		return _user$project$View$stopPicker(model);
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$View$stopPicker(model)
+			]);
 	} else {
 		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
 			_elm_lang$core$Native_List.fromArray(
-				[]),
-			A2(
-				_elm_lang$core$List$filterMap,
-				_elm_lang$core$Basics$identity,
+				[
+					_user$project$View$maybeStopPicker(model),
+					_elm_lang$core$Maybe$Just(
+					A2(_user$project$View$stopPickerButton, model.stopPickerOpen, _p0._0.stop))
+				]));
+	}
+};
+var _user$project$View$routeAndStop = function (model) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$View$maybeStopPicker(model),
-						_elm_lang$core$Maybe$Just(
-						_user$project$View$stopPickerButton(_p0._0.stop))
-					])));
-	}
+						_elm_native_ui$elm_native_ui$NativeUi_Style$width(270)
+					]))
+			]),
+		_user$project$View$picker(model));
 };
 var _user$project$View$defaultDirectionStyle = _elm_lang$core$Native_List.fromArray(
 	[

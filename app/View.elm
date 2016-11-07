@@ -115,16 +115,23 @@ defaultDirectionStyle =
 
 routeAndStop : Model -> Node Msg
 routeAndStop model =
+  Elements.view
+      [ Ui.style
+          [ Style.width 270
+          ]
+      ]
+      (picker model)
+
+picker : Model -> List (Node Msg)
+picker model =
     case model.selectedRouteStop of
         Nothing ->
-            stopPicker model
+            [ stopPicker model ]
         Just routeStop ->
-            Elements.view
-                []
-                ( List.filterMap identity [ maybeStopPicker model
-                , Just <| stopPickerButton routeStop.stop
-                ]
-                )
+            ( List.filterMap identity [ maybeStopPicker model
+            , Just <| stopPickerButton model.stopPickerOpen routeStop.stop
+            ]
+            )
 
 
 maybeStopPicker : Model -> Maybe (Node Msg)
@@ -139,8 +146,8 @@ stopPicker : Model -> Node Msg
 stopPicker model =
     Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
 
-stopPickerButton : Stop -> Node Msg
-stopPickerButton stop =
+stopPickerButton : Bool -> Stop -> Node Msg
+stopPickerButton stopPickerOpen stop =
     Elements.view
         [ Ui.style
             [ Style.backgroundColor Color.purple
@@ -148,8 +155,10 @@ stopPickerButton stop =
             , Style.height 56
             , Style.justifyContent "center"
             , Style.alignItems "center"
+            -- , Style.marginBottom 20
+            , Style.position "absolute"
+            , Style.bottom 20
             , Style.width 270
-            , Style.marginBottom 20
             ]
         ]
         [ text
@@ -158,5 +167,5 @@ stopPickerButton stop =
                 ]
             , onPress ToggleStopPicker
             ]
-            [ Ui.string stop ]
+            [ Ui.string (if stopPickerOpen then "Cancel" else stop) ]
         ]

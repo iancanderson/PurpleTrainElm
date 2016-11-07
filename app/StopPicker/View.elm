@@ -78,7 +78,11 @@ pickerContainer =
     Elements.view
         [ Ui.style
             [ Style.width 270
-            , Style.marginBottom 20
+            , Style.position "absolute"
+            , Style.bottom 96
+            , Style.shadowColor "rgb(49, 33, 64)"
+            , Style.shadowOpacity 0.2
+            , Style.shadowRadius 3
             ]
         ]
 

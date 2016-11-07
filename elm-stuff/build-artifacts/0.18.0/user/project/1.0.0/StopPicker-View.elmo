@@ -31,7 +31,11 @@ var _user$project$StopPicker_View$pickerContainer = _elm_native_ui$elm_native_ui
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(20)
+					_elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$bottom(96),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$shadowColor('rgb(49, 33, 64)'),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$shadowOpacity(0.2),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$shadowRadius(3)
 				]))
 		]));
 var _user$project$StopPicker_View$pickerHeader = function (label) {
