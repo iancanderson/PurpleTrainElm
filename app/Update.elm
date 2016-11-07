@@ -23,7 +23,10 @@ update msg model =
             ( { model | direction = direction }
             , fetchSchedule direction model.selectedRouteStop )
         PickStop routeStop ->
-            ( { model | selectedRouteStop = Just routeStop }
+            ( { model
+              | selectedRouteStop = Just routeStop
+              , stopPickerOpen = False
+              }
             , fetchSchedule model.direction (Just routeStop) )
         LoadRoutes result ->
             case result of
@@ -33,3 +36,5 @@ update msg model =
             case result of
                 Ok schedule -> ( { model | schedule = schedule }, Cmd.none)
                 Result.Err _ -> ( model, Cmd.none )
+        ToggleStopPicker ->
+            ( { model | stopPickerOpen = not model.stopPickerOpen }, Cmd.none)

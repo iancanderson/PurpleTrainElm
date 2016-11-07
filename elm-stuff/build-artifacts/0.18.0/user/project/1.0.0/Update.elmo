@@ -39,7 +39,8 @@ var _user$project$Update$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								selectedRouteStop: _elm_lang$core$Maybe$Just(_p3)
+								selectedRouteStop: _elm_lang$core$Maybe$Just(_p3),
+								stopPickerOpen: false
 							}),
 						_1: A2(
 							_user$project$FetchSchedule$fetchSchedule,
@@ -59,7 +60,7 @@ var _user$project$Update$update = F2(
 					} else {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
-				default:
+				case 'LoadSchedule':
 					var _p5 = _p0._0;
 					if (_p5.ctor === 'Ok') {
 						return {
@@ -72,6 +73,14 @@ var _user$project$Update$update = F2(
 					} else {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
+				default:
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{stopPickerOpen: !model.stopPickerOpen}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
 			}
 		}
 	});

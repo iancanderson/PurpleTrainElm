@@ -35,7 +35,7 @@ stopOptions route =
 stopButton : Route -> Stop -> Node Msg
 stopButton route stop =
   text
-    [ onPress (External (PickStop (RouteStop route stop)))
+    [ onPress (Internal (InternalPickStop (RouteStop route stop)))
     , Ui.style
         [ Style.marginVertical 5
         ]
@@ -65,7 +65,12 @@ pickerHeader label =
             , Style.padding 10
             ]
         ]
-        [ text [] [ Ui.string label ]
+        [ text
+             [ Ui.style
+                  [ Style.color Color.white
+                  ]
+             ]
+             [ Ui.string label ]
         ]
 
 pickerContainer : List (Node Msg) -> Node Msg

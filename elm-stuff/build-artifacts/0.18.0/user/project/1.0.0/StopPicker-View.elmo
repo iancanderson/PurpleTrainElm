@@ -53,7 +53,13 @@ var _user$project$StopPicker_View$pickerHeader = function (label) {
 				A2(
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white)
+							]))
+					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_native_ui$elm_native_ui$NativeUi$string(label)
@@ -92,8 +98,8 @@ var _user$project$StopPicker_View$stopButton = F2(
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-					_user$project$StopPicker_Update$External(
-						_user$project$StopPicker_Update$PickStop(
+					_user$project$StopPicker_Update$Internal(
+						_user$project$StopPicker_Update$InternalPickStop(
 							A2(_user$project$Types$RouteStop, route, stop)))),
 					_elm_native_ui$elm_native_ui$NativeUi$style(
 					_elm_lang$core$Native_List.fromArray(

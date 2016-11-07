@@ -117,23 +117,46 @@ routeAndStop : Model -> Node Msg
 routeAndStop model =
     case model.selectedRouteStop of
         Nothing ->
-            Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
+            stopPicker model
         Just routeStop ->
             Elements.view
-                  [ Ui.style
-                      [ Style.backgroundColor Color.purple
-                      , Style.borderRadius 40
-                      , Style.height 56
-                      , Style.justifyContent "center"
-                      , Style.alignItems "center"
-                      , Style.width 270
-                      , Style.marginBottom 20
-                      ]
-                  ]
-                  [ text
-                      [ Ui.style
-                          [ Style.color Color.lightGray
-                          ]
-                      ]
-                      [ Ui.string routeStop.stop ]
-                  ]
+                []
+                ( List.filterMap identity [ maybeStopPicker model
+                , Just <| stopPickerButton routeStop.stop
+                ]
+                )
+
+
+maybeStopPicker : Model -> Maybe (Node Msg)
+maybeStopPicker model =
+    if model.stopPickerOpen then
+        Just <| stopPicker model
+    else
+        Nothing
+
+
+stopPicker : Model -> Node Msg
+stopPicker model =
+    Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
+
+stopPickerButton : Stop -> Node Msg
+stopPickerButton stop =
+    Elements.view
+        [ Ui.style
+            [ Style.backgroundColor Color.purple
+            , Style.borderRadius 40
+            , Style.height 56
+            , Style.justifyContent "center"
+            , Style.alignItems "center"
+            , Style.width 270
+            , Style.marginBottom 20
+            ]
+        ]
+        [ text
+            [ Ui.style
+                [ Style.color Color.lightGray
+                ]
+            , onPress ToggleStopPicker
+            ]
+            [ Ui.string stop ]
+        ]

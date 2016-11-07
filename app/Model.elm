@@ -13,6 +13,7 @@ type alias Model =
     , routes : Routes
     , stopPicker : StopPicker.Model
     , selectedRouteStop : Maybe RouteStop
+    , stopPickerOpen : Bool
     }
 
 
@@ -23,6 +24,7 @@ initialModel =
     , routes = []
     , stopPicker = StopPicker.initialModel
     , selectedRouteStop = Nothing
+    , stopPickerOpen = True
     }
 
 directionName : Direction -> String

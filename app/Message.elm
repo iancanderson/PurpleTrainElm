@@ -10,3 +10,4 @@ type Msg
     | PickStop RouteStop
     | LoadRoutes (Result Http.Error Routes)
     | LoadSchedule (Result Http.Error Schedule)
+    | ToggleStopPicker

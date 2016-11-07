@@ -8541,19 +8541,6 @@ var _user$project$StopPicker_Model$Model = function (a) {
 	return {selectedRoute: a};
 };
 
-var _user$project$StopPicker_Update$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					selectedRoute: _elm_lang$core$Maybe$Just(_p0._0)
-				}),
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
-	});
 var _user$project$StopPicker_Update$External = function (a) {
 	return {ctor: 'External', _0: a};
 };
@@ -8563,10 +8550,43 @@ var _user$project$StopPicker_Update$Internal = function (a) {
 var _user$project$StopPicker_Update$PickStop = function (a) {
 	return {ctor: 'PickStop', _0: a};
 };
+var _user$project$StopPicker_Update$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		if (_p0.ctor === 'PickRoute') {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						selectedRoute: _elm_lang$core$Maybe$Just(_p0._0)
+					}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{selectedRoute: _elm_lang$core$Maybe$Nothing}),
+				_1: A2(
+					_elm_lang$core$Task$perform,
+					function (_p1) {
+						return _user$project$StopPicker_Update$External(
+							_user$project$StopPicker_Update$PickStop(_p1));
+					},
+					_elm_lang$core$Task$succeed(_p0._0))
+			};
+		}
+	});
+var _user$project$StopPicker_Update$InternalPickStop = function (a) {
+	return {ctor: 'InternalPickStop', _0: a};
+};
 var _user$project$StopPicker_Update$PickRoute = function (a) {
 	return {ctor: 'PickRoute', _0: a};
 };
 
+var _user$project$Message$ToggleStopPicker = {ctor: 'ToggleStopPicker'};
 var _user$project$Message$LoadSchedule = function (a) {
 	return {ctor: 'LoadSchedule', _0: a};
 };
@@ -8617,11 +8637,12 @@ var _user$project$Model$initialModel = {
 	routes: _elm_lang$core$Native_List.fromArray(
 		[]),
 	stopPicker: _user$project$StopPicker_Model$initialModel,
-	selectedRouteStop: _elm_lang$core$Maybe$Nothing
+	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
+	stopPickerOpen: true
 };
-var _user$project$Model$Model = F5(
-	function (a, b, c, d, e) {
-		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e};
+var _user$project$Model$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e, stopPickerOpen: f};
 	});
 
 var _user$project$FetchSchedule$stringToDate = A2(
@@ -8720,7 +8741,8 @@ var _user$project$Update$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								selectedRouteStop: _elm_lang$core$Maybe$Just(_p3)
+								selectedRouteStop: _elm_lang$core$Maybe$Just(_p3),
+								stopPickerOpen: false
 							}),
 						_1: A2(
 							_user$project$FetchSchedule$fetchSchedule,
@@ -8740,7 +8762,7 @@ var _user$project$Update$update = F2(
 					} else {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
-				default:
+				case 'LoadSchedule':
 					var _p5 = _p0._0;
 					if (_p5.ctor === 'Ok') {
 						return {
@@ -8753,6 +8775,14 @@ var _user$project$Update$update = F2(
 					} else {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
+				default:
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{stopPickerOpen: !model.stopPickerOpen}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
 			}
 		}
 	});
@@ -8812,7 +8842,13 @@ var _user$project$StopPicker_View$pickerHeader = function (label) {
 				A2(
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white)
+							]))
+					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_native_ui$elm_native_ui$NativeUi$string(label)
@@ -8851,8 +8887,8 @@ var _user$project$StopPicker_View$stopButton = F2(
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-					_user$project$StopPicker_Update$External(
-						_user$project$StopPicker_Update$PickStop(
+					_user$project$StopPicker_Update$Internal(
+						_user$project$StopPicker_Update$InternalPickStop(
 							A2(_user$project$Types$RouteStop, route, stop)))),
 					_elm_native_ui$elm_native_ui$NativeUi$style(
 					_elm_lang$core$Native_List.fromArray(
@@ -8891,47 +8927,70 @@ var _user$project$StopPicker_View$view = F2(
 		}
 	});
 
+var _user$project$View$stopPickerButton = function (stop) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$purple),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(20)
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightGray)
+							])),
+						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string(stop)
+					]))
+			]));
+};
+var _user$project$View$stopPicker = function (model) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$map,
+		_user$project$Message$StopPickerMsg,
+		A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker));
+};
+var _user$project$View$maybeStopPicker = function (model) {
+	return model.stopPickerOpen ? _elm_lang$core$Maybe$Just(
+		_user$project$View$stopPicker(model)) : _elm_lang$core$Maybe$Nothing;
+};
 var _user$project$View$routeAndStop = function (model) {
 	var _p0 = model.selectedRouteStop;
 	if (_p0.ctor === 'Nothing') {
-		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi$map,
-			_user$project$Message$StopPickerMsg,
-			A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker));
+		return _user$project$View$stopPicker(model);
 	} else {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi$style(
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$purple),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(20)
-						]))
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$style(
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightGray)
-								]))
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$string(_p0._0.stop)
-						]))
-				]));
+				[]),
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$View$maybeStopPicker(model),
+						_elm_lang$core$Maybe$Just(
+						_user$project$View$stopPickerButton(_p0._0.stop))
+					])));
 	}
 };
 var _user$project$View$defaultDirectionStyle = _elm_lang$core$Native_List.fromArray(
