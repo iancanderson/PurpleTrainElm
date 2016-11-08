@@ -25,9 +25,35 @@ view model =
             , Style.backgroundColor Color.darkPurple
             ]
         ]
-        [ topSection model
-        , routeAndStop model
+        ( mainView model )
+
+
+mainView : Model -> List (Node Msg)
+mainView model =
+    case model.selectedRouteStop of
+        Nothing ->
+            [ welcomeScreen
+            , routeAndStop model
+            ]
+        Just routeStop ->
+            [ topSection model
+            , routeAndStop model
+            ]
+
+
+welcomeScreen : Node Msg
+welcomeScreen =
+    text
+        [ Ui.style
+            [ Style.color "#301d41"
+            , Style.fontFamily Font.hkCompakt
+            , Style.textAlign "center"
+            , Style.fontWeight "800"
+            , Style.marginTop 60
+            , Style.fontSize 48
+            ]
         ]
+        [ Ui.string "Purple Train" ]
 
 
 topSection : Model -> Node Msg
@@ -152,16 +178,25 @@ routeAndStop model =
       ]
       (picker model)
 
+
 picker : Model -> List (Node Msg)
 picker model =
-    case model.selectedRouteStop of
-        Nothing ->
-            [ stopPicker model ]
-        Just routeStop ->
-            ( List.filterMap identity [ maybeStopPicker model
-            , Just <| stopPickerButton model.stopPickerOpen routeStop.stop
-            ]
-            )
+    let buttonLabel = stopPickerLabelText model
+    in
+        List.filterMap
+          identity
+          [ maybeStopPicker model
+          , Just <| stopPickerButton buttonLabel
+          ]
+
+
+stopPickerLabelText : Model -> String
+stopPickerLabelText {stopPickerOpen, selectedRouteStop} =
+    if stopPickerOpen then
+      "Cancel"
+    else
+      Maybe.map .stop selectedRouteStop
+      |> Maybe.withDefault "Select your home stop"
 
 
 maybeStopPicker : Model -> Maybe (Node Msg)
@@ -176,8 +211,8 @@ stopPicker : Model -> Node Msg
 stopPicker model =
     Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
 
-stopPickerButton : Bool -> Stop -> Node Msg
-stopPickerButton stopPickerOpen stop =
+stopPickerButton : String -> Node Msg
+stopPickerButton buttonLabel =
     Elements.view
         [ Ui.style
             [ Style.backgroundColor "#674982"
@@ -198,5 +233,5 @@ stopPickerButton stopPickerOpen stop =
                 ]
             , onPress ToggleStopPicker
             ]
-            [ Ui.string (if stopPickerOpen then "Cancel" else stop) ]
+            [ Ui.string buttonLabel ]
         ]

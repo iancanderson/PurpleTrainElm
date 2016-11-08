@@ -8641,7 +8641,7 @@ var _user$project$Model$initialModel = {
 		[]),
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
-	stopPickerOpen: true
+	stopPickerOpen: false
 };
 var _user$project$Model$Model = F6(
 	function (a, b, c, d, e, f) {
@@ -8937,47 +8937,45 @@ var _user$project$StopPicker_View$view = F2(
 		}
 	});
 
-var _user$project$View$stopPickerButton = F2(
-	function (stopPickerOpen, stop) {
-		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi$style(
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('#674982'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$bottom(20),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$width(270)
-						]))
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$style(
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_native_ui$elm_native_ui$NativeUi_Style$color('#C9B8D7'),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('500')
-								])),
-							_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker)
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$string(
-							stopPickerOpen ? 'Cancel' : stop)
-						]))
-				]));
-	});
+var _user$project$View$stopPickerButton = function (buttonLabel) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('#674982'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$bottom(20),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$width(270)
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color('#C9B8D7'),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('500')
+							])),
+						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string(buttonLabel)
+					]))
+			]));
+};
 var _user$project$View$stopPicker = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$map,
@@ -8988,24 +8986,29 @@ var _user$project$View$maybeStopPicker = function (model) {
 	return model.stopPickerOpen ? _elm_lang$core$Maybe$Just(
 		_user$project$View$stopPicker(model)) : _elm_lang$core$Maybe$Nothing;
 };
+var _user$project$View$stopPickerLabelText = function (_p0) {
+	var _p1 = _p0;
+	return _p1.stopPickerOpen ? 'Cancel' : A2(
+		_elm_lang$core$Maybe$withDefault,
+		'Select your home stop',
+		A2(
+			_elm_lang$core$Maybe$map,
+			function (_) {
+				return _.stop;
+			},
+			_p1.selectedRouteStop));
+};
 var _user$project$View$picker = function (model) {
-	var _p0 = model.selectedRouteStop;
-	if (_p0.ctor === 'Nothing') {
-		return _elm_lang$core$Native_List.fromArray(
+	var buttonLabel = _user$project$View$stopPickerLabelText(model);
+	return A2(
+		_elm_lang$core$List$filterMap,
+		_elm_lang$core$Basics$identity,
+		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$View$stopPicker(model)
-			]);
-	} else {
-		return A2(
-			_elm_lang$core$List$filterMap,
-			_elm_lang$core$Basics$identity,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_user$project$View$maybeStopPicker(model),
-					_elm_lang$core$Maybe$Just(
-					A2(_user$project$View$stopPickerButton, model.stopPickerOpen, _p0._0.stop))
-				]));
-	}
+				_user$project$View$maybeStopPicker(model),
+				_elm_lang$core$Maybe$Just(
+				_user$project$View$stopPickerButton(buttonLabel))
+			]));
 };
 var _user$project$View$routeAndStop = function (model) {
 	return A2(
@@ -9193,6 +9196,41 @@ var _user$project$View$topSection = function (model) {
 				_user$project$View$schedule(model.schedule)
 			]));
 };
+var _user$project$View$welcomeScreen = A2(
+	_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_elm_native_ui$elm_native_ui$NativeUi$style(
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_native_ui$elm_native_ui$NativeUi_Style$color('#301d41'),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('800'),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(60),
+					_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(48)
+				]))
+		]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_elm_native_ui$elm_native_ui$NativeUi$string('Purple Train')
+		]));
+var _user$project$View$mainView = function (model) {
+	var _p2 = model.selectedRouteStop;
+	if (_p2.ctor === 'Nothing') {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$View$welcomeScreen,
+				_user$project$View$routeAndStop(model)
+			]);
+	} else {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$View$topSection(model),
+				_user$project$View$routeAndStop(model)
+			]);
+	}
+};
 var _user$project$View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -9208,11 +9246,7 @@ var _user$project$View$view = function (model) {
 						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$darkPurple)
 					]))
 			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$View$topSection(model),
-				_user$project$View$routeAndStop(model)
-			]));
+		_user$project$View$mainView(model));
 };
 
 var _user$project$Main$main = _elm_native_ui$elm_native_ui$NativeUi$program(

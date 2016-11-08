@@ -24,7 +24,7 @@ initialModel =
     , routes = []
     , stopPicker = StopPicker.initialModel
     , selectedRouteStop = Nothing
-    , stopPickerOpen = True
+    , stopPickerOpen = False
     }
 
 directionName : Direction -> String

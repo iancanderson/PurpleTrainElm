@@ -15,7 +15,7 @@ var _user$project$Model$initialModel = {
 		[]),
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
-	stopPickerOpen: true
+	stopPickerOpen: false
 };
 var _user$project$Model$Model = F6(
 	function (a, b, c, d, e, f) {
