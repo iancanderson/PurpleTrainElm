@@ -7,6 +7,7 @@ import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
 
 import App.Color as Color
+import App.Font as Font
 import Model exposing (..)
 import Message exposing (..)
 import Types exposing (..)
@@ -24,9 +25,22 @@ view model =
             , Style.backgroundColor Color.darkPurple
             ]
         ]
+        [ topSection model
+        , routeAndStop model
+        ]
+
+
+topSection : Model -> Node Msg
+topSection model =
+    Elements.view
+        [ Ui.style
+            [ Style.flex 1
+            , Style.flexDirection "column"
+            , Style.alignSelf "stretch"
+            ]
+        ]
         [ directionPicker model.direction
         , schedule model.schedule
-        , routeAndStop model
         ]
 
 
@@ -36,7 +50,21 @@ schedule trains =
         [ Ui.style
             [ Style.alignSelf "stretch" ]
         ]
-        ( List.map trainElement trains )
+        ( List.append
+          [ text
+                [ Ui.style
+                    [ Style.backgroundColor Color.white
+                    , Style.color "#9F8AB3"
+                    , Style.fontSize 9
+                    , Style.fontWeight "700"
+                    , Style.letterSpacing 0.25
+                    , Style.paddingTop 18
+                    , Style.textAlign "center"
+                    ]
+                ]
+                [ Ui.string "UPCOMING" ] ]
+          ( List.map trainElement trains )
+        )
 
 
 trainElement : Train -> Node Msg
@@ -55,8 +83,8 @@ trainElement train =
         [ text
             [ Ui.style
               [ Style.color Color.darkPurple
-              , Style.fontSize 20
-              , Style.fontWeight "300"
+              , Style.fontSize 22
+              , Style.fontFamily Font.roboto
               ]
             ]
             [ Ui.string (prettyTime train.scheduledArrival) ]
@@ -83,12 +111,12 @@ directionPicker direction =
             [ onPress (ChangeDirection Inbound)
             , Ui.style (directionStyle Inbound direction)
             ]
-            [ Ui.string "Inbound" ]
+            [ Ui.string "To Boston" ]
         , text
             [ onPress (ChangeDirection Outbound)
             , Ui.style (directionStyle Outbound direction)
             ]
-            [ Ui.string "Outbound" ]
+            [ Ui.string "From Boston" ]
         ]
 
 
@@ -110,6 +138,8 @@ defaultDirectionStyle =
     [ Style.flex 1
     , Style.padding 20
     , Style.textAlign "center"
+    , Style.fontFamily Font.hkCompakt
+    , Style.fontWeight "400"
     ]
 
 
@@ -150,12 +180,11 @@ stopPickerButton : Bool -> Stop -> Node Msg
 stopPickerButton stopPickerOpen stop =
     Elements.view
         [ Ui.style
-            [ Style.backgroundColor Color.purple
+            [ Style.backgroundColor "#674982"
             , Style.borderRadius 40
             , Style.height 56
             , Style.justifyContent "center"
             , Style.alignItems "center"
-            -- , Style.marginBottom 20
             , Style.position "absolute"
             , Style.bottom 20
             , Style.width 270
@@ -163,7 +192,9 @@ stopPickerButton stopPickerOpen stop =
         ]
         [ text
             [ Ui.style
-                [ Style.color Color.lightGray
+                [ Style.color "#C9B8D7"
+                , Style.fontFamily Font.hkCompakt
+                , Style.fontWeight "500"
                 ]
             , onPress ToggleStopPicker
             ]

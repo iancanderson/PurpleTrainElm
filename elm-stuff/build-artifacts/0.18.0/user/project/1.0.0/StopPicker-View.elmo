@@ -15,7 +15,8 @@ var _user$project$StopPicker_View$routeButton = function (route) {
 				_elm_native_ui$elm_native_ui$NativeUi$style(
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5)
+						_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
 					])),
 				_user$project$StopPicker_View$keyProperty(route.name)
 			]),
@@ -61,7 +62,8 @@ var _user$project$StopPicker_View$pickerHeader = function (label) {
 						_elm_native_ui$elm_native_ui$NativeUi$style(
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white)
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
 							]))
 					]),
 				_elm_lang$core$Native_List.fromArray(
@@ -108,7 +110,8 @@ var _user$project$StopPicker_View$stopButton = F2(
 					_elm_native_ui$elm_native_ui$NativeUi$style(
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5)
+							_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
 						]))
 				]),
 			_elm_lang$core$Native_List.fromArray(

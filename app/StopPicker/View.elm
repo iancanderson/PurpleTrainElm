@@ -8,6 +8,7 @@ import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
 
 import App.Color as Color
+import App.Font as Font
 import StopPicker.Model exposing (..)
 import StopPicker.Update exposing (..)
 import Types exposing (..)
@@ -38,6 +39,7 @@ stopButton route stop =
     [ onPress (Internal (InternalPickStop (RouteStop route stop)))
     , Ui.style
         [ Style.marginVertical 5
+        , Style.fontFamily Font.hkCompakt
         ]
     ]
     [ Ui.string stop ]
@@ -68,6 +70,7 @@ pickerHeader label =
         [ text
              [ Ui.style
                   [ Style.color Color.white
+                  , Style.fontFamily Font.hkCompakt
                   ]
              ]
              [ Ui.string label ]
@@ -110,6 +113,7 @@ routeButton route =
     [ onPress (Internal (PickRoute route))
     , Ui.style
         [ Style.marginVertical 5
+        , Style.fontFamily Font.hkCompakt
         ]
     , keyProperty route.name
     ]

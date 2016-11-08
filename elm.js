@@ -8318,6 +8318,9 @@ var _user$project$App_Color$red = '#FF666B';
 var _user$project$App_Color$darkPurple = '#402D51';
 var _user$project$App_Color$purple = '#5C4570';
 
+var _user$project$App_Font$hkCompakt = 'HK Compakt';
+var _user$project$App_Font$roboto = 'Roboto Condensed';
+
 var _user$project$Date_Format$padWith = function (c) {
 	return function (_p0) {
 		return A3(
@@ -8804,7 +8807,8 @@ var _user$project$StopPicker_View$routeButton = function (route) {
 				_elm_native_ui$elm_native_ui$NativeUi$style(
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5)
+						_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
 					])),
 				_user$project$StopPicker_View$keyProperty(route.name)
 			]),
@@ -8850,7 +8854,8 @@ var _user$project$StopPicker_View$pickerHeader = function (label) {
 						_elm_native_ui$elm_native_ui$NativeUi$style(
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white)
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
 							]))
 					]),
 				_elm_lang$core$Native_List.fromArray(
@@ -8897,7 +8902,8 @@ var _user$project$StopPicker_View$stopButton = F2(
 					_elm_native_ui$elm_native_ui$NativeUi$style(
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5)
+							_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
 						]))
 				]),
 			_elm_lang$core$Native_List.fromArray(
@@ -8940,7 +8946,7 @@ var _user$project$View$stopPickerButton = F2(
 					_elm_native_ui$elm_native_ui$NativeUi$style(
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$purple),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('#674982'),
 							_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
 							_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
 							_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
@@ -8959,7 +8965,9 @@ var _user$project$View$stopPickerButton = F2(
 							_elm_native_ui$elm_native_ui$NativeUi$style(
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightGray)
+									_elm_native_ui$elm_native_ui$NativeUi_Style$color('#C9B8D7'),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('500')
 								])),
 							_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker)
 						]),
@@ -9016,7 +9024,9 @@ var _user$project$View$defaultDirectionStyle = _elm_lang$core$Native_List.fromAr
 	[
 		_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
 		_elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
-		_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center')
+		_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
+		_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+		_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400')
 	]);
 var _user$project$View$directionStyle = F2(
 	function (direction, currentDirection) {
@@ -9056,7 +9066,7 @@ var _user$project$View$directionPicker = function (direction) {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_native_ui$elm_native_ui$NativeUi$string('Inbound')
+						_elm_native_ui$elm_native_ui$NativeUi$string('To Boston')
 					])),
 				A2(
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
@@ -9069,7 +9079,7 @@ var _user$project$View$directionPicker = function (direction) {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_native_ui$elm_native_ui$NativeUi$string('Outbound')
+						_elm_native_ui$elm_native_ui$NativeUi$string('From Boston')
 					]))
 			]));
 };
@@ -9100,8 +9110,8 @@ var _user$project$View$trainElement = function (train) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(20),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('300')
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(22),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$roboto)
 							]))
 					]),
 				_elm_lang$core$Native_List.fromArray(
@@ -9137,7 +9147,51 @@ var _user$project$View$schedule = function (trains) {
 						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch')
 					]))
 			]),
-		A2(_elm_lang$core$List$map, _user$project$View$trainElement, trains));
+		A2(
+			_elm_lang$core$List$append,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$white),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$color('#9F8AB3'),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(9),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('700'),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$letterSpacing(0.25),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$paddingTop(18),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center')
+								]))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string('UPCOMING')
+						]))
+				]),
+			A2(_elm_lang$core$List$map, _user$project$View$trainElement, trains)));
+};
+var _user$project$View$topSection = function (model) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch')
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$View$directionPicker(model.direction),
+				_user$project$View$schedule(model.schedule)
+			]));
 };
 var _user$project$View$view = function (model) {
 	return A2(
@@ -9156,8 +9210,7 @@ var _user$project$View$view = function (model) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$View$directionPicker(model.direction),
-				_user$project$View$schedule(model.schedule),
+				_user$project$View$topSection(model),
 				_user$project$View$routeAndStop(model)
 			]));
 };
