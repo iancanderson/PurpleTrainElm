@@ -1,5 +1,7 @@
 module Update exposing (..)
 
+import Task
+
 import StopPicker.Update as StopPicker
 import StopPicker.Model as StopPicker
 import StopPicker.Translate as StopPicker
@@ -7,6 +9,9 @@ import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
 import FetchSchedule exposing (..)
+import FetchRoutes exposing (..)
+import String
+import AsyncStorage
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -27,7 +32,40 @@ update msg model =
               | selectedRouteStop = Just routeStop
               , stopPickerOpen = False
               }
-            , fetchSchedule model.direction (Just routeStop) )
+            , Cmd.batch
+              [ Task.attempt
+                  SetItem
+                  ( AsyncStorage.setItem
+                        "routeStop"
+                        (routeStop.route.id ++ "@" ++ routeStop.stop)
+                  )
+              , fetchSchedule model.direction (Just routeStop)
+              ]
+            )
+
+        GetItem result ->
+            case result of
+                Ok Nothing -> ( model, fetchRoutes )
+                Ok (Just routeStopString) ->
+                  let
+                    routeStop =
+                      case String.split "@" routeStopString of
+                          [routeId, stop] ->
+                            Just (RouteStop (Route "asdf" [] routeId) stop)
+                          _ -> Nothing
+                  in
+                    ( { model | selectedRouteStop = routeStop }
+                    , Cmd.batch
+                        [ fetchRoutes
+                        , fetchSchedule model.direction routeStop
+                        ]
+                    )
+                Result.Err _ -> ( model, fetchRoutes )
+        SetItem result ->
+            case result of
+                Ok _ ->
+                  ( model, Cmd.none )
+                Result.Err _ -> ( model, Cmd.none )
         LoadRoutes result ->
             case result of
                 Ok routes -> ( { model | routes = routes }, Cmd.none)

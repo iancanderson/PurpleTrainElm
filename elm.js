@@ -8321,6 +8321,44 @@ var _user$project$App_Color$purple = '#5C4570';
 var _user$project$App_Font$hkCompakt = 'HK Compakt';
 var _user$project$App_Font$roboto = 'Roboto Condensed';
 
+var { AsyncStorage } = require('react-native')
+
+var _user$project$Native_AsyncStorage = function () {
+  function setItem(key, value) {
+    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
+      AsyncStorage.setItem(key, value).then(function() {
+        return callback(_elm_lang$core$Native_Scheduler.succeed(value));
+      })
+      .catch(function(e) {
+        return callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'Error', _0: e.message }));
+      });
+    });
+  }
+
+  function getItem(key) {
+    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
+      AsyncStorage.getItem(key).then(function(value) {
+        const elmValue = value ? { ctor: 'Just', _0: value } : { ctor: 'Nothing' };
+        return callback(_elm_lang$core$Native_Scheduler.succeed(elmValue));
+      })
+      .catch(function(e) {
+        return callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'Error', _0: e.message }));
+      });
+    });
+  }
+
+  return {
+    setItem: F2(setItem),
+    getItem: getItem,
+  };
+}();
+
+var _user$project$AsyncStorage$getItem = _user$project$Native_AsyncStorage.getItem;
+var _user$project$AsyncStorage$setItem = _user$project$Native_AsyncStorage.setItem;
+var _user$project$AsyncStorage$Error = function (a) {
+	return {ctor: 'Error', _0: a};
+};
+
 var _user$project$Date_Format$padWith = function (c) {
 	return function (_p0) {
 		return A3(
@@ -8589,6 +8627,12 @@ var _user$project$StopPicker_Update$PickRoute = function (a) {
 	return {ctor: 'PickRoute', _0: a};
 };
 
+var _user$project$Message$GetItem = function (a) {
+	return {ctor: 'GetItem', _0: a};
+};
+var _user$project$Message$SetItem = function (a) {
+	return {ctor: 'SetItem', _0: a};
+};
 var _user$project$Message$ToggleStopPicker = {ctor: 'ToggleStopPicker'};
 var _user$project$Message$LoadSchedule = function (a) {
 	return {ctor: 'LoadSchedule', _0: a};
@@ -8747,32 +8791,92 @@ var _user$project$Update$update = F2(
 								selectedRouteStop: _elm_lang$core$Maybe$Just(_p3),
 								stopPickerOpen: false
 							}),
-						_1: A2(
-							_user$project$FetchSchedule$fetchSchedule,
-							model.direction,
-							_elm_lang$core$Maybe$Just(_p3))
+						_1: _elm_lang$core$Platform_Cmd$batch(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									A2(
+									_elm_lang$core$Task$attempt,
+									_user$project$Message$SetItem,
+									A2(
+										_user$project$AsyncStorage$setItem,
+										'routeStop',
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_p3.route.id,
+											A2(_elm_lang$core$Basics_ops['++'], '@', _p3.stop)))),
+									A2(
+									_user$project$FetchSchedule$fetchSchedule,
+									model.direction,
+									_elm_lang$core$Maybe$Just(_p3))
+								]))
 					};
-				case 'LoadRoutes':
+				case 'GetItem':
 					var _p4 = _p0._0;
 					if (_p4.ctor === 'Ok') {
+						if (_p4._0.ctor === 'Nothing') {
+							return {ctor: '_Tuple2', _0: model, _1: _user$project$FetchRoutes$fetchRoutes};
+						} else {
+							var routeStop = function () {
+								var _p5 = A2(_elm_lang$core$String$split, '@', _p4._0._0);
+								if (((_p5.ctor === '::') && (_p5._1.ctor === '::')) && (_p5._1._1.ctor === '[]')) {
+									return _elm_lang$core$Maybe$Just(
+										A2(
+											_user$project$Types$RouteStop,
+											A3(
+												_user$project$Types$Route,
+												'asdf',
+												_elm_lang$core$Native_List.fromArray(
+													[]),
+												_p5._0),
+											_p5._1._0));
+								} else {
+									return _elm_lang$core$Maybe$Nothing;
+								}
+							}();
+							return {
+								ctor: '_Tuple2',
+								_0: _elm_lang$core$Native_Utils.update(
+									model,
+									{selectedRouteStop: routeStop}),
+								_1: _elm_lang$core$Platform_Cmd$batch(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_user$project$FetchRoutes$fetchRoutes,
+											A2(_user$project$FetchSchedule$fetchSchedule, model.direction, routeStop)
+										]))
+							};
+						}
+					} else {
+						return {ctor: '_Tuple2', _0: model, _1: _user$project$FetchRoutes$fetchRoutes};
+					}
+				case 'SetItem':
+					var _p6 = _p0._0;
+					if (_p6.ctor === 'Ok') {
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					} else {
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					}
+				case 'LoadRoutes':
+					var _p7 = _p0._0;
+					if (_p7.ctor === 'Ok') {
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{routes: _p4._0}),
+								{routes: _p7._0}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
 				case 'LoadSchedule':
-					var _p5 = _p0._0;
-					if (_p5.ctor === 'Ok') {
+					var _p8 = _p0._0;
+					if (_p8.ctor === 'Ok') {
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{schedule: _p5._0}),
+								{schedule: _p8._0}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
@@ -9251,7 +9355,14 @@ var _user$project$View$view = function (model) {
 
 var _user$project$Main$main = _elm_native_ui$elm_native_ui$NativeUi$program(
 	{
-		init: {ctor: '_Tuple2', _0: _user$project$Model$initialModel, _1: _user$project$FetchRoutes$fetchRoutes},
+		init: {
+			ctor: '_Tuple2',
+			_0: _user$project$Model$initialModel,
+			_1: A2(
+				_elm_lang$core$Task$attempt,
+				_user$project$Message$GetItem,
+				_user$project$AsyncStorage$getItem('routeStop'))
+		},
 		view: _user$project$View$view,
 		update: _user$project$Update$update,
 		subscriptions: function (_p0) {

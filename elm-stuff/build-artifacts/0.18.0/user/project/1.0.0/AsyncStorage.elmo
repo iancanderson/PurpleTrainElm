@@ -1,0 +1,5 @@
+var _user$project$AsyncStorage$getItem = _user$project$Native_AsyncStorage.getItem;
+var _user$project$AsyncStorage$setItem = _user$project$Native_AsyncStorage.setItem;
+var _user$project$AsyncStorage$Error = function (a) {
+	return {ctor: 'Error', _0: a};
+};

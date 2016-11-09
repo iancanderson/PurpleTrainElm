@@ -1,3 +1,9 @@
+var _user$project$Message$GetItem = function (a) {
+	return {ctor: 'GetItem', _0: a};
+};
+var _user$project$Message$SetItem = function (a) {
+	return {ctor: 'SetItem', _0: a};
+};
 var _user$project$Message$ToggleStopPicker = {ctor: 'ToggleStopPicker'};
 var _user$project$Message$LoadSchedule = function (a) {
 	return {ctor: 'LoadSchedule', _0: a};

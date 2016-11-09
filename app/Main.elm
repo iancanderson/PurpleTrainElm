@@ -6,13 +6,17 @@ import Model exposing (Model, initialModel)
 import Update exposing (update)
 import Message exposing (Msg)
 import View exposing (view)
-import FetchRoutes exposing (fetchRoutes)
+import AsyncStorage
+import Message exposing (..)
+import Task
 
 
 main : Program Never Model Msg
 main =
     NativeUi.program
-        { init = ( initialModel, fetchRoutes )
+        { init = ( initialModel, Task.attempt
+                  GetItem
+                  (AsyncStorage.getItem "routeStop") )
         , view = view
         , update = update
         , subscriptions = \_ -> Sub.none
