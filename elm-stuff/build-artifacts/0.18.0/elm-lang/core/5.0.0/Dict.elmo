@@ -25,10 +25,9 @@ var _elm_lang$core$Dict$keys = function (dict) {
 		_elm_lang$core$Dict$foldr,
 		F3(
 			function (key, value, keyList) {
-				return A2(_elm_lang$core$List_ops['::'], key, keyList);
+				return {ctor: '::', _0: key, _1: keyList};
 			}),
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+		{ctor: '[]'},
 		dict);
 };
 var _elm_lang$core$Dict$values = function (dict) {
@@ -36,10 +35,9 @@ var _elm_lang$core$Dict$values = function (dict) {
 		_elm_lang$core$Dict$foldr,
 		F3(
 			function (key, value, valueList) {
-				return A2(_elm_lang$core$List_ops['::'], value, valueList);
+				return {ctor: '::', _0: value, _1: valueList};
 			}),
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+		{ctor: '[]'},
 		dict);
 };
 var _elm_lang$core$Dict$toList = function (dict) {
@@ -47,13 +45,13 @@ var _elm_lang$core$Dict$toList = function (dict) {
 		_elm_lang$core$Dict$foldr,
 		F3(
 			function (key, value, list) {
-				return A2(
-					_elm_lang$core$List_ops['::'],
-					{ctor: '_Tuple2', _0: key, _1: value},
-					list);
+				return {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: key, _1: value},
+					_1: list
+				};
 			}),
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+		{ctor: '[]'},
 		dict);
 };
 var _elm_lang$core$Dict$foldl = F3(
@@ -153,18 +151,43 @@ var _elm_lang$core$Dict$reportRemBug = F4(
 	function (msg, c, lgot, rgot) {
 		return _elm_lang$core$Native_Debug.crash(
 			_elm_lang$core$String$concat(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						'Internal red-black tree invariant violated, expected ',
-						msg,
-						' and got ',
-						_elm_lang$core$Basics$toString(c),
-						'/',
-						lgot,
-						'/',
-						rgot,
-						'\nPlease report this bug to <https://github.com/elm-lang/core/issues>'
-					])));
+				{
+					ctor: '::',
+					_0: 'Internal red-black tree invariant violated, expected ',
+					_1: {
+						ctor: '::',
+						_0: msg,
+						_1: {
+							ctor: '::',
+							_0: ' and got ',
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Basics$toString(c),
+								_1: {
+									ctor: '::',
+									_0: '/',
+									_1: {
+										ctor: '::',
+										_0: lgot,
+										_1: {
+											ctor: '::',
+											_0: '/',
+											_1: {
+												ctor: '::',
+												_0: rgot,
+												_1: {
+													ctor: '::',
+													_0: '\nPlease report this bug to <https://github.com/elm-lang/core/issues>',
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}));
 	});
 var _elm_lang$core$Dict$isBBlack = function (dict) {
 	var _p13 = dict;

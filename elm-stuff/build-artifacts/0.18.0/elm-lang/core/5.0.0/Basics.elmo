@@ -21,16 +21,8 @@ var _elm_lang$core$Basics$flip = F3(
 	function (f, b, a) {
 		return A2(f, a, b);
 	});
-var _elm_lang$core$Basics$snd = function (_p4) {
-	var _p5 = _p4;
-	return _p5._1;
-};
-var _elm_lang$core$Basics$fst = function (_p6) {
-	var _p7 = _p6;
-	return _p7._0;
-};
 var _elm_lang$core$Basics$always = F2(
-	function (a, _p8) {
+	function (a, _p4) {
 		return a;
 	});
 var _elm_lang$core$Basics$identity = function (x) {

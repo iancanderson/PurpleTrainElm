@@ -28,14 +28,15 @@ var _elm_native_ui$elm_native_ui$NativeUi_Style$encodeDeclaration = function (_p
 var _elm_native_ui$elm_native_ui$NativeUi_Style$encodeObject = function (_p3) {
 	var _p4 = _p3;
 	return _elm_lang$core$Json_Encode$object(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
+		{
+			ctor: '::',
+			_0: {
 				ctor: '_Tuple2',
 				_0: _p4._0,
 				_1: _elm_native_ui$elm_native_ui$NativeUi_Style$encodeValue(_p4._1)
-			}
-			]));
+			},
+			_1: {ctor: '[]'}
+		});
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Style$toJsonProperty = function (style) {
 	var _p5 = style;
@@ -151,57 +152,91 @@ var _elm_native_ui$elm_native_ui$NativeUi_Style$transform = function (options) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Style$listStyle,
 		'transform',
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
+		{
+			ctor: '::',
+			_0: A2(
 				_elm_lang$core$Maybe$map,
 				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('perspective'),
 				options.perspective),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotate'),
-				options.rotate),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateX'),
-				options.rotateX),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateY'),
-				options.rotateY),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateZ'),
-				options.rotateZ),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scale'),
-				options.scale),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scaleX'),
-				options.scaleX),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scaleY'),
-				options.scaleY),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('translateX'),
-				options.translateX),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('translateY'),
-				options.translateY),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('skewX'),
-				options.skewX),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('skewY'),
-				options.skewY)
-			]));
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$core$Maybe$map,
+					_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotate'),
+					options.rotate),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$Maybe$map,
+						_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateX'),
+						options.rotateX),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$core$Maybe$map,
+							_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateY'),
+							options.rotateY),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Maybe$map,
+								_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateZ'),
+								options.rotateZ),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Maybe$map,
+									_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scale'),
+									options.scale),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$core$Maybe$map,
+										_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scaleX'),
+										options.scaleX),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$core$Maybe$map,
+											_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scaleY'),
+											options.scaleY),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$core$Maybe$map,
+												_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('translateX'),
+												options.translateX),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$core$Maybe$map,
+													_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('translateY'),
+													options.translateY),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$core$Maybe$map,
+														_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('skewX'),
+														options.skewX),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$core$Maybe$map,
+															_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('skewY'),
+															options.skewY),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Style$ObjectStyle = function (a) {
 	return {ctor: 'ObjectStyle', _0: a};
@@ -216,11 +251,15 @@ var _elm_native_ui$elm_native_ui$NativeUi_Style$shadowOffset = F2(
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Style$objectStyle,
 			'shadowOffset',
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration, 'width', width),
-					A2(_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration, 'height', height)
-				]));
+			{
+				ctor: '::',
+				_0: A2(_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration, 'width', width),
+				_1: {
+					ctor: '::',
+					_0: A2(_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration, 'height', height),
+					_1: {ctor: '[]'}
+				}
+			});
 	});
 var _elm_native_ui$elm_native_ui$NativeUi_Style$NumberStyle = function (a) {
 	return {ctor: 'NumberStyle', _0: a};

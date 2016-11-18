@@ -69,10 +69,11 @@ var _elm_lang$http$Http_Progress$onEffects = F3(
 					ctor: '_Tuple3',
 					_0: _p10._0,
 					_1: _p10._1,
-					_2: A2(
-						_elm_lang$core$List_ops['::'],
-						{ctor: '_Tuple2', _0: id, _1: trackedRequest},
-						_p10._2)
+					_2: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: id, _1: trackedRequest},
+						_1: _p10._2
+					}
 				};
 			});
 		var bothStep = F4(
@@ -90,10 +91,11 @@ var _elm_lang$http$Http_Progress$onEffects = F3(
 				var _p15 = _p14;
 				return {
 					ctor: '_Tuple3',
-					_0: A2(
-						_elm_lang$core$List_ops['::'],
-						_elm_lang$core$Process$kill(process),
-						_p15._0),
+					_0: {
+						ctor: '::',
+						_0: _elm_lang$core$Process$kill(process),
+						_1: _p15._0
+					},
 					_1: _p15._1,
 					_2: _p15._2
 				};
@@ -108,11 +110,9 @@ var _elm_lang$http$Http_Progress$onEffects = F3(
 			subDict,
 			{
 				ctor: '_Tuple3',
-				_0: _elm_lang$core$Native_List.fromArray(
-					[]),
+				_0: {ctor: '[]'},
 				_1: _elm_lang$core$Dict$empty,
-				_2: _elm_lang$core$Native_List.fromArray(
-					[])
+				_2: {ctor: '[]'}
 			});
 		var dead = _p16._0;
 		var ongoing = _p16._1;

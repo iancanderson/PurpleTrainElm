@@ -1755,16 +1755,8 @@ var _elm_lang$core$Basics$flip = F3(
 	function (f, b, a) {
 		return A2(f, a, b);
 	});
-var _elm_lang$core$Basics$snd = function (_p4) {
-	var _p5 = _p4;
-	return _p5._1;
-};
-var _elm_lang$core$Basics$fst = function (_p6) {
-	var _p7 = _p6;
-	return _p7._0;
-};
 var _elm_lang$core$Basics$always = F2(
-	function (a, _p8) {
+	function (a, _p4) {
 		return a;
 	});
 var _elm_lang$core$Basics$identity = function (x) {
@@ -6244,7 +6236,7 @@ function replace(n, re, replacer, string)
 		return replacer({
 			match: match,
 			submatches: _elm_lang$core$Native_List.fromArray(submatches),
-			index: arguments[i - 1],
+			index: arguments[arguments.length - 2],
 			number: count
 		});
 	}
@@ -6262,6 +6254,7 @@ function split(n, re, str)
 	var result;
 	var out = [];
 	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
 	while (n--)
 	{
 		if (!(result = re.exec(string))) break;
@@ -6269,6 +6262,7 @@ function split(n, re, str)
 		start = re.lastIndex;
 	}
 	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
 	return _elm_lang$core$Native_List.fromArray(out);
 }
 
@@ -6284,6 +6278,33 @@ return {
 };
 
 }();
+
+var _elm_lang$core$Tuple$mapSecond = F2(
+	function (func, _p0) {
+		var _p1 = _p0;
+		return {
+			ctor: '_Tuple2',
+			_0: _p1._0,
+			_1: func(_p1._1)
+		};
+	});
+var _elm_lang$core$Tuple$mapFirst = F2(
+	function (func, _p2) {
+		var _p3 = _p2;
+		return {
+			ctor: '_Tuple2',
+			_0: func(_p3._0),
+			_1: _p3._1
+		};
+	});
+var _elm_lang$core$Tuple$second = function (_p4) {
+	var _p5 = _p4;
+	return _p5._1;
+};
+var _elm_lang$core$Tuple$first = function (_p6) {
+	var _p7 = _p6;
+	return _p7._0;
+};
 
 var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
 var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
@@ -6389,8 +6410,12 @@ function configureRequest(xhr, request)
 
 	A2(_elm_lang$core$List$map, setHeader, request.headers);
 	xhr.responseType = request.expect.responseType;
-  xhr.timeout = request.timeout._0;
 	xhr.withCredentials = request.withCredentials;
+
+	if (request.timeout.ctor === 'Just')
+	{
+		xhr.timeout = request.timeout._0;
+	}
 }
 
 function send(xhr, body)
@@ -6703,6 +6728,14 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     };
   }
 
+  function renderProperty(propName, decoder, value) {
+    return {
+      type: 'renderProp',
+      propName: propName,
+      value: value,
+      decoder: decoder
+    };
+  }
 
   // ELEMENTS
 
@@ -6747,6 +6780,28 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   }
 
   /**
+   * A non-standard node that renders a React Native component with props and children
+   */
+  function customNode(tagName, moduleName, maybeExportedName) {
+    var exportedName = null;
+
+    if (maybeExportedName.ctor !== 'Nothing') {
+      exportedName = maybeExportedName._0;
+    }
+
+    return F2(function(factList, childList) {
+      return {
+        type: 'component',
+        tagName: tagName,
+        facts: toArray(factList),
+        children: toArray(childList),
+        moduleName: moduleName,
+        exportedName: exportedName
+      };
+    });
+  }
+
+  /**
    * Maps another node onto a different message type
    */
   function map(tagger, node) {
@@ -6766,13 +6821,8 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   function makeEventHandler(eventNode, decoder) {
     function eventHandler(event) {
       var decoder = eventHandler.decoder;
-      var value = A2(_elm_lang$core$Native_Json.run, decoder, event);
+      var message = decodeValue(eventHandler.decoder, event);
 
-      if (value.ctor !== 'Ok') {
-        return;
-      }
-
-      var message = value._0;
       var currentEventNode = eventNode;
       while (currentEventNode) {
         var tagger = currentEventNode.tagger;
@@ -6795,6 +6845,38 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   }
 
   /**
+   * Converts a fact whose value is a function that renders a subTree into a
+   * function that constructs the subTree to render with the provided props.
+   * This is used by NavigationExperimental to pass the header and scene views
+   * into the component
+   */
+  function makeRenderNodePropHandler(fact, eventNode, key) {
+    function handler(props) {
+      var decodedProps = decodeValue(handler.decoder, props);
+
+      return renderTree(handler.component(decodedProps), eventNode, key);
+    };
+
+    handler.component = fact.value;
+    handler.decoder = fact.decoder;
+
+    return handler;
+  }
+
+  /**
+   * Decodes properties from elm into json props for react-native
+   */
+  function decodeValue(decoder, value) {
+    var decodedValue = A2(_elm_lang$core$Native_Json.run, decoder, value);
+
+    if (decodedValue.ctor !== 'Ok') {
+      throw Error(decodedValue._0);
+    }
+
+    return decodedValue._0;
+  }
+
+  /**
    * Converts a string node back to a plain string for React Native to render
    */
   function renderString(node) {
@@ -6804,7 +6886,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   /**
    * Composes taggers created by `map`
    */
-  function renderTagger(node, eventNode) {
+  function renderTagger(node, eventNode, key) {
     var subNode = node.node;
     var tagger = node.tagger;
 
@@ -6817,7 +6899,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     }
 
     var subEventRoot = { tagger: tagger, parent: eventNode };
-    return renderTree(subNode, subEventRoot);
+    return renderTree(subNode, subEventRoot, key);
   }
 
   /**
@@ -6825,21 +6907,26 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
    * children array and props object, looks up the component by name on the
    * React Native module and calls into React.createElement.
    */
-  function renderComponent(node, eventNode) {
+  function renderComponent(node, eventNode, key) {
     var children = [];
     for (var i = 0; i < node.children.length; i++) {
-      children.push(renderTree(node.children[i], eventNode));
+      children.push(renderTree(node.children[i], eventNode, i));
     }
 
     var finalProps = {};
 
-    for (var i = 0; i < node.facts.length; i++) {
-      var fact = node.facts[i];
+    for (var j = 0; j < node.facts.length; j++) {
+      var fact = node.facts[j];
+
       switch (fact.type) {
         case 'prop':
           finalProps[fact.propName] = fact.value;
           break;
 
+        case 'renderProp':
+          finalProps[fact.propName] = makeRenderNodePropHandler(fact, eventNode, key);
+          break;
+	  
         case 'event':
           finalProps[fact.eventName] = makeEventHandler(eventNode, fact.decoder);
           break;
@@ -6850,28 +6937,47 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
       }
     }
 
+    if(!finalProps.key) {
+      finalProps.key = 'elm-native-ui-auto-added-' + key;
+    }
+
     if (children.length === 1) {
       finalProps.children = children[0];
     } else if (children.length) {
       finalProps.children = children;
     }
 
-    return React.createElement(ReactNative[node.tagName], finalProps);
+    if (ReactNative[node.tagName]) {
+      return React.createElement(ReactNative[node.tagName], finalProps);
+    } else {
+      if (!node.moduleName) {
+          throw Error('Unable to find a node called ' + node.tagName + ' in ReactNative. Try defining it as a customNode');
+      }
+
+      var customComponent = require(node.moduleName);
+
+      if(node.exportedName) {
+          return React.createElement(customComponent[node.exportedName], finalProps);
+      } else {
+          return React.createElement(customComponent, finalProps);
+      }
+    }
   }
 
   /**
    * Renders the whole tree!
    */
-  function renderTree(node, eventNode) {
+  function renderTree(node, eventNode, key) {
     switch (node.type) {
       case 'string':
         return renderString(node);
 
       case 'tagger':
-        return renderTagger(node, eventNode);
+        return renderTagger(node, eventNode, key);
 
       case 'component':
-        return renderComponent(node, eventNode);
+        return renderComponent(node, eventNode, key);
+
     }
   }
 
@@ -6913,7 +7019,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
         // There won't be a model to render right away so we'll check that it
         // exists before trying to call the view function
         return typeof this.state.model !== 'undefined' ?
-          renderTree(impl.view(this.state.model), this.eventNode) :
+          renderTree(impl.view(this.state.model), this.eventNode, 0) :
           null;
       }
     });
@@ -6966,15 +7072,74 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     program: program,
     node: node,
     voidNode: voidNode,
+    customNode: F3(customNode),
     string: string,
     map: F2(map),
     on: F2(on),
     style: style,
     property: F2(property),
+    renderProperty: F3(renderProperty),
     encodeDate: identity,
     parseDate: parseDate
   };
 }());
+
+const _elm_native_ui$elm_native_ui$Native_NativeUi_AsyncStorage = function () {
+  const { AsyncStorage } = require("react-native");
+  const unit = { ctor: "_Tuple0" };
+
+  function setItem(key, value) {
+    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
+      AsyncStorage.setItem(key, value)
+        .then(function() {
+          return callback(_elm_lang$core$Native_Scheduler.succeed(unit));
+        })
+        .catch(failWithError(callback));
+    });
+  }
+
+  function getItem(key) {
+    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
+      AsyncStorage.getItem(key)
+        .then(function(value) {
+          const result = maybe(value);
+          return callback(_elm_lang$core$Native_Scheduler.succeed(result));
+        })
+        .catch(failWithError(callback));
+    });
+  }
+
+  function removeItem(key) {
+    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
+      AsyncStorage.removeItem(key)
+        .then(function() {
+          return callback(_elm_lang$core$Native_Scheduler.succeed(unit));
+        })
+        .catch(failWithError(callback));
+    });
+  }
+
+  function failWithError(callback) {
+    return function(e) {
+      const errorValue = { ctor: 'Error', _0: e.message };
+      return callback(_elm_lang$core$Native_Scheduler.fail(errorValue));
+    };
+  }
+
+  function maybe(value) {
+    if (value) {
+      return { ctor: 'Just', _0: value };
+    } else {
+      return { ctor: 'Nothing' };
+    }
+  }
+
+  return {
+    setItem: F2(setItem),
+    getItem: getItem,
+    removeItem: removeItem,
+  };
+}();
 
 var _elm_native_ui$elm_native_ui$NativeUi_Style$defaultTransform = {perspective: _elm_lang$core$Maybe$Nothing, rotate: _elm_lang$core$Maybe$Nothing, rotateX: _elm_lang$core$Maybe$Nothing, rotateY: _elm_lang$core$Maybe$Nothing, rotateZ: _elm_lang$core$Maybe$Nothing, scale: _elm_lang$core$Maybe$Nothing, scaleX: _elm_lang$core$Maybe$Nothing, scaleY: _elm_lang$core$Maybe$Nothing, translateX: _elm_lang$core$Maybe$Nothing, translateY: _elm_lang$core$Maybe$Nothing, skewX: _elm_lang$core$Maybe$Nothing, skewY: _elm_lang$core$Maybe$Nothing};
 var _elm_native_ui$elm_native_ui$NativeUi_Style$encodeValue = function (value) {
@@ -7296,16 +7461,24 @@ var _elm_native_ui$elm_native_ui$NativeUi$style = function (styles) {
 	return _elm_native_ui$elm_native_ui$Native_NativeUi.style(
 		_elm_native_ui$elm_native_ui$NativeUi_Style$encode(styles));
 };
-var _elm_native_ui$elm_native_ui$NativeUi$property = F2(
-	function (name, value) {
-		return _elm_native_ui$elm_native_ui$Native_NativeUi.property;
-	});
+var _elm_native_ui$elm_native_ui$NativeUi$renderProperty = _elm_native_ui$elm_native_ui$Native_NativeUi.renderProperty;
+var _elm_native_ui$elm_native_ui$NativeUi$property = _elm_native_ui$elm_native_ui$Native_NativeUi.property;
 var _elm_native_ui$elm_native_ui$NativeUi$string = _elm_native_ui$elm_native_ui$Native_NativeUi.string;
+var _elm_native_ui$elm_native_ui$NativeUi$customNode = _elm_native_ui$elm_native_ui$Native_NativeUi.customNode;
 var _elm_native_ui$elm_native_ui$NativeUi$node = _elm_native_ui$elm_native_ui$Native_NativeUi.node;
 var _elm_native_ui$elm_native_ui$NativeUi$Node = {ctor: 'Node'};
 var _elm_native_ui$elm_native_ui$NativeUi$Property = {ctor: 'Property'};
 
+var _elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$removeItem = _elm_native_ui$elm_native_ui$Native_NativeUi_AsyncStorage.removeItem;
+var _elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$setItem = _elm_native_ui$elm_native_ui$Native_NativeUi_AsyncStorage.setItem;
+var _elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$getItem = _elm_native_ui$elm_native_ui$Native_NativeUi_AsyncStorage.getItem;
+var _elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$Error = function (a) {
+	return {ctor: 'Error', _0: a};
+};
+
+var _elm_native_ui$elm_native_ui$NativeUi_Elements$navigationCardStack = A3(_elm_native_ui$elm_native_ui$NativeUi$customNode, 'NavigationCardStack', 'NavigationCardStack', _elm_lang$core$Maybe$Nothing);
 var _elm_native_ui$elm_native_ui$NativeUi_Elements$view = _elm_native_ui$elm_native_ui$NativeUi$node('View');
+var _elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight = _elm_native_ui$elm_native_ui$NativeUi$node('TouchableHighlight');
 var _elm_native_ui$elm_native_ui$NativeUi_Elements$toolbar = _elm_native_ui$elm_native_ui$NativeUi$node('Toolbar');
 var _elm_native_ui$elm_native_ui$NativeUi_Elements$textInput = _elm_native_ui$elm_native_ui$NativeUi$node('TextInput');
 var _elm_native_ui$elm_native_ui$NativeUi_Elements$tabBar = _elm_native_ui$elm_native_ui$NativeUi$node('TabBar');
@@ -7323,30 +7496,6 @@ var _elm_native_ui$elm_native_ui$NativeUi_Elements$activityIndicator = _elm_nati
 var _elm_native_ui$elm_native_ui$NativeUi_Elements$image = _elm_native_ui$elm_native_ui$NativeUi$node('Image');
 var _elm_native_ui$elm_native_ui$NativeUi_Elements$text = _elm_native_ui$elm_native_ui$NativeUi$node('Text');
 
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onChangeText = function (tagger) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$on,
-		'ChangeText',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$string));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onSwitchValueChange = function (tagger) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$on,
-		'SwitchValueChange',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$int));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onSliderValueChange = function (tagger) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$on,
-		'SliderValueChange',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$float));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onSegmentedControlValueChange = function (tagger) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$on,
-		'SegmentedControlValueChange',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$core$Json_Decode$int));
-};
 var _elm_native_ui$elm_native_ui$NativeUi_Events$onPickerValueChange = function (tagger) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$on,
@@ -7362,11 +7511,7 @@ var _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent = F2(
 	});
 var _elm_native_ui$elm_native_ui$NativeUi_Events$onLayout = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Layout');
 var _elm_native_ui$elm_native_ui$NativeUi_Events$onPress = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Press');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onLoadStart = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('LoadStart');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onProgress = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Progress');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onError = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Error');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onLoad = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Load');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onLoadEnd = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('LoadEnd');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onLongPress = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('LongPress');
 var _elm_native_ui$elm_native_ui$NativeUi_Events$onRegionChange = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('RegionChange');
 var _elm_native_ui$elm_native_ui$NativeUi_Events$onRegionChangeComplete = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('RegionChangeComplete');
 var _elm_native_ui$elm_native_ui$NativeUi_Events$onAnnotationPress = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('AnnotationPress');
@@ -7374,339 +7519,47 @@ var _elm_native_ui$elm_native_ui$NativeUi_Events$onRefresh = _elm_native_ui$elm_
 var _elm_native_ui$elm_native_ui$NativeUi_Events$onScroll = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Scroll');
 var _elm_native_ui$elm_native_ui$NativeUi_Events$onScrollAnimationEnd = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ScrollAnimationEnd');
 var _elm_native_ui$elm_native_ui$NativeUi_Events$onContentSizeChange = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ContentSizeChange');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onChange = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Change');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onSlidingComplete = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('SlidingComplete');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onBlur = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Blur');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onFocus = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('Focus');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onEndEditing = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('EndEditing');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onSelectionChange = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('SelectionChange');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onSubmitEditing = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('SubmitEditing');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onKeyPress = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('KeyPress');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onActionSelected = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ActionSelected');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onIconClicked = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('IconClicked');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onAccessibilityTap = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('AccessibilityTap');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onMagicTap = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('MagicTap');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderGrant = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderGrant');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderMove = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderMove');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderReject = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderReject');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderRelease = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderRelease');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderTerminate = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderTerminate');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onResponderTerminationRequest = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ResponderTerminationRequest');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onStartShouldSetResponder = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('StartShouldSetResponder');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onStartShouldSetResponderCapture = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('StartShouldSetResponderCapture');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onMoveShouldSetResponder = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('MoveShouldSetResponder');
-var _elm_native_ui$elm_native_ui$NativeUi_Events$onMoveShouldSetResponderCapture = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('MoveShouldSetResponderCapture');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onShowUnderlay = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('ShowUnderlay');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onHideUnderlay = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('HideUnderlay');
+var _elm_native_ui$elm_native_ui$NativeUi_Events$onNavigateBack = _elm_native_ui$elm_native_ui$NativeUi_Events$constantMsgEvent('NavigateBack');
 
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$needsOffscreenAlphaCompositing = function (val) {
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$enableGestures = function (val) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'needsOffscreenAlphaCompositing',
+		'enableGestures',
 		_elm_lang$core$Json_Encode$bool(val));
 };
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$collapsable = function (val) {
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$gestureResponseDistance = function (val) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'collapsable',
-		_elm_lang$core$Json_Encode$bool(val));
+		'gestureResponseDistance',
+		_elm_lang$core$Json_Encode$float(val));
 };
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$shouldRasterizeIOS = function (val) {
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$activeOpacity = function (val) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'shouldRasterizeIOS',
-		_elm_lang$core$Json_Encode$bool(val));
+		'activeOpacity',
+		_elm_lang$core$Json_Encode$float(val));
 };
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$renderToHardwareTextureAndroid = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'renderToHardwareTextureAndroid',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$pointerEvents = function (val) {
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$itemPositioning = function (val) {
 	var stringValue = function () {
 		var _p0 = val;
 		switch (_p0.ctor) {
-			case 'ViewPointerEventsBoxNone':
-				return 'box-none';
-			case 'ViewPointerEventsNone':
-				return 'none';
-			case 'ViewPointerEventsBoxOnly':
-				return 'box-only';
+			case 'TabBarItemPositioningFill':
+				return 'fill';
+			case 'TabBarItemPositioningCenter':
+				return 'center';
 			default:
 				return 'auto';
 		}
 	}();
 	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'pointerEvents', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$importantForAccessibility = function (val) {
-	var stringValue = function () {
-		var _p1 = val;
-		switch (_p1.ctor) {
-			case 'ViewImportantForAccessibilityAuto':
-				return 'auto';
-			case 'ViewImportantForAccessibilityYes':
-				return 'yes';
-			case 'ViewImportantForAccessibilityNo':
-				return 'no';
-			default:
-				return 'no-hide-descendants';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'importantForAccessibility', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$accessibilityLiveRegion = function (val) {
-	var stringValue = function () {
-		var _p2 = val;
-		switch (_p2.ctor) {
-			case 'ViewAccessibilityLiveRegionNone':
-				return 'none';
-			case 'ViewAccessibilityLiveRegionPolite':
-				return 'polite';
-			default:
-				return 'assertive';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'accessibilityLiveRegion', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$rtl = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'rtl',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$contentInsetEnd = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'contentInsetEnd',
-		_elm_lang$core$Json_Encode$float(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$contentInsetStart = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'contentInsetStart',
-		_elm_lang$core$Json_Encode$float(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$subtitle = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'subtitle',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$underlineColorAndroid = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'underlineColorAndroid',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$blurOnSubmit = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'blurOnSubmit',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$selectTextOnFocus = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'selectTextOnFocus',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$clearTextOnFocus = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'clearTextOnFocus',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$clearButtonMode = function (val) {
-	var stringValue = function () {
-		var _p3 = val;
-		switch (_p3.ctor) {
-			case 'TextInputClearButtonModeNever':
-				return 'never';
-			case 'TextInputClearButtonModeWhileEditing':
-				return 'while-editing';
-			case 'TextInputClearButtonModeUnlessEditing':
-				return 'unless-editing';
-			default:
-				return 'always';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'clearButtonMode', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$defaultValue = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'defaultValue',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$value = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'value',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$selectionColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'selectionColor',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$secureTextEntry = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'secureTextEntry',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$placeholderTextColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'placeholderTextColor',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$placeholder = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'placeholder',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$multiline = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'multiline',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$enablesReturnKeyAutomatically = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'enablesReturnKeyAutomatically',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$maxLength = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'maxLength',
-		_elm_lang$core$Json_Encode$float(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$returnKeyType = function (val) {
-	var stringValue = function () {
-		var _p4 = val;
-		switch (_p4.ctor) {
-			case 'TextInputReturnKeyTypeDefault':
-				return 'default';
-			case 'TextInputReturnKeyTypeGo':
-				return 'go';
-			case 'TextInputReturnKeyTypeGoogle':
-				return 'google';
-			case 'TextInputReturnKeyTypeJoin':
-				return 'join';
-			case 'TextInputReturnKeyTypeNext':
-				return 'next';
-			case 'TextInputReturnKeyTypeRoute':
-				return 'route';
-			case 'TextInputReturnKeyTypeSearch':
-				return 'search';
-			case 'TextInputReturnKeyTypeSend':
-				return 'send';
-			case 'TextInputReturnKeyTypeYahoo':
-				return 'yahoo';
-			case 'TextInputReturnKeyTypeDone':
-				return 'done';
-			default:
-				return 'emergency-call';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'returnKeyType', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$keyboardAppearance = function (val) {
-	var stringValue = function () {
-		var _p5 = val;
-		switch (_p5.ctor) {
-			case 'TextInputKeyboardAppearanceDefault':
-				return 'default';
-			case 'TextInputKeyboardAppearanceLight':
-				return 'light';
-			default:
-				return 'dark';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'keyboardAppearance', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$keyboardType = function (val) {
-	var stringValue = function () {
-		var _p6 = val;
-		switch (_p6.ctor) {
-			case 'TextInputKeyboardTypeDefault':
-				return 'default';
-			case 'TextInputKeyboardTypeEmailAddress':
-				return 'email-address';
-			case 'TextInputKeyboardTypeNumeric':
-				return 'numeric';
-			case 'TextInputKeyboardTypePhonePad':
-				return 'phone-pad';
-			case 'TextInputKeyboardTypeAsciiCapable':
-				return 'ascii-capable';
-			case 'TextInputKeyboardTypeNumbersAndPunctuation':
-				return 'numbers-and-punctuation';
-			case 'TextInputKeyboardTypeUrl':
-				return 'url';
-			case 'TextInputKeyboardTypeNumberPad':
-				return 'number-pad';
-			case 'TextInputKeyboardTypeNamePhonePad':
-				return 'name-phone-pad';
-			case 'TextInputKeyboardTypeDecimalPad':
-				return 'decimal-pad';
-			case 'TextInputKeyboardTypeTwitter':
-				return 'twitter';
-			default:
-				return 'web-search';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'keyboardType', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$editable = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'editable',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$autoFocus = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'autoFocus',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$autoCorrect = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'autoCorrect',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$autoCapitalize = function (val) {
-	var stringValue = function () {
-		var _p7 = val;
-		switch (_p7.ctor) {
-			case 'TextInputAutoCapitalizeNone':
-				return 'none';
-			case 'TextInputAutoCapitalizeSentences':
-				return 'sentences';
-			case 'TextInputAutoCapitalizeWords':
-				return 'words';
-			default:
-				return 'characters';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'autoCapitalize', jsonValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'itemPositioning', jsonValue);
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$showHideTransition = function (val) {
 	var stringValue = function () {
-		var _p8 = val;
-		if (_p8.ctor === 'StatusBarShowHideTransitionFade') {
+		var _p1 = val;
+		if (_p1.ctor === 'StatusBarShowHideTransitionFade') {
 			return 'fade';
 		} else {
 			return 'slide';
@@ -7723,8 +7576,8 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$networkActivityIndicatorVis
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$barStyle = function (val) {
 	var stringValue = function () {
-		var _p9 = val;
-		if (_p9.ctor === 'StatusBarBarStyleDefault') {
+		var _p2 = val;
+		if (_p2.ctor === 'StatusBarBarStyleDefault') {
 			return 'default';
 		} else {
 			return 'light-content';
@@ -7751,65 +7604,11 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$hidden = function (val) {
 		'hidden',
 		_elm_lang$core$Json_Encode$bool(val));
 };
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$disabled = function (val) {
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$scrollPerfTag = function (val) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'disabled',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$maximumTrackTintColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'maximumTrackTintColor',
+		'scrollPerfTag',
 		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$minimumTrackTintColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'minimumTrackTintColor',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$maximumValue = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'maximumValue',
-		_elm_lang$core$Json_Encode$float(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$minimumValue = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'minimumValue',
-		_elm_lang$core$Json_Encode$float(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$step = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'step',
-		_elm_lang$core$Json_Encode$float(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$sliderValue = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'sliderValue',
-		_elm_lang$core$Json_Encode$float(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$momentary = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'momentary',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$tintColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'tintColor',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$selectedIndex = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'selectedIndex',
-		_elm_lang$core$Json_Encode$float(val));
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$zoomScale = function (val) {
 	return A2(
@@ -7825,8 +7624,8 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$removeClippedSubviews = fun
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$snapToAlignment = function (val) {
 	var stringValue = function () {
-		var _p10 = val;
-		switch (_p10.ctor) {
+		var _p3 = val;
+		switch (_p3.ctor) {
 			case 'ScrollViewSnapToAlignmentStart':
 				return 'start';
 			case 'ScrollViewSnapToAlignmentCenter':
@@ -7854,12 +7653,6 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$showsHorizontalScrollIndica
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
 		'showsHorizontalScrollIndicator',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$sendMomentumEvents = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'sendMomentumEvents',
 		_elm_lang$core$Json_Encode$bool(val));
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$scrollsToTop = function (val) {
@@ -7900,8 +7693,8 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$keyboardShouldPersistTaps =
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$keyboardDismissMode = function (val) {
 	var stringValue = function () {
-		var _p11 = val;
-		switch (_p11.ctor) {
+		var _p4 = val;
+		switch (_p4.ctor) {
 			case 'ScrollViewKeyboardDismissModeNone':
 				return 'none';
 			case 'ScrollViewKeyboardDismissModeInteractive':
@@ -7927,8 +7720,8 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$directionalLockEnabled = fu
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$indicatorStyle = function (val) {
 	var stringValue = function () {
-		var _p12 = val;
-		switch (_p12.ctor) {
+		var _p5 = val;
+		switch (_p5.ctor) {
 			case 'ScrollViewIndicatorStyleDefault':
 				return 'default';
 			case 'ScrollViewIndicatorStyleBlack':
@@ -7982,6 +7775,12 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$automaticallyAdjustContentI
 		'automaticallyAdjustContentInsets',
 		_elm_lang$core$Json_Encode$bool(val));
 };
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$progressViewOffset = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'progressViewOffset',
+		_elm_lang$core$Json_Encode$float(val));
+};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$title = function (val) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
@@ -7994,36 +7793,6 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$refreshing = function (val)
 		'refreshing',
 		_elm_lang$core$Json_Encode$bool(val));
 };
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$trackTintColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'trackTintColor',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$progressTintColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'progressTintColor',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$progressViewStyle = function (val) {
-	var stringValue = function () {
-		var _p13 = val;
-		if (_p13.ctor === 'ProgressViewProgressViewStyleDefault') {
-			return 'default';
-		} else {
-			return 'bar';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'progressViewStyle', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$progress = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'progress',
-		_elm_lang$core$Json_Encode$float(val));
-};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$prompt = function (val) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
@@ -8032,8 +7801,8 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$prompt = function (val) {
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$mode = function (val) {
 	var stringValue = function () {
-		var _p14 = val;
-		if (_p14.ctor === 'PickerModeDialog') {
+		var _p6 = val;
+		if (_p6.ctor === 'PickerModeDialog') {
 			return 'dialog';
 		} else {
 			return 'dropdown';
@@ -8068,8 +7837,8 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$maxDelta = function (val) {
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$mapType = function (val) {
 	var stringValue = function () {
-		var _p15 = val;
-		switch (_p15.ctor) {
+		var _p7 = val;
+		switch (_p7.ctor) {
 			case 'MapViewMapTypeStandard':
 				return 'standard';
 			case 'MapViewMapTypeSatellite':
@@ -8129,63 +7898,6 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$showsUserLocation = functio
 		'showsUserLocation',
 		_elm_lang$core$Json_Encode$bool(val));
 };
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$size = function (val) {
-	var stringValue = function () {
-		var _p16 = val;
-		if (_p16.ctor === 'ActivityIndicatorSizeSmall') {
-			return 'small';
-		} else {
-			return 'large';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'size', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$hidesWhenStopped = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'hidesWhenStopped',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$color = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'color',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$animating = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'animating',
-		_elm_lang$core$Json_Encode$bool(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$resizeMode = function (val) {
-	var stringValue = function () {
-		var _p17 = val;
-		switch (_p17.ctor) {
-			case 'ImageResizeModeCover':
-				return 'cover';
-			case 'ImageResizeModeContain':
-				return 'contain';
-			default:
-				return 'stretch';
-		}
-	}();
-	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
-	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'resizeMode', jsonValue);
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$accessibilityLabel = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'accessibilityLabel',
-		_elm_lang$core$Json_Encode$string(val));
-};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$accessible = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'accessible',
-		_elm_lang$core$Json_Encode$bool(val));
-};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$defaultSource = function (uri) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
@@ -8214,6 +7926,24 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$source = function (uri) {
 				}
 				])));
 };
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$minimumFontScale = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'minimumFontScale',
+		_elm_lang$core$Json_Encode$float(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$adjustsFontSizeToFit = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'adjustsFontSizeToFit',
+		_elm_lang$core$Json_Encode$bool(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$accessible = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'accessible',
+		_elm_lang$core$Json_Encode$bool(val));
+};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$allowFontScaling = function (val) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
@@ -8232,24 +7962,50 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$suppressHighlighting = func
 		'suppressHighlighting',
 		_elm_lang$core$Json_Encode$bool(val));
 };
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$selectable = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'selectable',
+		_elm_lang$core$Json_Encode$bool(val));
+};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$numberOfLines = function (val) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
 		'numberOfLines',
 		_elm_lang$core$Json_Encode$float(val));
 };
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ImageResizeModeStretch = {ctor: 'ImageResizeModeStretch'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ImageResizeModeContain = {ctor: 'ImageResizeModeContain'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ImageResizeModeCover = {ctor: 'ImageResizeModeCover'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ActivityIndicatorSizeLarge = {ctor: 'ActivityIndicatorSizeLarge'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ActivityIndicatorSizeSmall = {ctor: 'ActivityIndicatorSizeSmall'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$ellipsizeMode = function (val) {
+	var stringValue = function () {
+		var _p8 = val;
+		switch (_p8.ctor) {
+			case 'TextEllipsizeModeHead':
+				return 'head';
+			case 'TextEllipsizeModeMiddle':
+				return 'middle';
+			case 'TextEllipsizeModeTail':
+				return 'tail';
+			default:
+				return 'clip';
+		}
+	}();
+	var jsonValue = _elm_lang$core$Json_Encode$string(stringValue);
+	return A2(_elm_native_ui$elm_native_ui$NativeUi$property, 'ellipsizeMode', jsonValue);
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$key = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'key',
+		_elm_lang$core$Json_Encode$string(val));
+};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextEllipsizeModeClip = {ctor: 'TextEllipsizeModeClip'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextEllipsizeModeTail = {ctor: 'TextEllipsizeModeTail'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextEllipsizeModeMiddle = {ctor: 'TextEllipsizeModeMiddle'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextEllipsizeModeHead = {ctor: 'TextEllipsizeModeHead'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$MapViewMapTypeHybrid = {ctor: 'MapViewMapTypeHybrid'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$MapViewMapTypeSatellite = {ctor: 'MapViewMapTypeSatellite'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$MapViewMapTypeStandard = {ctor: 'MapViewMapTypeStandard'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$PickerModeDropdown = {ctor: 'PickerModeDropdown'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$PickerModeDialog = {ctor: 'PickerModeDialog'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ProgressViewProgressViewStyleBar = {ctor: 'ProgressViewProgressViewStyleBar'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ProgressViewProgressViewStyleDefault = {ctor: 'ProgressViewProgressViewStyleDefault'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewIndicatorStyleWhite = {ctor: 'ScrollViewIndicatorStyleWhite'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewIndicatorStyleBlack = {ctor: 'ScrollViewIndicatorStyleBlack'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$ScrollViewIndicatorStyleDefault = {ctor: 'ScrollViewIndicatorStyleDefault'};
@@ -8263,52 +8019,11 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$StatusBarBarStyleLightConte
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$StatusBarBarStyleDefault = {ctor: 'StatusBarBarStyleDefault'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$StatusBarShowHideTransitionSlide = {ctor: 'StatusBarShowHideTransitionSlide'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$StatusBarShowHideTransitionFade = {ctor: 'StatusBarShowHideTransitionFade'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputAutoCapitalizeCharacters = {ctor: 'TextInputAutoCapitalizeCharacters'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputAutoCapitalizeWords = {ctor: 'TextInputAutoCapitalizeWords'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputAutoCapitalizeSentences = {ctor: 'TextInputAutoCapitalizeSentences'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputAutoCapitalizeNone = {ctor: 'TextInputAutoCapitalizeNone'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeWebSearch = {ctor: 'TextInputKeyboardTypeWebSearch'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeTwitter = {ctor: 'TextInputKeyboardTypeTwitter'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeDecimalPad = {ctor: 'TextInputKeyboardTypeDecimalPad'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeNamePhonePad = {ctor: 'TextInputKeyboardTypeNamePhonePad'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeNumberPad = {ctor: 'TextInputKeyboardTypeNumberPad'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeUrl = {ctor: 'TextInputKeyboardTypeUrl'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeNumbersAndPunctuation = {ctor: 'TextInputKeyboardTypeNumbersAndPunctuation'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeAsciiCapable = {ctor: 'TextInputKeyboardTypeAsciiCapable'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypePhonePad = {ctor: 'TextInputKeyboardTypePhonePad'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeNumeric = {ctor: 'TextInputKeyboardTypeNumeric'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeEmailAddress = {ctor: 'TextInputKeyboardTypeEmailAddress'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardTypeDefault = {ctor: 'TextInputKeyboardTypeDefault'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardAppearanceDark = {ctor: 'TextInputKeyboardAppearanceDark'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardAppearanceLight = {ctor: 'TextInputKeyboardAppearanceLight'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputKeyboardAppearanceDefault = {ctor: 'TextInputKeyboardAppearanceDefault'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeEmergencyCall = {ctor: 'TextInputReturnKeyTypeEmergencyCall'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeDone = {ctor: 'TextInputReturnKeyTypeDone'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeYahoo = {ctor: 'TextInputReturnKeyTypeYahoo'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeSend = {ctor: 'TextInputReturnKeyTypeSend'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeSearch = {ctor: 'TextInputReturnKeyTypeSearch'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeRoute = {ctor: 'TextInputReturnKeyTypeRoute'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeNext = {ctor: 'TextInputReturnKeyTypeNext'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeJoin = {ctor: 'TextInputReturnKeyTypeJoin'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeGoogle = {ctor: 'TextInputReturnKeyTypeGoogle'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeGo = {ctor: 'TextInputReturnKeyTypeGo'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputReturnKeyTypeDefault = {ctor: 'TextInputReturnKeyTypeDefault'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputClearButtonModeAlways = {ctor: 'TextInputClearButtonModeAlways'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputClearButtonModeUnlessEditing = {ctor: 'TextInputClearButtonModeUnlessEditing'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputClearButtonModeWhileEditing = {ctor: 'TextInputClearButtonModeWhileEditing'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$TextInputClearButtonModeNever = {ctor: 'TextInputClearButtonModeNever'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewAccessibilityLiveRegionAssertive = {ctor: 'ViewAccessibilityLiveRegionAssertive'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewAccessibilityLiveRegionPolite = {ctor: 'ViewAccessibilityLiveRegionPolite'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewAccessibilityLiveRegionNone = {ctor: 'ViewAccessibilityLiveRegionNone'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewImportantForAccessibilityNoHideDescendants = {ctor: 'ViewImportantForAccessibilityNoHideDescendants'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewImportantForAccessibilityNo = {ctor: 'ViewImportantForAccessibilityNo'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewImportantForAccessibilityYes = {ctor: 'ViewImportantForAccessibilityYes'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewImportantForAccessibilityAuto = {ctor: 'ViewImportantForAccessibilityAuto'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsAuto = {ctor: 'ViewPointerEventsAuto'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxOnly = {ctor: 'ViewPointerEventsBoxOnly'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsNone = {ctor: 'ViewPointerEventsNone'};
-var _elm_native_ui$elm_native_ui$NativeUi_Properties$ViewPointerEventsBoxNone = {ctor: 'ViewPointerEventsBoxNone'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TabBarItemPositioningAuto = {ctor: 'TabBarItemPositioningAuto'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TabBarItemPositioningCenter = {ctor: 'TabBarItemPositioningCenter'};
+var _elm_native_ui$elm_native_ui$NativeUi_Properties$TabBarItemPositioningFill = {ctor: 'TabBarItemPositioningFill'};
 
+var _user$project$App_Color$stopPickerButton = '#674982';
 var _user$project$App_Color$defaultUnderlay = 'rgba(0,0,0,0.05)';
 var _user$project$App_Color$lightHeader = '#9F8AB3';
 var _user$project$App_Color$lightGray = '#f8f8f8';
@@ -8320,44 +8035,6 @@ var _user$project$App_Color$purple = '#5C4570';
 
 var _user$project$App_Font$hkCompakt = 'HK Compakt';
 var _user$project$App_Font$roboto = 'Roboto Condensed';
-
-var { AsyncStorage } = require('react-native')
-
-var _user$project$Native_AsyncStorage = function () {
-  function setItem(key, value) {
-    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
-      AsyncStorage.setItem(key, value).then(function() {
-        return callback(_elm_lang$core$Native_Scheduler.succeed(value));
-      })
-      .catch(function(e) {
-        return callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'Error', _0: e.message }));
-      });
-    });
-  }
-
-  function getItem(key) {
-    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
-      AsyncStorage.getItem(key).then(function(value) {
-        const elmValue = value ? { ctor: 'Just', _0: value } : { ctor: 'Nothing' };
-        return callback(_elm_lang$core$Native_Scheduler.succeed(elmValue));
-      })
-      .catch(function(e) {
-        return callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'Error', _0: e.message }));
-      });
-    });
-  }
-
-  return {
-    setItem: F2(setItem),
-    getItem: getItem,
-  };
-}();
-
-var _user$project$AsyncStorage$getItem = _user$project$Native_AsyncStorage.getItem;
-var _user$project$AsyncStorage$setItem = _user$project$Native_AsyncStorage.setItem;
-var _user$project$AsyncStorage$Error = function (a) {
-	return {ctor: 'Error', _0: a};
-};
 
 var _user$project$Date_Format$padWith = function (c) {
 	return function (_p0) {
@@ -8650,24 +8327,6 @@ var _user$project$Message$StopPickerMsg = function (a) {
 	return {ctor: 'StopPickerMsg', _0: a};
 };
 
-var _user$project$FetchRoutes$decodeStop = _elm_lang$core$Json_Decode$string;
-var _user$project$FetchRoutes$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$FetchRoutes$decodeStop);
-var _user$project$FetchRoutes$decodeRoute = A3(
-	_elm_lang$core$Json_Decode$map2,
-	_user$project$Types$Route,
-	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$FetchRoutes$decodeStops));
-var _user$project$FetchRoutes$decodeRoutes = A2(
-	_elm_lang$core$Json_Decode$map,
-	_elm_lang$core$List$map(
-		function (_p0) {
-			var _p1 = _p0;
-			return _p1._1(_p1._0);
-		}),
-	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$FetchRoutes$decodeRoute));
-var _user$project$FetchRoutes$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$FetchRoutes$decodeRoutes);
-var _user$project$FetchRoutes$fetchRoutes = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$FetchRoutes$getRoutes);
-
 var _user$project$Model$prettyTime = _user$project$Date_Format$format('%l:%M %P');
 var _user$project$Model$directionName = function (direction) {
 	var _p0 = direction;
@@ -8691,6 +8350,101 @@ var _user$project$Model$Model = F6(
 	function (a, b, c, d, e, f) {
 		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e, stopPickerOpen: f};
 	});
+
+var _user$project$ViewHelpers$underlayColor = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'underlayColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+
+var _user$project$DirectionPicker_View$defaultDirectionStyle = _elm_lang$core$Native_List.fromArray(
+	[
+		_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
+		_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+		_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
+		_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(20)
+	]);
+var _user$project$DirectionPicker_View$directionStyle = F2(
+	function (direction, currentDirection) {
+		var activeStyle = _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white)
+			]) : _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightHeader)
+			]);
+		return A2(_elm_lang$core$List$append, _user$project$DirectionPicker_View$defaultDirectionStyle, activeStyle);
+	});
+var _user$project$DirectionPicker_View$directionButton = F3(
+	function (currentDirection, direction, label) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+					_user$project$Message$ChangeDirection(direction)),
+					_user$project$ViewHelpers$underlayColor(_user$project$App_Color$darkPurple),
+					_elm_native_ui$elm_native_ui$NativeUi$style(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
+							_elm_native_ui$elm_native_ui$NativeUi_Style$padding(20)
+						]))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$style(
+							A2(_user$project$DirectionPicker_View$directionStyle, currentDirection, direction))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string(label)
+						]))
+				]));
+	});
+var _user$project$DirectionPicker_View$view = function (direction) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(20)
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Inbound, 'To Boston'),
+				A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Outbound, 'From Boston')
+			]));
+};
+
+var _user$project$FetchRoutes$decodeStop = _elm_lang$core$Json_Decode$string;
+var _user$project$FetchRoutes$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$FetchRoutes$decodeStop);
+var _user$project$FetchRoutes$decodeRoute = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$Types$Route,
+	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$FetchRoutes$decodeStops));
+var _user$project$FetchRoutes$decodeRoutes = A2(
+	_elm_lang$core$Json_Decode$map,
+	_elm_lang$core$List$map(
+		function (_p0) {
+			var _p1 = _p0;
+			return _p1._1(_p1._0);
+		}),
+	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$FetchRoutes$decodeRoute));
+var _user$project$FetchRoutes$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$FetchRoutes$decodeRoutes);
+var _user$project$FetchRoutes$fetchRoutes = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$FetchRoutes$getRoutes);
 
 var _user$project$FetchSchedule$stringToDate = A2(
 	_elm_lang$core$Json_Decode$andThen,
@@ -8798,7 +8552,7 @@ var _user$project$Update$update = F2(
 									_elm_lang$core$Task$attempt,
 									_user$project$Message$SetItem,
 									A2(
-										_user$project$AsyncStorage$setItem,
+										_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$setItem,
 										'routeStop',
 										A2(
 											_elm_lang$core$Basics_ops['++'],
@@ -8894,12 +8648,6 @@ var _user$project$Update$update = F2(
 		}
 	});
 
-var _user$project$StopPicker_View$keyProperty = function (string) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'key',
-		_elm_lang$core$Json_Encode$string(string));
-};
 var _user$project$StopPicker_View$routeButton = function (route) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
@@ -8914,7 +8662,7 @@ var _user$project$StopPicker_View$routeButton = function (route) {
 						_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
 						_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
 					])),
-				_user$project$StopPicker_View$keyProperty(route.name)
+				_elm_native_ui$elm_native_ui$NativeUi_Properties$key(route.name)
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -9041,7 +8789,28 @@ var _user$project$StopPicker_View$view = F2(
 		}
 	});
 
-var _user$project$View$stopPickerButton = function (buttonLabel) {
+var _user$project$Schedule_View$predictionText = function (_p0) {
+	var _p1 = _p0;
+	return _user$project$Model$prettyTime(_p1.predictedArrival);
+};
+var _user$project$Schedule_View$prediction = function (train) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple)
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$string(
+				_user$project$Schedule_View$predictionText(train))
+			]));
+};
+var _user$project$Schedule_View$trainElement = function (train) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		_elm_lang$core$Native_List.fromArray(
@@ -9049,7 +8818,87 @@ var _user$project$View$stopPickerButton = function (buttonLabel) {
 				_elm_native_ui$elm_native_ui$NativeUi$style(
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('#674982'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white'),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomWidth(1),
+						_elm_native_ui$elm_native_ui$NativeUi_Style$borderColor(_user$project$App_Color$lightGray)
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(36),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(-1),
+								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$roboto)
+							]))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi$string(
+						_user$project$Model$prettyTime(train.scheduledArrival))
+					])),
+				_user$project$Schedule_View$prediction(train)
+			]));
+};
+var _user$project$Schedule_View$view = function (trains) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch')
+					]))
+			]),
+		A2(
+			_elm_lang$core$List$append,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$white),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$color('#9F8AB3'),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(9),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('700'),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$letterSpacing(0.25),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$paddingTop(18),
+									_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center')
+								]))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_native_ui$elm_native_ui$NativeUi$string('UPCOMING')
+						]))
+				]),
+			A2(_elm_lang$core$List$map, _user$project$Schedule_View$trainElement, trains)));
+};
+
+var _user$project$View$stopPickerButton = function (buttonLabel) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_native_ui$elm_native_ui$NativeUi$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$stopPickerButton),
 						_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
 						_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
 						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
@@ -9057,7 +8906,9 @@ var _user$project$View$stopPickerButton = function (buttonLabel) {
 						_elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
 						_elm_native_ui$elm_native_ui$NativeUi_Style$bottom(20),
 						_elm_native_ui$elm_native_ui$NativeUi_Style$width(270)
-					]))
+					])),
+				_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker),
+				_user$project$ViewHelpers$underlayColor(_user$project$App_Color$stopPickerButton)
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -9071,8 +8922,7 @@ var _user$project$View$stopPickerButton = function (buttonLabel) {
 								_elm_native_ui$elm_native_ui$NativeUi_Style$color('#C9B8D7'),
 								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
 								_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('500')
-							])),
-						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker)
+							]))
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -9127,160 +8977,6 @@ var _user$project$View$routeAndStop = function (model) {
 			]),
 		_user$project$View$picker(model));
 };
-var _user$project$View$defaultDirectionStyle = _elm_lang$core$Native_List.fromArray(
-	[
-		_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
-		_elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
-		_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
-		_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
-		_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400')
-	]);
-var _user$project$View$directionStyle = F2(
-	function (direction, currentDirection) {
-		var activeStyle = _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? _elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white)
-			]) : _elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightHeader)
-			]);
-		return A2(_elm_lang$core$List$append, _user$project$View$defaultDirectionStyle, activeStyle);
-	});
-var _user$project$View$directionPicker = function (direction) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(20)
-					]))
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-						_user$project$Message$ChangeDirection(_user$project$Types$Inbound)),
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						A2(_user$project$View$directionStyle, _user$project$Types$Inbound, direction))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string('To Boston')
-					])),
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-						_user$project$Message$ChangeDirection(_user$project$Types$Outbound)),
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						A2(_user$project$View$directionStyle, _user$project$Types$Outbound, direction))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string('From Boston')
-					]))
-			]));
-};
-var _user$project$View$trainElement = function (train) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomWidth(1),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$borderColor(_user$project$App_Color$lightGray)
-					]))
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(22),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$roboto)
-							]))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string(
-						_user$project$Model$prettyTime(train.scheduledArrival))
-					])),
-				A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple)
-							]))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string(
-						_user$project$Model$prettyTime(train.predictedArrival))
-					]))
-			]));
-};
-var _user$project$View$schedule = function (trains) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch')
-					]))
-			]),
-		A2(
-			_elm_lang$core$List$append,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$style(
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$white),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$color('#9F8AB3'),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(9),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('700'),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$letterSpacing(0.25),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$paddingTop(18),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center')
-								]))
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$string('UPCOMING')
-						]))
-				]),
-			A2(_elm_lang$core$List$map, _user$project$View$trainElement, trains)));
-};
 var _user$project$View$topSection = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -9296,8 +8992,8 @@ var _user$project$View$topSection = function (model) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$View$directionPicker(model.direction),
-				_user$project$View$schedule(model.schedule)
+				_user$project$DirectionPicker_View$view(model.direction),
+				_user$project$Schedule_View$view(model.schedule)
 			]));
 };
 var _user$project$View$welcomeScreen = A2(
@@ -9361,7 +9057,7 @@ var _user$project$Main$main = _elm_native_ui$elm_native_ui$NativeUi$program(
 			_1: A2(
 				_elm_lang$core$Task$attempt,
 				_user$project$Message$GetItem,
-				_user$project$AsyncStorage$getItem('routeStop'))
+				_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$getItem('routeStop'))
 		},
 		view: _user$project$View$view,
 		update: _user$project$Update$update,

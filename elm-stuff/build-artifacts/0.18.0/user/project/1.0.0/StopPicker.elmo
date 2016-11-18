@@ -1,4 +1,0 @@
-var _user$project$StopPicker$initialModel = {selectedRoute: _elm_lang$core$Maybe$Nothing};
-var _user$project$StopPicker$Model = function (a) {
-	return {selectedRoute: a};
-};

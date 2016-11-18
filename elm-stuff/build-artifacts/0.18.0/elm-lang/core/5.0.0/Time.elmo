@@ -31,14 +31,17 @@ var _elm_lang$core$Time$addMySub = F2(
 			return A3(
 				_elm_lang$core$Dict$insert,
 				_p5,
-				_elm_lang$core$Native_List.fromArray(
-					[_p6]),
+				{
+					ctor: '::',
+					_0: _p6,
+					_1: {ctor: '[]'}
+				},
 				state);
 		} else {
 			return A3(
 				_elm_lang$core$Dict$insert,
 				_p5,
-				A2(_elm_lang$core$List_ops['::'], _p6, _p4._0),
+				{ctor: '::', _0: _p6, _1: _p4._0},
 				state);
 		}
 	});
@@ -125,7 +128,7 @@ var _elm_lang$core$Time$onEffects = F3(
 				var _p18 = _p17;
 				return {
 					ctor: '_Tuple3',
-					_0: A2(_elm_lang$core$List_ops['::'], interval, _p18._0),
+					_0: {ctor: '::', _0: interval, _1: _p18._0},
 					_1: _p18._1,
 					_2: _p18._2
 				};
@@ -140,8 +143,7 @@ var _elm_lang$core$Time$onEffects = F3(
 			_p10.processes,
 			{
 				ctor: '_Tuple3',
-				_0: _elm_lang$core$Native_List.fromArray(
-					[]),
+				_0: {ctor: '[]'},
 				_1: _elm_lang$core$Dict$empty,
 				_2: _elm_lang$core$Task$succeed(
 					{ctor: '_Tuple0'})

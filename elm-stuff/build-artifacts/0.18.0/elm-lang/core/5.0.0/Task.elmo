@@ -125,14 +125,13 @@ var _elm_lang$core$Task$sequence = function (tasks) {
 	var _p3 = tasks;
 	if (_p3.ctor === '[]') {
 		return _elm_lang$core$Task$succeed(
-			_elm_lang$core$Native_List.fromArray(
-				[]));
+			{ctor: '[]'});
 	} else {
 		return A3(
 			_elm_lang$core$Task$map2,
 			F2(
 				function (x, y) {
-					return A2(_elm_lang$core$List_ops['::'], x, y);
+					return {ctor: '::', _0: x, _1: y};
 				}),
 			_p3._0,
 			_elm_lang$core$Task$sequence(_p3._1));

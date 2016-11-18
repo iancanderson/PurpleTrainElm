@@ -7,15 +7,13 @@ var _elm_lang$html$Html$beginnerProgram = function (_p0) {
 			init: A2(
 				_elm_lang$core$Platform_Cmd_ops['!'],
 				_p1.model,
-				_elm_lang$core$Native_List.fromArray(
-					[])),
+				{ctor: '[]'}),
 			update: F2(
 				function (msg, model) {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						A2(_p1.update, msg, model),
-						_elm_lang$core$Native_List.fromArray(
-							[]));
+						{ctor: '[]'});
 				}),
 			view: _p1.view,
 			subscriptions: function (_p2) {

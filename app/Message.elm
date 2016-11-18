@@ -4,7 +4,7 @@ import Http
 
 import StopPicker.Update as StopPicker
 import Types exposing (..)
-import AsyncStorage
+import NativeUi.AsyncStorage as AsyncStorage
 
 type Msg
     = StopPickerMsg StopPicker.Msg
@@ -13,5 +13,5 @@ type Msg
     | LoadRoutes (Result Http.Error Routes)
     | LoadSchedule (Result Http.Error Schedule)
     | ToggleStopPicker
-    | SetItem (Result AsyncStorage.Error String)
+    | SetItem (Result AsyncStorage.Error ())
     | GetItem (Result AsyncStorage.Error (Maybe String))

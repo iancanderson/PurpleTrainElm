@@ -27,8 +27,7 @@ var _elm_lang$http$Http$post = F3(
 		return _elm_lang$http$Http$request(
 			{
 				method: 'POST',
-				headers: _elm_lang$core$Native_List.fromArray(
-					[]),
+				headers: {ctor: '[]'},
 				url: url,
 				body: body,
 				expect: _elm_lang$http$Http$expectJson(decoder),
@@ -41,8 +40,7 @@ var _elm_lang$http$Http$get = F2(
 		return _elm_lang$http$Http$request(
 			{
 				method: 'GET',
-				headers: _elm_lang$core$Native_List.fromArray(
-					[]),
+				headers: {ctor: '[]'},
 				url: url,
 				body: _elm_lang$http$Http$emptyBody,
 				expect: _elm_lang$http$Http$expectJson(decoder),
@@ -54,8 +52,7 @@ var _elm_lang$http$Http$getString = function (url) {
 	return _elm_lang$http$Http$request(
 		{
 			method: 'GET',
-			headers: _elm_lang$core$Native_List.fromArray(
-				[]),
+			headers: {ctor: '[]'},
 			url: url,
 			body: _elm_lang$http$Http$emptyBody,
 			expect: _elm_lang$http$Http$expectString,

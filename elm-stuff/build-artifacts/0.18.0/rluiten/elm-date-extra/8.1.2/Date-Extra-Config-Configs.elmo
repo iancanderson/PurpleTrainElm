@@ -1,0 +1,45 @@
+var _rluiten$elm_date_extra$Date_Extra_Config_Configs$configs = _elm_lang$core$Dict$fromList(
+	{
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: 'en_au', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_en_au$config},
+		_1: {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'en_us', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'en_gb', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_en_gb$config},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'fr_fr', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_fr_fr$config},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'pl_pl', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_pl_pl$config},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'fi_fi', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_fi_fi$config},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'ro_ro', _1: _rluiten$elm_date_extra$Date_Extra_Config_Config_ro_ro$config},
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Config_Configs$getConfig = function (id) {
+	var lowerId = _elm_lang$core$String$toLower(id);
+	var fixedId = A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('-'),
+		function (_p0) {
+			return '_';
+		},
+		lowerId);
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		_rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config,
+		A2(_elm_lang$core$Dict$get, fixedId, _rluiten$elm_date_extra$Date_Extra_Config_Configs$configs));
+};

@@ -13,11 +13,10 @@ var _elm_native_ui$elm_native_ui$NativeUi$style = function (styles) {
 	return _elm_native_ui$elm_native_ui$Native_NativeUi.style(
 		_elm_native_ui$elm_native_ui$NativeUi_Style$encode(styles));
 };
-var _elm_native_ui$elm_native_ui$NativeUi$property = F2(
-	function (name, value) {
-		return _elm_native_ui$elm_native_ui$Native_NativeUi.property;
-	});
+var _elm_native_ui$elm_native_ui$NativeUi$renderProperty = _elm_native_ui$elm_native_ui$Native_NativeUi.renderProperty;
+var _elm_native_ui$elm_native_ui$NativeUi$property = _elm_native_ui$elm_native_ui$Native_NativeUi.property;
 var _elm_native_ui$elm_native_ui$NativeUi$string = _elm_native_ui$elm_native_ui$Native_NativeUi.string;
+var _elm_native_ui$elm_native_ui$NativeUi$customNode = _elm_native_ui$elm_native_ui$Native_NativeUi.customNode;
 var _elm_native_ui$elm_native_ui$NativeUi$node = _elm_native_ui$elm_native_ui$Native_NativeUi.node;
 var _elm_native_ui$elm_native_ui$NativeUi$Node = {ctor: 'Node'};
 var _elm_native_ui$elm_native_ui$NativeUi$Property = {ctor: 'Property'};

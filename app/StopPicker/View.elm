@@ -103,10 +103,6 @@ routeOptions routes =
         ( List.map routeButton routes)
 
 
-keyProperty : String -> Ui.Property Msg
-keyProperty string = Ui.property "key" (Json.Encode.string string)
-
-
 routeButton : Route -> Node Msg
 routeButton route =
   text
@@ -115,6 +111,6 @@ routeButton route =
         [ Style.marginVertical 5
         , Style.fontFamily Font.hkCompakt
         ]
-    , keyProperty route.name
+    , key route.name
     ]
     [ Ui.string route.name ]

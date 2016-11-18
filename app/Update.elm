@@ -11,7 +11,7 @@ import Message exposing (..)
 import FetchSchedule exposing (..)
 import FetchRoutes exposing (..)
 import String
-import AsyncStorage
+import NativeUi.AsyncStorage as AsyncStorage
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -65,7 +65,8 @@ update msg model =
             case result of
                 Ok _ ->
                   ( model, Cmd.none )
-                Result.Err _ -> ( model, Cmd.none )
+                Result.Err a ->
+                    ( model, Cmd.none )
         LoadRoutes result ->
             case result of
                 Ok routes -> ( { model | routes = routes }, Cmd.none)

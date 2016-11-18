@@ -45,11 +45,15 @@ var _elm_lang$core$Json_Decode$list = function (decoder) {
 };
 var _elm_lang$core$Json_Decode$nullable = function (decoder) {
 	return _elm_lang$core$Json_Decode$oneOf(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
-				A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, decoder)
-			]));
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+			_1: {
+				ctor: '::',
+				_0: A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, decoder),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _elm_lang$core$Json_Decode$float = _elm_lang$core$Native_Json.decodePrimitive('float');
 var _elm_lang$core$Json_Decode$int = _elm_lang$core$Native_Json.decodePrimitive('int');

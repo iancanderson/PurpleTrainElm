@@ -6,7 +6,7 @@ import Model exposing (Model, initialModel)
 import Update exposing (update)
 import Message exposing (Msg)
 import View exposing (view)
-import AsyncStorage
+import NativeUi.AsyncStorage as AsyncStorage
 import Message exposing (..)
 import Task
 

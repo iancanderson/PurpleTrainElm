@@ -50,7 +50,7 @@ var _elm_lang$core$Random$listHelp = F4(
 				var _p8 = generate(seed);
 				var value = _p8._0;
 				var newSeed = _p8._1;
-				var _v2 = A2(_elm_lang$core$List_ops['::'], value, list),
+				var _v2 = {ctor: '::', _0: value, _1: list},
 					_v3 = n - 1,
 					_v4 = generate,
 					_v5 = newSeed;
@@ -79,8 +79,7 @@ var _elm_lang$core$Random$list = F2(
 			function (seed) {
 				return A4(
 					_elm_lang$core$Random$listHelp,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
+					{ctor: '[]'},
 					n,
 					_p10._0,
 					seed);
@@ -258,7 +257,7 @@ var _elm_lang$core$Random$split = function (_p64) {
 	var _p65 = _p64;
 	var _p68 = _p65._1;
 	var _p67 = _p65._0;
-	var _p66 = _elm_lang$core$Basics$snd(
+	var _p66 = _elm_lang$core$Tuple$second(
 		_elm_lang$core$Random$next(_p65));
 	var t1 = _p66._0;
 	var t2 = _p66._1;

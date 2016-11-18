@@ -1,0 +1,93 @@
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$Year = {ctor: 'Year'};
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$Month = {ctor: 'Month'};
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$Day = {ctor: 'Day'};
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$Hour = {ctor: 'Hour'};
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$Minute = {ctor: 'Minute'};
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$Second = {ctor: 'Second'};
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$startOfTime = F2(
+	function (unit, date) {
+		var _p0 = unit;
+		switch (_p0.ctor) {
+			case 'Millisecond':
+				return date;
+			case 'Second':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$Millisecond(0),
+					date);
+			case 'Minute':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$Second(0),
+					A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$startOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Second, date));
+			case 'Hour':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$Minute(0),
+					A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$startOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Minute, date));
+			case 'Day':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$Hour(0),
+					A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$startOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Hour, date));
+			case 'Month':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$DayOfMonth(1),
+					A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$startOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Day, date));
+			default:
+				return _rluiten$elm_date_extra$Date_Extra_TimeUnit$startOfTimeYear(date);
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$startOfTimeYear = function (date) {
+	var startMonthDate = A2(
+		_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+		_rluiten$elm_date_extra$Date_Extra_Field$DayOfMonth(1),
+		date);
+	var startYearDate = A2(
+		_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+		_rluiten$elm_date_extra$Date_Extra_Field$Month(_elm_lang$core$Date$Jan),
+		startMonthDate);
+	var monthTicks = _rluiten$elm_date_extra$Date_Extra_Core$toTime(startMonthDate) - _rluiten$elm_date_extra$Date_Extra_Core$toTime(startYearDate);
+	var updatedDate = _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Core$toTime(date) - monthTicks);
+	return A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$startOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Month, updatedDate);
+};
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$endOfTime = F2(
+	function (unit, date) {
+		var _p1 = unit;
+		switch (_p1.ctor) {
+			case 'Millisecond':
+				return date;
+			case 'Second':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$Millisecond(999),
+					date);
+			case 'Minute':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$Second(59),
+					A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$endOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Second, date));
+			case 'Hour':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$Minute(59),
+					A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$endOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Minute, date));
+			case 'Day':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$Hour(23),
+					A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$endOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Hour, date));
+			case 'Month':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp,
+					_rluiten$elm_date_extra$Date_Extra_Field$DayOfMonth(31),
+					A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$endOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Day, date));
+			default:
+				var extraYear = A3(_rluiten$elm_date_extra$Date_Extra_Duration$add, _rluiten$elm_date_extra$Date_Extra_Duration$Year, 1, date);
+				var startYear = A2(_rluiten$elm_date_extra$Date_Extra_TimeUnit$startOfTime, _rluiten$elm_date_extra$Date_Extra_TimeUnit$Year, extraYear);
+				return A3(_rluiten$elm_date_extra$Date_Extra_Duration$add, _rluiten$elm_date_extra$Date_Extra_Duration$Millisecond, -1, startYear);
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_TimeUnit$Millisecond = {ctor: 'Millisecond'};
