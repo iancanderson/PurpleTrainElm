@@ -9,15 +9,24 @@ import View exposing (view)
 import NativeUi.AsyncStorage as AsyncStorage
 import Message exposing (..)
 import Task
+import Time exposing (every, minute)
+
+subscriptions : Model -> Sub Msg
+subscriptions _ = every minute Minute
+
+
+init : (Model, Cmd Msg)
+init =
+  ( initialModel
+  , Task.perform Minute Time.now
+  )
 
 
 main : Program Never Model Msg
 main =
     NativeUi.program
-        { init = ( initialModel, Task.attempt
-                  GetItem
-                  (AsyncStorage.getItem "routeStop") )
+        { init = init
         , view = view
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         }

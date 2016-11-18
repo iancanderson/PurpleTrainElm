@@ -1,6 +1,7 @@
 module Update exposing (..)
 
 import Task
+import Date exposing (Date)
 
 import StopPicker.Update as StopPicker
 import StopPicker.Model as StopPicker
@@ -77,3 +78,10 @@ update msg model =
                 Result.Err _ -> ( model, Cmd.none )
         ToggleStopPicker ->
             ( { model | stopPickerOpen = not model.stopPickerOpen }, Cmd.none)
+
+        Minute now ->
+            ( { model | now = Date.fromTime now }
+            , Task.attempt
+                  GetItem
+                  (AsyncStorage.getItem "routeStop")
+            )

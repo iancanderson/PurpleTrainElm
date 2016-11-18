@@ -12,8 +12,8 @@ import Types exposing (..)
 import Message exposing (..)
 import Model exposing (..)
 
-view : Schedule -> Node Msg
-view trains =
+view : Model -> Node Msg
+view {schedule, now} =
     Elements.view
         [ Ui.style
             [ Style.alignSelf "stretch" ]
@@ -31,12 +31,12 @@ view trains =
                     ]
                 ]
                 [ Ui.string "UPCOMING" ] ]
-          ( List.map trainElement trains )
+          ( List.map (trainElement now) schedule )
         )
 
 
-trainElement : Train -> Node Msg
-trainElement train =
+trainElement : Date -> Train -> Node Msg
+trainElement now train =
     Elements.view
         [ Ui.style
             [ Style.flexDirection "row"
@@ -58,41 +58,74 @@ trainElement train =
               ]
             ]
             [ Ui.string (prettyTime train.scheduledArrival) ]
-        , prediction train
+        , prediction now train
         ]
 
 
-prediction : Train -> Node Msg
-prediction {predictedArrival, scheduledArrival} =
+prediction : Date -> Train -> Node Msg
+prediction now {predictedArrival, scheduledArrival} =
     let predictionDiff = (Duration.diff predictedArrival scheduledArrival)
         minutesLate = predictedMinutesLate predictionDiff
+        displayedArrival
+          = if minutesLate == Nothing
+              then scheduledArrival
+              else predictedArrival
     in
         text
             [ Ui.style
               [ Style.color <| predictionColor minutesLate
               ]
             ]
-            [ Ui.string <| predictionText minutesLate predictedArrival ]
+            [ Ui.string <| predictionText now minutesLate displayedArrival ]
 
 
-predictionText : Maybe String -> Date -> String
-predictionText minutesLate predictedArrival =
-    String.concat <|
-        List.filterMap
-        identity
-        [minutesLate, (Just <| prettyTime predictedArrival)]
+predictionText : Date -> Maybe String -> Date -> String
+predictionText now minutesLate predictedArrival =
+    joinMaybe
+        [ minutesLate
+        , Just <| prettyDuration <| Duration.diff predictedArrival now
+        ]
+
+
+prettyDuration : Duration.DeltaRecord -> String
+prettyDuration {year,month,day,hour,minute} =
+    let unitSum = year + month + day + hour + minute in
+        if unitSum < 0 then
+            "departed"
+        else if unitSum == 0 then
+            "departing now"
+        else if year + month + day > 0 then
+            "departs in more than a day"
+        else
+            joinMaybe
+                [ Just "departs in"
+                , prettyDurationUnit hour "h"
+                , prettyDurationUnit minute "m"
+                ]
+
+
+joinMaybe : List (Maybe String) -> String
+joinMaybe = String.join " " << catMaybes
+
+
+catMaybes : List (Maybe a) -> List a
+catMaybes = List.filterMap identity
+
+
+prettyDurationUnit : Int -> String -> Maybe String
+prettyDurationUnit amount unit =
+    if amount > 0 then
+        Just <| toString amount ++ unit
+    else
+        Nothing
+
 
 predictedMinutesLate : Duration.DeltaRecord -> Maybe String
-predictedMinutesLate {minute} =
-  if minute > minutesLateThreshold then
-    Just <| toString minute ++ "m late, "
-  else
-    Nothing
+predictedMinutesLate {minute} = prettyDurationUnit minute "m late,"
+
 
 predictionColor : Maybe String -> String
 predictionColor minutesLate =
     case minutesLate of
         Nothing -> Color.darkPurple
         Just _ -> Color.red
-
-minutesLateThreshold = 0

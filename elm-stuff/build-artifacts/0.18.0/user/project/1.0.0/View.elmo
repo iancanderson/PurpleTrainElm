@@ -156,7 +156,7 @@ var _user$project$View$topSection = function (model) {
 			_0: _user$project$DirectionPicker_View$view(model.direction),
 			_1: {
 				ctor: '::',
-				_0: _user$project$Schedule_View$view(model.schedule),
+				_0: _user$project$Schedule_View$view(model),
 				_1: {ctor: '[]'}
 			}
 		});

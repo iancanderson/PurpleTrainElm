@@ -9550,6 +9550,9 @@ var _user$project$StopPicker_Update$PickRoute = function (a) {
 	return {ctor: 'PickRoute', _0: a};
 };
 
+var _user$project$Message$Minute = function (a) {
+	return {ctor: 'Minute', _0: a};
+};
 var _user$project$Message$GetItem = function (a) {
 	return {ctor: 'GetItem', _0: a};
 };
@@ -9588,11 +9591,12 @@ var _user$project$Model$initialModel = {
 	routes: {ctor: '[]'},
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
-	stopPickerOpen: false
+	stopPickerOpen: false,
+	now: _elm_lang$core$Date$fromTime(0)
 };
-var _user$project$Model$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e, stopPickerOpen: f};
+var _user$project$Model$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e, stopPickerOpen: f, now: g};
 	});
 
 var _user$project$ViewHelpers$underlayColor = function (val) {
@@ -9928,13 +9932,26 @@ var _user$project$Update$update = F2(
 					} else {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
-				default:
+				case 'ToggleStopPicker':
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{stopPickerOpen: !model.stopPickerOpen}),
 						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				default:
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								now: _elm_lang$core$Date$fromTime(_p0._0)
+							}),
+						_1: A2(
+							_elm_lang$core$Task$attempt,
+							_user$project$Message$GetItem,
+							_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$getItem('routeStop'))
 					};
 			}
 		}
@@ -10159,7 +10176,6 @@ var _user$project$StopPicker_View$view = F2(
 		}
 	});
 
-var _user$project$Schedule_View$minutesLateThreshold = 0;
 var _user$project$Schedule_View$predictionColor = function (minutesLate) {
 	var _p0 = minutesLate;
 	if (_p0.ctor === 'Nothing') {
@@ -10168,138 +10184,174 @@ var _user$project$Schedule_View$predictionColor = function (minutesLate) {
 		return _user$project$App_Color$red;
 	}
 };
+var _user$project$Schedule_View$prettyDurationUnit = F2(
+	function (amount, unit) {
+		return (_elm_lang$core$Native_Utils.cmp(amount, 0) > 0) ? _elm_lang$core$Maybe$Just(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(amount),
+				unit)) : _elm_lang$core$Maybe$Nothing;
+	});
 var _user$project$Schedule_View$predictedMinutesLate = function (_p1) {
 	var _p2 = _p1;
-	var _p3 = _p2.minute;
-	return (_elm_lang$core$Native_Utils.cmp(_p3, _user$project$Schedule_View$minutesLateThreshold) > 0) ? _elm_lang$core$Maybe$Just(
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(_p3),
-			'm late, ')) : _elm_lang$core$Maybe$Nothing;
+	return A2(_user$project$Schedule_View$prettyDurationUnit, _p2.minute, 'm late,');
 };
-var _user$project$Schedule_View$predictionText = F2(
-	function (minutesLate, predictedArrival) {
-		return _elm_lang$core$String$concat(
-			A2(
-				_elm_lang$core$List$filterMap,
-				_elm_lang$core$Basics$identity,
-				{
-					ctor: '::',
-					_0: minutesLate,
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$core$Maybe$Just(
-							_user$project$Model$prettyTime(predictedArrival)),
-						_1: {ctor: '[]'}
-					}
-				}));
-	});
-var _user$project$Schedule_View$prediction = function (_p4) {
+var _user$project$Schedule_View$catMaybes = _elm_lang$core$List$filterMap(_elm_lang$core$Basics$identity);
+var _user$project$Schedule_View$joinMaybe = function (_p3) {
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		_user$project$Schedule_View$catMaybes(_p3));
+};
+var _user$project$Schedule_View$prettyDuration = function (_p4) {
 	var _p5 = _p4;
-	var _p6 = _p5.predictedArrival;
-	var predictionDiff = A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, _p6, _p5.scheduledArrival);
-	var minutesLate = _user$project$Schedule_View$predictedMinutesLate(predictionDiff);
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+	var _p10 = _p5.year;
+	var _p9 = _p5.month;
+	var _p8 = _p5.minute;
+	var _p7 = _p5.hour;
+	var _p6 = _p5.day;
+	var unitSum = (((_p10 + _p9) + _p6) + _p7) + _p8;
+	return (_elm_lang$core$Native_Utils.cmp(unitSum, 0) < 0) ? 'departed' : (_elm_lang$core$Native_Utils.eq(unitSum, 0) ? 'departing now' : ((_elm_lang$core$Native_Utils.cmp((_p10 + _p9) + _p6, 0) > 0) ? 'departs in more than a day' : _user$project$Schedule_View$joinMaybe(
 		{
 			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-				{
+			_0: _elm_lang$core$Maybe$Just('departs in'),
+			_1: {
+				ctor: '::',
+				_0: A2(_user$project$Schedule_View$prettyDurationUnit, _p7, 'h'),
+				_1: {
 					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(
-						_user$project$Schedule_View$predictionColor(minutesLate)),
+					_0: A2(_user$project$Schedule_View$prettyDurationUnit, _p8, 'm'),
 					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi$string(
-				A2(_user$project$Schedule_View$predictionText, minutesLate, _p6)),
-			_1: {ctor: '[]'}
-		});
+				}
+			}
+		})));
 };
-var _user$project$Schedule_View$trainElement = function (train) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		{
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-				{
+var _user$project$Schedule_View$predictionText = F3(
+	function (now, minutesLate, predictedArrival) {
+		return _user$project$Schedule_View$joinMaybe(
+			{
+				ctor: '::',
+				_0: minutesLate,
+				_1: {
 					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
-					_1: {
+					_0: _elm_lang$core$Maybe$Just(
+						_user$project$Schedule_View$prettyDuration(
+							A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, predictedArrival, now))),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Schedule_View$prediction = F2(
+	function (now, _p11) {
+		var _p12 = _p11;
+		var _p14 = _p12.scheduledArrival;
+		var _p13 = _p12.predictedArrival;
+		var predictionDiff = A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, _p13, _p14);
+		var minutesLate = _user$project$Schedule_View$predictedMinutesLate(predictionDiff);
+		var displayedArrival = _elm_lang$core$Native_Utils.eq(minutesLate, _elm_lang$core$Maybe$Nothing) ? _p14 : _p13;
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+					{
 						ctor: '::',
-						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(
+							_user$project$Schedule_View$predictionColor(minutesLate)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi$string(
+					A3(_user$project$Schedule_View$predictionText, now, minutesLate, displayedArrival)),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Schedule_View$trainElement = F2(
+	function (now, train) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
 						_1: {
 							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
 							_1: {
 								ctor: '::',
-								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white'),
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
 								_1: {
 									ctor: '::',
-									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white'),
 									_1: {
 										ctor: '::',
-										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomWidth(1),
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
 										_1: {
 											ctor: '::',
-											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderColor(_user$project$App_Color$lightGray),
-											_1: {ctor: '[]'}
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomWidth(1),
+											_1: {
+												ctor: '::',
+												_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderColor(_user$project$App_Color$lightGray),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
 							}
 						}
-					}
-				}),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				{
-					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-						{
-							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple),
-							_1: {
+					}),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+							{
 								ctor: '::',
-								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(36),
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple),
 								_1: {
 									ctor: '::',
-									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(36),
 									_1: {
 										ctor: '::',
-										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(-1),
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
 										_1: {
 											ctor: '::',
-											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$roboto),
-											_1: {ctor: '[]'}
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(-1),
+											_1: {
+												ctor: '::',
+												_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$roboto),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
-							}
-						}),
-					_1: {ctor: '[]'}
-				},
-				{
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$string(
+							_user$project$Model$prettyTime(train.scheduledArrival)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
 					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi$string(
-						_user$project$Model$prettyTime(train.scheduledArrival)),
+					_0: A2(_user$project$Schedule_View$prediction, now, train),
 					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: _user$project$Schedule_View$prediction(train),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$Schedule_View$view = function (trains) {
+				}
+			});
+	});
+var _user$project$Schedule_View$view = function (_p15) {
+	var _p16 = _p15;
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 		{
@@ -10359,7 +10411,10 @@ var _user$project$Schedule_View$view = function (trains) {
 					}),
 				_1: {ctor: '[]'}
 			},
-			A2(_elm_lang$core$List$map, _user$project$Schedule_View$trainElement, trains)));
+			A2(
+				_elm_lang$core$List$map,
+				_user$project$Schedule_View$trainElement(_p16.now),
+				_p16.schedule)));
 };
 
 var _user$project$View$stopPickerButton = function (buttonLabel) {
@@ -10520,7 +10575,7 @@ var _user$project$View$topSection = function (model) {
 			_0: _user$project$DirectionPicker_View$view(model.direction),
 			_1: {
 				ctor: '::',
-				_0: _user$project$Schedule_View$view(model.schedule),
+				_0: _user$project$Schedule_View$view(model),
 				_1: {ctor: '[]'}
 			}
 		});
@@ -10618,22 +10673,16 @@ var _user$project$View$view = function (model) {
 		_user$project$View$mainView(model));
 };
 
+var _user$project$Main$init = {
+	ctor: '_Tuple2',
+	_0: _user$project$Model$initialModel,
+	_1: A2(_elm_lang$core$Task$perform, _user$project$Message$Minute, _elm_lang$core$Time$now)
+};
+var _user$project$Main$subscriptions = function (_p0) {
+	return A2(_elm_lang$core$Time$every, _elm_lang$core$Time$minute, _user$project$Message$Minute);
+};
 var _user$project$Main$main = _elm_native_ui$elm_native_ui$NativeUi$program(
-	{
-		init: {
-			ctor: '_Tuple2',
-			_0: _user$project$Model$initialModel,
-			_1: A2(
-				_elm_lang$core$Task$attempt,
-				_user$project$Message$GetItem,
-				_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$getItem('routeStop'))
-		},
-		view: _user$project$View$view,
-		update: _user$project$Update$update,
-		subscriptions: function (_p0) {
-			return _elm_lang$core$Platform_Sub$none;
-		}
-	})();
+	{init: _user$project$Main$init, view: _user$project$View$view, update: _user$project$Update$update, subscriptions: _user$project$Main$subscriptions})();
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};

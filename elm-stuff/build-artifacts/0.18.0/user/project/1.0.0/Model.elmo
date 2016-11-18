@@ -13,9 +13,10 @@ var _user$project$Model$initialModel = {
 	routes: {ctor: '[]'},
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
-	stopPickerOpen: false
+	stopPickerOpen: false,
+	now: _elm_lang$core$Date$fromTime(0)
 };
-var _user$project$Model$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e, stopPickerOpen: f};
+var _user$project$Model$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e, stopPickerOpen: f, now: g};
 	});

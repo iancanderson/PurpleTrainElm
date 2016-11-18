@@ -140,13 +140,26 @@ var _user$project$Update$update = F2(
 					} else {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
-				default:
+				case 'ToggleStopPicker':
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{stopPickerOpen: !model.stopPickerOpen}),
 						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				default:
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								now: _elm_lang$core$Date$fromTime(_p0._0)
+							}),
+						_1: A2(
+							_elm_lang$core$Task$attempt,
+							_user$project$Message$GetItem,
+							_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$getItem('routeStop'))
 					};
 			}
 		}

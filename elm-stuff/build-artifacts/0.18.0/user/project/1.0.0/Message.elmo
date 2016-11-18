@@ -1,3 +1,6 @@
+var _user$project$Message$Minute = function (a) {
+	return {ctor: 'Minute', _0: a};
+};
 var _user$project$Message$GetItem = function (a) {
 	return {ctor: 'GetItem', _0: a};
 };

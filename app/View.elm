@@ -68,7 +68,7 @@ topSection model =
             ]
         ]
         [ DirectionPicker.view model.direction
-        , Schedule.view model.schedule
+        , Schedule.view model
         ]
 
 

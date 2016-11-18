@@ -1,6 +1,7 @@
 module Message exposing (..)
 
 import Http
+import Time exposing (Time)
 
 import StopPicker.Update as StopPicker
 import Types exposing (..)
@@ -15,3 +16,4 @@ type Msg
     | ToggleStopPicker
     | SetItem (Result AsyncStorage.Error ())
     | GetItem (Result AsyncStorage.Error (Maybe String))
+    | Minute Time
