@@ -1,0 +1,16 @@
+var _user$project$Main$main = _elm_native_ui$elm_native_ui$NativeUi$program(
+	{
+		init: {
+			ctor: '_Tuple2',
+			_0: _user$project$Model$initialModel,
+			_1: A2(
+				_elm_lang$core$Task$attempt,
+				_user$project$Message$GetItem,
+				_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$getItem('routeStop'))
+		},
+		view: _user$project$View$view,
+		update: _user$project$Update$update,
+		subscriptions: function (_p0) {
+			return _elm_lang$core$Platform_Sub$none;
+		}
+	})();

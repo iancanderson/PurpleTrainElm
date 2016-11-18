@@ -1,0 +1,110 @@
+var _user$project$DirectionPicker_View$defaultDirectionStyle = {
+	ctor: '::',
+	_0: _elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
+	_1: {
+		ctor: '::',
+		_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+		_1: {
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
+			_1: {
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(20),
+				_1: {ctor: '[]'}
+			}
+		}
+	}
+};
+var _user$project$DirectionPicker_View$directionStyle = F2(
+	function (direction, currentDirection) {
+		var activeStyle = _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? {
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white),
+			_1: {ctor: '[]'}
+		} : {
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightHeader),
+			_1: {ctor: '[]'}
+		};
+		return A2(_elm_lang$core$List$append, _user$project$DirectionPicker_View$defaultDirectionStyle, activeStyle);
+	});
+var _user$project$DirectionPicker_View$directionButton = F3(
+	function (currentDirection, direction, label) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight,
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+					_user$project$Message$ChangeDirection(direction)),
+				_1: {
+					ctor: '::',
+					_0: _user$project$ViewHelpers$underlayColor(_user$project$App_Color$darkPurple),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+							{
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+							A2(_user$project$DirectionPicker_View$directionStyle, currentDirection, direction)),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$string(label),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$DirectionPicker_View$view = function (direction) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(20),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Inbound, 'To Boston'),
+			_1: {
+				ctor: '::',
+				_0: A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Outbound, 'From Boston'),
+				_1: {ctor: '[]'}
+			}
+		});
+};

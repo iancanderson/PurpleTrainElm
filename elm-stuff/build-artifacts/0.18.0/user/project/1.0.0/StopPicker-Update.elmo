@@ -1,0 +1,44 @@
+var _user$project$StopPicker_Update$External = function (a) {
+	return {ctor: 'External', _0: a};
+};
+var _user$project$StopPicker_Update$Internal = function (a) {
+	return {ctor: 'Internal', _0: a};
+};
+var _user$project$StopPicker_Update$PickStop = function (a) {
+	return {ctor: 'PickStop', _0: a};
+};
+var _user$project$StopPicker_Update$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		if (_p0.ctor === 'PickRoute') {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						selectedRoute: _elm_lang$core$Maybe$Just(_p0._0)
+					}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{selectedRoute: _elm_lang$core$Maybe$Nothing}),
+				_1: A2(
+					_elm_lang$core$Task$perform,
+					function (_p1) {
+						return _user$project$StopPicker_Update$External(
+							_user$project$StopPicker_Update$PickStop(_p1));
+					},
+					_elm_lang$core$Task$succeed(_p0._0))
+			};
+		}
+	});
+var _user$project$StopPicker_Update$InternalPickStop = function (a) {
+	return {ctor: 'InternalPickStop', _0: a};
+};
+var _user$project$StopPicker_Update$PickRoute = function (a) {
+	return {ctor: 'PickRoute', _0: a};
+};

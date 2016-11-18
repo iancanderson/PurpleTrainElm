@@ -3,6 +3,8 @@ module Schedule.View exposing (view)
 import NativeUi as Ui exposing (Node, Property)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
+import Date.Extra.Duration as Duration
+import Date exposing (Date)
 
 import App.Color as Color
 import App.Font as Font
@@ -61,18 +63,36 @@ trainElement train =
 
 
 prediction : Train -> Node Msg
-prediction train =
-      text
-          [ Ui.style
-            [ Style.color Color.darkPurple
+prediction {predictedArrival, scheduledArrival} =
+    let predictionDiff = (Duration.diff predictedArrival scheduledArrival)
+        minutesLate = predictedMinutesLate predictionDiff
+    in
+        text
+            [ Ui.style
+              [ Style.color <| predictionColor minutesLate
+              ]
             ]
-          ]
-          [ Ui.string <| predictionText train ]
+            [ Ui.string <| predictionText minutesLate predictedArrival ]
 
 
-predictionText : Train -> String
-predictionText {scheduledArrival, predictedArrival} =
-    -- let predictedTime = (Date.toTime predictedArrival)
-    --     scheduledTime = (Date.toTime scheduledArrival)
-    -- in
-        prettyTime predictedArrival
+predictionText : Maybe String -> Date -> String
+predictionText minutesLate predictedArrival =
+    String.concat <|
+        List.filterMap
+        identity
+        [minutesLate, (Just <| prettyTime predictedArrival)]
+
+predictedMinutesLate : Duration.DeltaRecord -> Maybe String
+predictedMinutesLate {minute} =
+  if minute > minutesLateThreshold then
+    Just <| toString minute ++ "m late, "
+  else
+    Nothing
+
+predictionColor : Maybe String -> String
+predictionColor minutesLate =
+    case minutesLate of
+        Nothing -> Color.darkPurple
+        Just _ -> Color.red
+
+minutesLateThreshold = 0

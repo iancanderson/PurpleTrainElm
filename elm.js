@@ -2234,33 +2234,32 @@ var _elm_lang$core$List$map = F2(
 			_elm_lang$core$List$foldr,
 			F2(
 				function (x, acc) {
-					return A2(
-						_elm_lang$core$List_ops['::'],
-						f(x),
-						acc);
+					return {
+						ctor: '::',
+						_0: f(x),
+						_1: acc
+					};
 				}),
-			_elm_lang$core$Native_List.fromArray(
-				[]),
+			{ctor: '[]'},
 			xs);
 	});
 var _elm_lang$core$List$filter = F2(
 	function (pred, xs) {
 		var conditionalCons = F2(
 			function (front, back) {
-				return pred(front) ? A2(_elm_lang$core$List_ops['::'], front, back) : back;
+				return pred(front) ? {ctor: '::', _0: front, _1: back} : back;
 			});
 		return A3(
 			_elm_lang$core$List$foldr,
 			conditionalCons,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
+			{ctor: '[]'},
 			xs);
 	});
 var _elm_lang$core$List$maybeCons = F3(
 	function (f, mx, xs) {
 		var _p10 = f(mx);
 		if (_p10.ctor === 'Just') {
-			return A2(_elm_lang$core$List_ops['::'], _p10._0, xs);
+			return {ctor: '::', _0: _p10._0, _1: xs};
 		} else {
 			return xs;
 		}
@@ -2270,8 +2269,7 @@ var _elm_lang$core$List$filterMap = F2(
 		return A3(
 			_elm_lang$core$List$foldr,
 			_elm_lang$core$List$maybeCons(f),
-			_elm_lang$core$Native_List.fromArray(
-				[]),
+			{ctor: '[]'},
 			xs);
 	});
 var _elm_lang$core$List$reverse = function (list) {
@@ -2279,10 +2277,9 @@ var _elm_lang$core$List$reverse = function (list) {
 		_elm_lang$core$List$foldl,
 		F2(
 			function (x, y) {
-				return A2(_elm_lang$core$List_ops['::'], x, y);
+				return {ctor: '::', _0: x, _1: y};
 			}),
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+		{ctor: '[]'},
 		list);
 };
 var _elm_lang$core$List$scanl = F3(
@@ -2291,21 +2288,24 @@ var _elm_lang$core$List$scanl = F3(
 			function (x, accAcc) {
 				var _p11 = accAcc;
 				if (_p11.ctor === '::') {
-					return A2(
-						_elm_lang$core$List_ops['::'],
-						A2(f, x, _p11._0),
-						accAcc);
+					return {
+						ctor: '::',
+						_0: A2(f, x, _p11._0),
+						_1: accAcc
+					};
 				} else {
-					return _elm_lang$core$Native_List.fromArray(
-						[]);
+					return {ctor: '[]'};
 				}
 			});
 		return _elm_lang$core$List$reverse(
 			A3(
 				_elm_lang$core$List$foldl,
 				scan1,
-				_elm_lang$core$Native_List.fromArray(
-					[b]),
+				{
+					ctor: '::',
+					_0: b,
+					_1: {ctor: '[]'}
+				},
 				xs));
 	});
 var _elm_lang$core$List$append = F2(
@@ -2318,7 +2318,7 @@ var _elm_lang$core$List$append = F2(
 				_elm_lang$core$List$foldr,
 				F2(
 					function (x, y) {
-						return A2(_elm_lang$core$List_ops['::'], x, y);
+						return {ctor: '::', _0: x, _1: y};
 					}),
 				ys,
 				xs);
@@ -2328,8 +2328,7 @@ var _elm_lang$core$List$concat = function (lists) {
 	return A3(
 		_elm_lang$core$List$foldr,
 		_elm_lang$core$List$append,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+		{ctor: '[]'},
 		lists);
 };
 var _elm_lang$core$List$concatMap = F2(
@@ -2346,12 +2345,12 @@ var _elm_lang$core$List$partition = F2(
 				var _p15 = _p14._1;
 				return pred(x) ? {
 					ctor: '_Tuple2',
-					_0: A2(_elm_lang$core$List_ops['::'], x, _p16),
+					_0: {ctor: '::', _0: x, _1: _p16},
 					_1: _p15
 				} : {
 					ctor: '_Tuple2',
 					_0: _p16,
-					_1: A2(_elm_lang$core$List_ops['::'], x, _p15)
+					_1: {ctor: '::', _0: x, _1: _p15}
 				};
 			});
 		return A3(
@@ -2359,10 +2358,8 @@ var _elm_lang$core$List$partition = F2(
 			step,
 			{
 				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_List.fromArray(
-					[]),
-				_1: _elm_lang$core$Native_List.fromArray(
-					[])
+				_0: {ctor: '[]'},
+				_1: {ctor: '[]'}
 			},
 			list);
 	});
@@ -2373,8 +2370,8 @@ var _elm_lang$core$List$unzip = function (pairs) {
 			var _p20 = _p17;
 			return {
 				ctor: '_Tuple2',
-				_0: A2(_elm_lang$core$List_ops['::'], _p19._0, _p20._0),
-				_1: A2(_elm_lang$core$List_ops['::'], _p19._1, _p20._1)
+				_0: {ctor: '::', _0: _p19._0, _1: _p20._0},
+				_1: {ctor: '::', _0: _p19._1, _1: _p20._1}
 			};
 		});
 	return A3(
@@ -2382,10 +2379,8 @@ var _elm_lang$core$List$unzip = function (pairs) {
 		step,
 		{
 			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_List.fromArray(
-				[]),
-			_1: _elm_lang$core$Native_List.fromArray(
-				[])
+			_0: {ctor: '[]'},
+			_1: {ctor: '[]'}
 		},
 		pairs);
 };
@@ -2393,23 +2388,22 @@ var _elm_lang$core$List$intersperse = F2(
 	function (sep, xs) {
 		var _p21 = xs;
 		if (_p21.ctor === '[]') {
-			return _elm_lang$core$Native_List.fromArray(
-				[]);
+			return {ctor: '[]'};
 		} else {
 			var step = F2(
 				function (x, rest) {
-					return A2(
-						_elm_lang$core$List_ops['::'],
-						sep,
-						A2(_elm_lang$core$List_ops['::'], x, rest));
+					return {
+						ctor: '::',
+						_0: sep,
+						_1: {ctor: '::', _0: x, _1: rest}
+					};
 				});
 			var spersed = A3(
 				_elm_lang$core$List$foldr,
 				step,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
+				{ctor: '[]'},
 				_p21._1);
-			return A2(_elm_lang$core$List_ops['::'], _p21._0, spersed);
+			return {ctor: '::', _0: _p21._0, _1: spersed};
 		}
 	});
 var _elm_lang$core$List$takeReverse = F3(
@@ -2425,7 +2419,7 @@ var _elm_lang$core$List$takeReverse = F3(
 				} else {
 					var _v23 = n - 1,
 						_v24 = _p22._1,
-						_v25 = A2(_elm_lang$core$List_ops['::'], _p22._0, taken);
+						_v25 = {ctor: '::', _0: _p22._0, _1: taken};
 					n = _v23;
 					list = _v24;
 					taken = _v25;
@@ -2441,14 +2435,12 @@ var _elm_lang$core$List$takeTailRec = F2(
 				_elm_lang$core$List$takeReverse,
 				n,
 				list,
-				_elm_lang$core$Native_List.fromArray(
-					[])));
+				{ctor: '[]'}));
 	});
 var _elm_lang$core$List$takeFast = F3(
 	function (ctr, n, list) {
 		if (_elm_lang$core$Native_Utils.cmp(n, 0) < 1) {
-			return _elm_lang$core$Native_List.fromArray(
-				[]);
+			return {ctor: '[]'};
 		} else {
 			var _p23 = {ctor: '_Tuple2', _0: n, _1: list};
 			_v26_5:
@@ -2464,12 +2456,30 @@ var _elm_lang$core$List$takeFast = F3(
 									case 1:
 										break _v26_1;
 									case 2:
-										return _elm_lang$core$Native_List.fromArray(
-											[_p23._1._0, _p23._1._1._0]);
+										return {
+											ctor: '::',
+											_0: _p23._1._0,
+											_1: {
+												ctor: '::',
+												_0: _p23._1._1._0,
+												_1: {ctor: '[]'}
+											}
+										};
 									case 3:
 										if (_p23._1._1._1.ctor === '::') {
-											return _elm_lang$core$Native_List.fromArray(
-												[_p23._1._0, _p23._1._1._0, _p23._1._1._1._0]);
+											return {
+												ctor: '::',
+												_0: _p23._1._0,
+												_1: {
+													ctor: '::',
+													_0: _p23._1._1._0,
+													_1: {
+														ctor: '::',
+														_0: _p23._1._1._1._0,
+														_1: {ctor: '[]'}
+													}
+												}
+											};
 										} else {
 											break _v26_5;
 										}
@@ -2480,31 +2490,39 @@ var _elm_lang$core$List$takeFast = F3(
 											var _p26 = _p23._1._0;
 											var _p25 = _p23._1._1._1._1._0;
 											var _p24 = _p23._1._1._1._1._1;
-											return (_elm_lang$core$Native_Utils.cmp(ctr, 1000) > 0) ? A2(
-												_elm_lang$core$List_ops['::'],
-												_p26,
-												A2(
-													_elm_lang$core$List_ops['::'],
-													_p27,
-													A2(
-														_elm_lang$core$List_ops['::'],
-														_p28,
-														A2(
-															_elm_lang$core$List_ops['::'],
-															_p25,
-															A2(_elm_lang$core$List$takeTailRec, n - 4, _p24))))) : A2(
-												_elm_lang$core$List_ops['::'],
-												_p26,
-												A2(
-													_elm_lang$core$List_ops['::'],
-													_p27,
-													A2(
-														_elm_lang$core$List_ops['::'],
-														_p28,
-														A2(
-															_elm_lang$core$List_ops['::'],
-															_p25,
-															A3(_elm_lang$core$List$takeFast, ctr + 1, n - 4, _p24)))));
+											return (_elm_lang$core$Native_Utils.cmp(ctr, 1000) > 0) ? {
+												ctor: '::',
+												_0: _p26,
+												_1: {
+													ctor: '::',
+													_0: _p27,
+													_1: {
+														ctor: '::',
+														_0: _p28,
+														_1: {
+															ctor: '::',
+															_0: _p25,
+															_1: A2(_elm_lang$core$List$takeTailRec, n - 4, _p24)
+														}
+													}
+												}
+											} : {
+												ctor: '::',
+												_0: _p26,
+												_1: {
+													ctor: '::',
+													_0: _p27,
+													_1: {
+														ctor: '::',
+														_0: _p28,
+														_1: {
+															ctor: '::',
+															_0: _p25,
+															_1: A3(_elm_lang$core$List$takeFast, ctr + 1, n - 4, _p24)
+														}
+													}
+												}
+											};
 										} else {
 											break _v26_5;
 										}
@@ -2521,8 +2539,11 @@ var _elm_lang$core$List$takeFast = F3(
 						break _v26_5;
 					}
 				} while(false);
-				return _elm_lang$core$Native_List.fromArray(
-					[_p23._1._0]);
+				return {
+					ctor: '::',
+					_0: _p23._1._0,
+					_1: {ctor: '[]'}
+				};
 			} while(false);
 			return list;
 		}
@@ -2538,7 +2559,7 @@ var _elm_lang$core$List$repeatHelp = F3(
 			if (_elm_lang$core$Native_Utils.cmp(n, 0) < 1) {
 				return result;
 			} else {
-				var _v27 = A2(_elm_lang$core$List_ops['::'], value, result),
+				var _v27 = {ctor: '::', _0: value, _1: result},
 					_v28 = n - 1,
 					_v29 = value;
 				result = _v27;
@@ -2552,8 +2573,7 @@ var _elm_lang$core$List$repeat = F2(
 	function (n, value) {
 		return A3(
 			_elm_lang$core$List$repeatHelp,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
+			{ctor: '[]'},
 			n,
 			value);
 	});
@@ -2564,7 +2584,7 @@ var _elm_lang$core$List$rangeHelp = F3(
 			if (_elm_lang$core$Native_Utils.cmp(lo, hi) < 1) {
 				var _v30 = lo,
 					_v31 = hi - 1,
-					_v32 = A2(_elm_lang$core$List_ops['::'], hi, list);
+					_v32 = {ctor: '::', _0: hi, _1: list};
 				lo = _v30;
 				hi = _v31;
 				list = _v32;
@@ -2580,8 +2600,7 @@ var _elm_lang$core$List$range = F2(
 			_elm_lang$core$List$rangeHelp,
 			lo,
 			hi,
-			_elm_lang$core$Native_List.fromArray(
-				[]));
+			{ctor: '[]'});
 	});
 var _elm_lang$core$List$indexedMap = F2(
 	function (f, xs) {
@@ -3584,8 +3603,7 @@ return {
 
 var _elm_lang$core$Platform_Cmd$batch = _elm_lang$core$Native_Platform.batch;
 var _elm_lang$core$Platform_Cmd$none = _elm_lang$core$Platform_Cmd$batch(
-	_elm_lang$core$Native_List.fromArray(
-		[]));
+	{ctor: '[]'});
 var _elm_lang$core$Platform_Cmd_ops = _elm_lang$core$Platform_Cmd_ops || {};
 _elm_lang$core$Platform_Cmd_ops['!'] = F2(
 	function (model, commands) {
@@ -3600,8 +3618,7 @@ var _elm_lang$core$Platform_Cmd$Cmd = {ctor: 'Cmd'};
 
 var _elm_lang$core$Platform_Sub$batch = _elm_lang$core$Native_Platform.batch;
 var _elm_lang$core$Platform_Sub$none = _elm_lang$core$Platform_Sub$batch(
-	_elm_lang$core$Native_List.fromArray(
-		[]));
+	{ctor: '[]'});
 var _elm_lang$core$Platform_Sub$map = _elm_lang$core$Native_Platform.map;
 var _elm_lang$core$Platform_Sub$Sub = {ctor: 'Sub'};
 
@@ -3884,14 +3901,13 @@ var _elm_lang$core$Task$sequence = function (tasks) {
 	var _p3 = tasks;
 	if (_p3.ctor === '[]') {
 		return _elm_lang$core$Task$succeed(
-			_elm_lang$core$Native_List.fromArray(
-				[]));
+			{ctor: '[]'});
 	} else {
 		return A3(
 			_elm_lang$core$Task$map2,
 			F2(
 				function (x, y) {
-					return A2(_elm_lang$core$List_ops['::'], x, y);
+					return {ctor: '::', _0: x, _1: y};
 				}),
 			_p3._0,
 			_elm_lang$core$Task$sequence(_p3._1));
@@ -4392,10 +4408,9 @@ var _elm_lang$core$Dict$keys = function (dict) {
 		_elm_lang$core$Dict$foldr,
 		F3(
 			function (key, value, keyList) {
-				return A2(_elm_lang$core$List_ops['::'], key, keyList);
+				return {ctor: '::', _0: key, _1: keyList};
 			}),
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+		{ctor: '[]'},
 		dict);
 };
 var _elm_lang$core$Dict$values = function (dict) {
@@ -4403,10 +4418,9 @@ var _elm_lang$core$Dict$values = function (dict) {
 		_elm_lang$core$Dict$foldr,
 		F3(
 			function (key, value, valueList) {
-				return A2(_elm_lang$core$List_ops['::'], value, valueList);
+				return {ctor: '::', _0: value, _1: valueList};
 			}),
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+		{ctor: '[]'},
 		dict);
 };
 var _elm_lang$core$Dict$toList = function (dict) {
@@ -4414,13 +4428,13 @@ var _elm_lang$core$Dict$toList = function (dict) {
 		_elm_lang$core$Dict$foldr,
 		F3(
 			function (key, value, list) {
-				return A2(
-					_elm_lang$core$List_ops['::'],
-					{ctor: '_Tuple2', _0: key, _1: value},
-					list);
+				return {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: key, _1: value},
+					_1: list
+				};
 			}),
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+		{ctor: '[]'},
 		dict);
 };
 var _elm_lang$core$Dict$foldl = F3(
@@ -4520,18 +4534,43 @@ var _elm_lang$core$Dict$reportRemBug = F4(
 	function (msg, c, lgot, rgot) {
 		return _elm_lang$core$Native_Debug.crash(
 			_elm_lang$core$String$concat(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						'Internal red-black tree invariant violated, expected ',
-						msg,
-						' and got ',
-						_elm_lang$core$Basics$toString(c),
-						'/',
-						lgot,
-						'/',
-						rgot,
-						'\nPlease report this bug to <https://github.com/elm-lang/core/issues>'
-					])));
+				{
+					ctor: '::',
+					_0: 'Internal red-black tree invariant violated, expected ',
+					_1: {
+						ctor: '::',
+						_0: msg,
+						_1: {
+							ctor: '::',
+							_0: ' and got ',
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Basics$toString(c),
+								_1: {
+									ctor: '::',
+									_0: '/',
+									_1: {
+										ctor: '::',
+										_0: lgot,
+										_1: {
+											ctor: '::',
+											_0: '/',
+											_1: {
+												ctor: '::',
+												_0: rgot,
+												_1: {
+													ctor: '::',
+													_0: '\nPlease report this bug to <https://github.com/elm-lang/core/issues>',
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}));
 	});
 var _elm_lang$core$Dict$isBBlack = function (dict) {
 	var _p13 = dict;
@@ -5319,14 +5358,17 @@ var _elm_lang$core$Time$addMySub = F2(
 			return A3(
 				_elm_lang$core$Dict$insert,
 				_p5,
-				_elm_lang$core$Native_List.fromArray(
-					[_p6]),
+				{
+					ctor: '::',
+					_0: _p6,
+					_1: {ctor: '[]'}
+				},
 				state);
 		} else {
 			return A3(
 				_elm_lang$core$Dict$insert,
 				_p5,
-				A2(_elm_lang$core$List_ops['::'], _p6, _p4._0),
+				{ctor: '::', _0: _p6, _1: _p4._0},
 				state);
 		}
 	});
@@ -5413,7 +5455,7 @@ var _elm_lang$core$Time$onEffects = F3(
 				var _p18 = _p17;
 				return {
 					ctor: '_Tuple3',
-					_0: A2(_elm_lang$core$List_ops['::'], interval, _p18._0),
+					_0: {ctor: '::', _0: interval, _1: _p18._0},
 					_1: _p18._1,
 					_2: _p18._2
 				};
@@ -5428,8 +5470,7 @@ var _elm_lang$core$Time$onEffects = F3(
 			_p10.processes,
 			{
 				ctor: '_Tuple3',
-				_0: _elm_lang$core$Native_List.fromArray(
-					[]),
+				_0: {ctor: '[]'},
 				_1: _elm_lang$core$Dict$empty,
 				_2: _elm_lang$core$Task$succeed(
 					{ctor: '_Tuple0'})
@@ -6147,11 +6188,15 @@ var _elm_lang$core$Json_Decode$list = function (decoder) {
 };
 var _elm_lang$core$Json_Decode$nullable = function (decoder) {
 	return _elm_lang$core$Json_Decode$oneOf(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
-				A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, decoder)
-			]));
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+			_1: {
+				ctor: '::',
+				_0: A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, decoder),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _elm_lang$core$Json_Decode$float = _elm_lang$core$Native_Json.decodePrimitive('float');
 var _elm_lang$core$Json_Decode$int = _elm_lang$core$Native_Json.decodePrimitive('int');
@@ -6618,8 +6663,7 @@ var _elm_lang$http$Http$post = F3(
 		return _elm_lang$http$Http$request(
 			{
 				method: 'POST',
-				headers: _elm_lang$core$Native_List.fromArray(
-					[]),
+				headers: {ctor: '[]'},
 				url: url,
 				body: body,
 				expect: _elm_lang$http$Http$expectJson(decoder),
@@ -6632,8 +6676,7 @@ var _elm_lang$http$Http$get = F2(
 		return _elm_lang$http$Http$request(
 			{
 				method: 'GET',
-				headers: _elm_lang$core$Native_List.fromArray(
-					[]),
+				headers: {ctor: '[]'},
 				url: url,
 				body: _elm_lang$http$Http$emptyBody,
 				expect: _elm_lang$http$Http$expectJson(decoder),
@@ -6645,8 +6688,7 @@ var _elm_lang$http$Http$getString = function (url) {
 	return _elm_lang$http$Http$request(
 		{
 			method: 'GET',
-			headers: _elm_lang$core$Native_List.fromArray(
-				[]),
+			headers: {ctor: '[]'},
 			url: url,
 			body: _elm_lang$http$Http$emptyBody,
 			expect: _elm_lang$http$Http$expectString,
@@ -7171,14 +7213,15 @@ var _elm_native_ui$elm_native_ui$NativeUi_Style$encodeDeclaration = function (_p
 var _elm_native_ui$elm_native_ui$NativeUi_Style$encodeObject = function (_p3) {
 	var _p4 = _p3;
 	return _elm_lang$core$Json_Encode$object(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
+		{
+			ctor: '::',
+			_0: {
 				ctor: '_Tuple2',
 				_0: _p4._0,
 				_1: _elm_native_ui$elm_native_ui$NativeUi_Style$encodeValue(_p4._1)
-			}
-			]));
+			},
+			_1: {ctor: '[]'}
+		});
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Style$toJsonProperty = function (style) {
 	var _p5 = style;
@@ -7294,57 +7337,91 @@ var _elm_native_ui$elm_native_ui$NativeUi_Style$transform = function (options) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Style$listStyle,
 		'transform',
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
+		{
+			ctor: '::',
+			_0: A2(
 				_elm_lang$core$Maybe$map,
 				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('perspective'),
 				options.perspective),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotate'),
-				options.rotate),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateX'),
-				options.rotateX),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateY'),
-				options.rotateY),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateZ'),
-				options.rotateZ),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scale'),
-				options.scale),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scaleX'),
-				options.scaleX),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scaleY'),
-				options.scaleY),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('translateX'),
-				options.translateX),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('translateY'),
-				options.translateY),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('skewX'),
-				options.skewX),
-				A2(
-				_elm_lang$core$Maybe$map,
-				_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('skewY'),
-				options.skewY)
-			]));
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$core$Maybe$map,
+					_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotate'),
+					options.rotate),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$Maybe$map,
+						_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateX'),
+						options.rotateX),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$core$Maybe$map,
+							_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateY'),
+							options.rotateY),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Maybe$map,
+								_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('rotateZ'),
+								options.rotateZ),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Maybe$map,
+									_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scale'),
+									options.scale),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$core$Maybe$map,
+										_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scaleX'),
+										options.scaleX),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$core$Maybe$map,
+											_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('scaleY'),
+											options.scaleY),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$core$Maybe$map,
+												_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('translateX'),
+												options.translateX),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$core$Maybe$map,
+													_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration('translateY'),
+													options.translateY),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$core$Maybe$map,
+														_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('skewX'),
+														options.skewX),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$core$Maybe$map,
+															_elm_native_ui$elm_native_ui$NativeUi_Style$stringDeclaration('skewY'),
+															options.skewY),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Style$ObjectStyle = function (a) {
 	return {ctor: 'ObjectStyle', _0: a};
@@ -7359,11 +7436,15 @@ var _elm_native_ui$elm_native_ui$NativeUi_Style$shadowOffset = F2(
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Style$objectStyle,
 			'shadowOffset',
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration, 'width', width),
-					A2(_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration, 'height', height)
-				]));
+			{
+				ctor: '::',
+				_0: A2(_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration, 'width', width),
+				_1: {
+					ctor: '::',
+					_0: A2(_elm_native_ui$elm_native_ui$NativeUi_Style$numberDeclaration, 'height', height),
+					_1: {ctor: '[]'}
+				}
+			});
 	});
 var _elm_native_ui$elm_native_ui$NativeUi_Style$NumberStyle = function (a) {
 	return {ctor: 'NumberStyle', _0: a};
@@ -7903,28 +7984,30 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$defaultSource = function (u
 		_elm_native_ui$elm_native_ui$NativeUi$property,
 		'defaultSource',
 		_elm_lang$core$Json_Encode$object(
-			_elm_lang$core$Native_List.fromArray(
-				[
-					{
+			{
+				ctor: '::',
+				_0: {
 					ctor: '_Tuple2',
 					_0: 'uri',
 					_1: _elm_lang$core$Json_Encode$string(uri)
-				}
-				])));
+				},
+				_1: {ctor: '[]'}
+			}));
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$source = function (uri) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi$property,
 		'source',
 		_elm_lang$core$Json_Encode$object(
-			_elm_lang$core$Native_List.fromArray(
-				[
-					{
+			{
+				ctor: '::',
+				_0: {
 					ctor: '_Tuple2',
 					_0: 'uri',
 					_1: _elm_lang$core$Json_Encode$string(uri)
-				}
-				])));
+				},
+				_1: {ctor: '[]'}
+			}));
 };
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$minimumFontScale = function (val) {
 	return A2(
@@ -8022,6 +8105,1169 @@ var _elm_native_ui$elm_native_ui$NativeUi_Properties$StatusBarShowHideTransition
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$TabBarItemPositioningAuto = {ctor: 'TabBarItemPositioningAuto'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$TabBarItemPositioningCenter = {ctor: 'TabBarItemPositioningCenter'};
 var _elm_native_ui$elm_native_ui$NativeUi_Properties$TabBarItemPositioningFill = {ctor: 'TabBarItemPositioningFill'};
+
+var _rluiten$elm_date_extra$Date_Extra_Core$prevMonth = function (month) {
+	var _p0 = month;
+	switch (_p0.ctor) {
+		case 'Jan':
+			return _elm_lang$core$Date$Dec;
+		case 'Feb':
+			return _elm_lang$core$Date$Jan;
+		case 'Mar':
+			return _elm_lang$core$Date$Feb;
+		case 'Apr':
+			return _elm_lang$core$Date$Mar;
+		case 'May':
+			return _elm_lang$core$Date$Apr;
+		case 'Jun':
+			return _elm_lang$core$Date$May;
+		case 'Jul':
+			return _elm_lang$core$Date$Jun;
+		case 'Aug':
+			return _elm_lang$core$Date$Jul;
+		case 'Sep':
+			return _elm_lang$core$Date$Aug;
+		case 'Oct':
+			return _elm_lang$core$Date$Sep;
+		case 'Nov':
+			return _elm_lang$core$Date$Oct;
+		default:
+			return _elm_lang$core$Date$Nov;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$nextMonth = function (month) {
+	var _p1 = month;
+	switch (_p1.ctor) {
+		case 'Jan':
+			return _elm_lang$core$Date$Feb;
+		case 'Feb':
+			return _elm_lang$core$Date$Mar;
+		case 'Mar':
+			return _elm_lang$core$Date$Apr;
+		case 'Apr':
+			return _elm_lang$core$Date$May;
+		case 'May':
+			return _elm_lang$core$Date$Jun;
+		case 'Jun':
+			return _elm_lang$core$Date$Jul;
+		case 'Jul':
+			return _elm_lang$core$Date$Aug;
+		case 'Aug':
+			return _elm_lang$core$Date$Sep;
+		case 'Sep':
+			return _elm_lang$core$Date$Oct;
+		case 'Oct':
+			return _elm_lang$core$Date$Nov;
+		case 'Nov':
+			return _elm_lang$core$Date$Dec;
+		default:
+			return _elm_lang$core$Date$Jan;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$intToMonth = function (month) {
+	return (_elm_lang$core$Native_Utils.cmp(month, 1) < 1) ? _elm_lang$core$Date$Jan : (_elm_lang$core$Native_Utils.eq(month, 2) ? _elm_lang$core$Date$Feb : (_elm_lang$core$Native_Utils.eq(month, 3) ? _elm_lang$core$Date$Mar : (_elm_lang$core$Native_Utils.eq(month, 4) ? _elm_lang$core$Date$Apr : (_elm_lang$core$Native_Utils.eq(month, 5) ? _elm_lang$core$Date$May : (_elm_lang$core$Native_Utils.eq(month, 6) ? _elm_lang$core$Date$Jun : (_elm_lang$core$Native_Utils.eq(month, 7) ? _elm_lang$core$Date$Jul : (_elm_lang$core$Native_Utils.eq(month, 8) ? _elm_lang$core$Date$Aug : (_elm_lang$core$Native_Utils.eq(month, 9) ? _elm_lang$core$Date$Sep : (_elm_lang$core$Native_Utils.eq(month, 10) ? _elm_lang$core$Date$Oct : (_elm_lang$core$Native_Utils.eq(month, 11) ? _elm_lang$core$Date$Nov : _elm_lang$core$Date$Dec))))))))));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$monthToInt = function (month) {
+	var _p2 = month;
+	switch (_p2.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear = function (year) {
+	return (_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], year, 4),
+		0) && (!_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], year, 100),
+		0))) || _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], year, 400),
+		0);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYearDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(
+		_elm_lang$core$Date$year(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$yearToDayLength = function (year) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(year) ? 366 : 365;
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonth = F2(
+	function (year, month) {
+		var _p3 = month;
+		switch (_p3.ctor) {
+			case 'Jan':
+				return 31;
+			case 'Feb':
+				return _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear(year) ? 29 : 28;
+			case 'Mar':
+				return 31;
+			case 'Apr':
+				return 30;
+			case 'May':
+				return 31;
+			case 'Jun':
+				return 30;
+			case 'Jul':
+				return 31;
+			case 'Aug':
+				return 31;
+			case 'Sep':
+				return 30;
+			case 'Oct':
+				return 31;
+			case 'Nov':
+				return 30;
+			default:
+				return 31;
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$monthList = {
+	ctor: '::',
+	_0: _elm_lang$core$Date$Jan,
+	_1: {
+		ctor: '::',
+		_0: _elm_lang$core$Date$Feb,
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$core$Date$Mar,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Date$Apr,
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Date$May,
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Date$Jun,
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$core$Date$Jul,
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Date$Aug,
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Date$Sep,
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Date$Oct,
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Date$Nov,
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$core$Date$Dec,
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$toTime = function (_p4) {
+	return _elm_lang$core$Basics$floor(
+		_elm_lang$core$Date$toTime(_p4));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$fromTime = function (_p5) {
+	return _elm_lang$core$Date$fromTime(
+		_elm_lang$core$Basics$toFloat(_p5));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$prevDay = function (day) {
+	var _p6 = day;
+	switch (_p6.ctor) {
+		case 'Mon':
+			return _elm_lang$core$Date$Sun;
+		case 'Tue':
+			return _elm_lang$core$Date$Mon;
+		case 'Wed':
+			return _elm_lang$core$Date$Tue;
+		case 'Thu':
+			return _elm_lang$core$Date$Wed;
+		case 'Fri':
+			return _elm_lang$core$Date$Thu;
+		case 'Sat':
+			return _elm_lang$core$Date$Fri;
+		default:
+			return _elm_lang$core$Date$Sat;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$nextDay = function (day) {
+	var _p7 = day;
+	switch (_p7.ctor) {
+		case 'Mon':
+			return _elm_lang$core$Date$Tue;
+		case 'Tue':
+			return _elm_lang$core$Date$Wed;
+		case 'Wed':
+			return _elm_lang$core$Date$Thu;
+		case 'Thu':
+			return _elm_lang$core$Date$Fri;
+		case 'Fri':
+			return _elm_lang$core$Date$Sat;
+		case 'Sat':
+			return _elm_lang$core$Date$Sun;
+		default:
+			return _elm_lang$core$Date$Mon;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek = function (day) {
+	var _p8 = day;
+	switch (_p8.ctor) {
+		case 'Mon':
+			return 1;
+		case 'Tue':
+			return 2;
+		case 'Wed':
+			return 3;
+		case 'Thu':
+			return 4;
+		case 'Fri':
+			return 5;
+		case 'Sat':
+			return 6;
+		default:
+			return 7;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$daysBackToStartOfWeek = F2(
+	function (dateDay, startOfWeekDay) {
+		var startOfWeekDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(startOfWeekDay);
+		var dateDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(dateDay);
+		return (_elm_lang$core$Native_Utils.cmp(dateDayIndex, startOfWeekDayIndex) < 0) ? ((7 + dateDayIndex) - startOfWeekDayIndex) : (dateDayIndex - startOfWeekDayIndex);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond = _elm_lang$core$Basics$floor(_elm_lang$core$Time$millisecond);
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond = _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond * 1000;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute = _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond * 60;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour = _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute * 60;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksADay = _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour * 24;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek = _rluiten$elm_date_extra$Date_Extra_Core$ticksADay * 7;
+var _rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks = function (date) {
+	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date);
+	var day = _elm_lang$core$Date$day(date);
+	return dateTicks + ((1 - day) * _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks(date) - _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInPrevMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(
+		_rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$toFirstOfMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Core$firstOfMonthTicks(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks = function (date) {
+	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date);
+	var day = _elm_lang$core$Date$day(date);
+	var month = _elm_lang$core$Date$month(date);
+	var year = _elm_lang$core$Date$year(date);
+	var daysInMonthVal = A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, year, month);
+	var addDays = daysInMonthVal - day;
+	return dateTicks + (addDays * _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks(date) + _rluiten$elm_date_extra$Date_Extra_Core$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInNextMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(
+		_rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthTicks(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$epochDateStr = '1970-01-01T00:00:00Z';
+
+var _rluiten$elm_date_extra$Date_Extra_Compare$is3 = F4(
+	function (comp, date1, date2, date3) {
+		var time3 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date3);
+		var time2 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date2);
+		var highBound = A2(_elm_lang$core$Basics$max, time2, time3);
+		var lowBound = A2(_elm_lang$core$Basics$min, time2, time3);
+		var time1 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date1);
+		var _p0 = comp;
+		switch (_p0.ctor) {
+			case 'Between':
+				return (_elm_lang$core$Native_Utils.cmp(time1, lowBound) > 0) && (_elm_lang$core$Native_Utils.cmp(time1, highBound) < 0);
+			case 'BetweenOpenStart':
+				return (_elm_lang$core$Native_Utils.cmp(time1, lowBound) > -1) && (_elm_lang$core$Native_Utils.cmp(time1, highBound) < 0);
+			case 'BetweenOpenEnd':
+				return (_elm_lang$core$Native_Utils.cmp(time1, lowBound) > 0) && (_elm_lang$core$Native_Utils.cmp(time1, highBound) < 1);
+			default:
+				return (_elm_lang$core$Native_Utils.cmp(time1, lowBound) > -1) && (_elm_lang$core$Native_Utils.cmp(time1, highBound) < 1);
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Compare$is = F3(
+	function (comp, date1, date2) {
+		var time2 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date2);
+		var time1 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date1);
+		var _p1 = comp;
+		switch (_p1.ctor) {
+			case 'Before':
+				return _elm_lang$core$Native_Utils.cmp(time1, time2) < 0;
+			case 'After':
+				return _elm_lang$core$Native_Utils.cmp(time1, time2) > 0;
+			case 'Same':
+				return _elm_lang$core$Native_Utils.eq(time1, time2);
+			case 'SameOrBefore':
+				return _elm_lang$core$Native_Utils.cmp(time1, time2) < 1;
+			default:
+				return _elm_lang$core$Native_Utils.cmp(time1, time2) > -1;
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Compare$SameOrBefore = {ctor: 'SameOrBefore'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$SameOrAfter = {ctor: 'SameOrAfter'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$Same = {ctor: 'Same'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$Before = {ctor: 'Before'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$After = {ctor: 'After'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$BetweenOpen = {ctor: 'BetweenOpen'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$BetweenOpenEnd = {ctor: 'BetweenOpenEnd'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$BetweenOpenStart = {ctor: 'BetweenOpenStart'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$Between = {ctor: 'Between'};
+
+var _rluiten$elm_date_extra$Date_Extra_Config$Config = F2(
+	function (a, b) {
+		return {i18n: a, format: b};
+	});
+
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayOfMonthWithSuffix = F2(
+	function (pad, day) {
+		var value = function () {
+			var _p0 = day;
+			switch (_p0) {
+				case 1:
+					return '1st';
+				case 21:
+					return '21st';
+				case 2:
+					return '2nd';
+				case 22:
+					return '22nd';
+				case 3:
+					return '3rd';
+				case 23:
+					return '23rd';
+				case 31:
+					return '31st';
+				default:
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(day),
+						'th');
+			}
+		}();
+		return pad ? A3(
+			_elm_lang$core$String$padLeft,
+			4,
+			_elm_lang$core$Native_Utils.chr(' '),
+			value) : value;
+	});
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthName = function (month) {
+	var _p1 = month;
+	switch (_p1.ctor) {
+		case 'Jan':
+			return 'January';
+		case 'Feb':
+			return 'February';
+		case 'Mar':
+			return 'March';
+		case 'Apr':
+			return 'April';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'June';
+		case 'Jul':
+			return 'July';
+		case 'Aug':
+			return 'August';
+		case 'Sep':
+			return 'September';
+		case 'Oct':
+			return 'October';
+		case 'Nov':
+			return 'November';
+		default:
+			return 'December';
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthShort = function (month) {
+	var _p2 = month;
+	switch (_p2.ctor) {
+		case 'Jan':
+			return 'Jan';
+		case 'Feb':
+			return 'Feb';
+		case 'Mar':
+			return 'Mar';
+		case 'Apr':
+			return 'Apr';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'Jun';
+		case 'Jul':
+			return 'Jul';
+		case 'Aug':
+			return 'Aug';
+		case 'Sep':
+			return 'Sep';
+		case 'Oct':
+			return 'Oct';
+		case 'Nov':
+			return 'Nov';
+		default:
+			return 'Dec';
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayName = function (day) {
+	var _p3 = day;
+	switch (_p3.ctor) {
+		case 'Mon':
+			return 'Monday';
+		case 'Tue':
+			return 'Tuesday';
+		case 'Wed':
+			return 'Wednesday';
+		case 'Thu':
+			return 'Thursday';
+		case 'Fri':
+			return 'Friday';
+		case 'Sat':
+			return 'Saturday';
+		default:
+			return 'Sunday';
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayShort = function (day) {
+	var _p4 = day;
+	switch (_p4.ctor) {
+		case 'Mon':
+			return 'Mon';
+		case 'Tue':
+			return 'Tue';
+		case 'Wed':
+			return 'Wed';
+		case 'Thu':
+			return 'Thu';
+		case 'Fri':
+			return 'Fri';
+		case 'Sat':
+			return 'Sat';
+		default:
+			return 'Sun';
+	}
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config = {
+	i18n: {dayShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayShort, dayName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayName, monthShort: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthShort, monthName: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$monthName, dayOfMonthWithSuffix: _rluiten$elm_date_extra$Date_Extra_I18n_I_en_us$dayOfMonthWithSuffix},
+	format: {date: '%-m/%-d/%Y', longDate: '%A, %B %d, %Y', time: '%-H:%M %p', longTime: '%-H:%M:%S %p', dateTime: '%-m/%-d/%Y %-I:%M %p', firstDayOfWeek: _elm_lang$core$Date$Sun}
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Period$diff = F2(
+	function (date1, date2) {
+		var millisecondDiff = _elm_lang$core$Date$millisecond(date1) - _elm_lang$core$Date$millisecond(date2);
+		var secondDiff = _elm_lang$core$Date$second(date1) - _elm_lang$core$Date$second(date2);
+		var minuteDiff = _elm_lang$core$Date$minute(date1) - _elm_lang$core$Date$minute(date2);
+		var hourDiff = _elm_lang$core$Date$hour(date1) - _elm_lang$core$Date$hour(date2);
+		var ticksDiff = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date1) - _rluiten$elm_date_extra$Date_Extra_Core$toTime(date2);
+		var ticksDayDiff = (((ticksDiff - (hourDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour)) - (minuteDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute)) - (secondDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond)) - (millisecondDiff * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond);
+		var onlyDaysDiff = (ticksDayDiff / _rluiten$elm_date_extra$Date_Extra_Core$ticksADay) | 0;
+		var _p0 = function () {
+			if (_elm_lang$core$Native_Utils.cmp(onlyDaysDiff, 0) < 0) {
+				var absDayDiff = _elm_lang$core$Basics$abs(onlyDaysDiff);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Basics$negate((absDayDiff / 7) | 0),
+					_1: _elm_lang$core$Basics$negate(
+						A2(_elm_lang$core$Basics_ops['%'], absDayDiff, 7))
+				};
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: (onlyDaysDiff / 7) | 0,
+					_1: A2(_elm_lang$core$Basics_ops['%'], onlyDaysDiff, 7)
+				};
+			}
+		}();
+		var weekDiff = _p0._0;
+		var dayDiff = _p0._1;
+		return {week: weekDiff, day: dayDiff, hour: hourDiff, minute: minuteDiff, second: secondDiff, millisecond: millisecondDiff};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit = F3(
+	function (unit, addend, date) {
+		return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+			A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				addend * unit,
+				_rluiten$elm_date_extra$Date_Extra_Core$toTime(date)));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$toTicks = function (period) {
+	var _p1 = period;
+	switch (_p1.ctor) {
+		case 'Millisecond':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond;
+		case 'Second':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond;
+		case 'Minute':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute;
+		case 'Hour':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour;
+		case 'Day':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksADay;
+		case 'Week':
+			return _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek;
+		default:
+			var _p2 = _p1._0;
+			return (((((_rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond * _p2.millisecond) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksASecond * _p2.second)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute * _p2.minute)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour * _p2.hour)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksADay * _p2.day)) + (_rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek * _p2.week);
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$add = function (period) {
+	return _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit(
+		_rluiten$elm_date_extra$Date_Extra_Period$toTicks(period));
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$zeroDelta = {week: 0, day: 0, hour: 0, minute: 0, second: 0, millisecond: 0};
+var _rluiten$elm_date_extra$Date_Extra_Period$DeltaRecord = F6(
+	function (a, b, c, d, e, f) {
+		return {week: a, day: b, hour: c, minute: d, second: e, millisecond: f};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$Delta = function (a) {
+	return {ctor: 'Delta', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$Week = {ctor: 'Week'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Day = {ctor: 'Day'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Hour = {ctor: 'Hour'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Minute = {ctor: 'Minute'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Second = {ctor: 'Second'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Millisecond = {ctor: 'Millisecond'};
+
+var _rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil = F3(
+	function (year, month, day) {
+		var doy = (((((153 * (month + ((_elm_lang$core$Native_Utils.cmp(month, 2) > 0) ? -3 : 9))) + 2) / 5) | 0) + day) - 1;
+		var y = year - ((_elm_lang$core$Native_Utils.cmp(month, 2) < 1) ? 1 : 0);
+		var era = (((_elm_lang$core$Native_Utils.cmp(y, 0) > -1) ? y : (y - 399)) / 400) | 0;
+		var yoe = y - (era * 400);
+		var doe = (((yoe * 365) + ((yoe / 4) | 0)) - ((yoe / 100) | 0)) + doy;
+		return ((era * 146097) + doe) - 719468;
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields = F7(
+	function (year, month, day, hour, minute, second, millisecond) {
+		var monthInt = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month);
+		var c_year = (_elm_lang$core$Native_Utils.cmp(year, 0) < 0) ? 0 : year;
+		var c_day = A3(
+			_elm_lang$core$Basics$clamp,
+			1,
+			A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, c_year, month),
+			day);
+		var dayCount = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, c_year, monthInt, c_day);
+		return _rluiten$elm_date_extra$Date_Extra_Period$toTicks(
+			_rluiten$elm_date_extra$Date_Extra_Period$Delta(
+				{
+					millisecond: A3(_elm_lang$core$Basics$clamp, 0, 999, millisecond),
+					second: A3(_elm_lang$core$Basics$clamp, 0, 59, second),
+					minute: A3(_elm_lang$core$Basics$clamp, 0, 59, minute),
+					hour: A3(_elm_lang$core$Basics$clamp, 0, 23, hour),
+					day: dayCount,
+					week: 0
+				}));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields = function (date) {
+	return A7(
+		_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date),
+		_elm_lang$core$Date$hour(date),
+		_elm_lang$core$Date$minute(date),
+		_elm_lang$core$Date$second(date),
+		_elm_lang$core$Date$millisecond(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset = function (date) {
+	var v1Ticks = _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields(date);
+	var dateTicks = _elm_lang$core$Basics$floor(
+		_elm_lang$core$Date$toTime(date));
+	return ((dateTicks - v1Ticks) / _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute) | 0;
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset = F2(
+	function (offsetMinutes, date) {
+		return _rluiten$elm_date_extra$Date_Extra_Core$fromTime(
+			A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				offsetMinutes * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute,
+				_rluiten$elm_date_extra$Date_Extra_Core$toTime(date)));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsUtc = function (date) {
+	var offset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date);
+	var oHours = (offset / _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour) | 0;
+	var oMinutes = ((offset - (oHours * _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour)) / _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute) | 0;
+	var _p0 = A2(
+		_elm_lang$core$Debug$log,
+		'hackDateAsUtc',
+		{ctor: '_Tuple3', _0: offset, _1: oHours, _2: oMinutes});
+	var _p1 = A2(
+		_elm_lang$core$Debug$log,
+		'(local  date) fields',
+		{
+			ctor: '_Tuple7',
+			_0: _elm_lang$core$Date$year(date),
+			_1: _elm_lang$core$Date$month(date),
+			_2: _elm_lang$core$Date$day(date),
+			_3: _elm_lang$core$Date$hour(date),
+			_4: _elm_lang$core$Date$minute(date),
+			_5: _elm_lang$core$Date$second(date),
+			_6: _elm_lang$core$Date$millisecond(date)
+		});
+	return A2(_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset, offset, date);
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Create$epochDate = _elm_lang$core$Date$fromTime(0);
+var _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset = function () {
+	var inMinutes = (_elm_lang$core$Date$hour(_rluiten$elm_date_extra$Date_Extra_Create$epochDate) * 60) + _elm_lang$core$Date$minute(_rluiten$elm_date_extra$Date_Extra_Create$epochDate);
+	return _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$year(_rluiten$elm_date_extra$Date_Extra_Create$epochDate),
+		1969) ? (0 - (inMinutes - (24 * 60))) : (0 - inMinutes);
+}();
+var _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset;
+var _rluiten$elm_date_extra$Date_Extra_Create$adjustedTicksToDate = function (ticks) {
+	var date = A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Millisecond, ticks + (_rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute), _rluiten$elm_date_extra$Date_Extra_Create$epochDate);
+	var dateOffset = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date);
+	return _elm_lang$core$Native_Utils.eq(dateOffset, _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset) ? date : A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Minute, dateOffset - _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset, date);
+};
+var _rluiten$elm_date_extra$Date_Extra_Create$dateFromFields = F7(
+	function (year, month, day, hour, minute, second, millisecond) {
+		return _rluiten$elm_date_extra$Date_Extra_Create$adjustedTicksToDate(
+			A7(_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields, year, month, day, hour, minute, second, millisecond));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Create$timeFromFields = A3(_rluiten$elm_date_extra$Date_Extra_Create$dateFromFields, 1970, _elm_lang$core$Date$Jan, 1);
+
+var _rluiten$elm_date_extra$Date_Extra_Format$toHourMin = function (offsetMinutes) {
+	return {
+		ctor: '_Tuple2',
+		_0: (offsetMinutes / 60) | 0,
+		_1: A2(_elm_lang$core$Basics_ops['%'], offsetMinutes, 60)
+	};
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$padWithN = F2(
+	function (n, c) {
+		return function (_p0) {
+			return A3(
+				_elm_lang$core$String$padLeft,
+				n,
+				c,
+				_elm_lang$core$Basics$toString(_p0));
+		};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$padWith = function (c) {
+	return function (_p1) {
+		return A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			c,
+			_elm_lang$core$Basics$toString(_p1));
+	};
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$hourMod12 = function (h) {
+	return _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], h, 12),
+		0) ? 12 : A2(_elm_lang$core$Basics_ops['%'], h, 12);
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$formatOffsetStr = F2(
+	function (betweenHoursMinutes, offset) {
+		var _p2 = _rluiten$elm_date_extra$Date_Extra_Format$toHourMin(
+			_elm_lang$core$Basics$abs(offset));
+		var hour = _p2._0;
+		var minute = _p2._1;
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			(_elm_lang$core$Native_Utils.cmp(offset, 0) < 1) ? '+' : '-',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					hour),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					betweenHoursMinutes,
+					A2(
+						_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+						_elm_lang$core$Native_Utils.chr('0'),
+						minute))));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$collapse = function (m) {
+	return A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Basics$identity, m);
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$formatToken = F4(
+	function (config, offset, d, m) {
+		var symbol = A2(
+			_elm_lang$core$Maybe$withDefault,
+			' ',
+			_rluiten$elm_date_extra$Date_Extra_Format$collapse(
+				_elm_lang$core$List$head(m.submatches)));
+		var _p3 = symbol;
+		switch (_p3) {
+			case 'Y':
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWithN,
+					4,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$year(d));
+			case 'y':
+				return A2(
+					_elm_lang$core$String$right,
+					2,
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Format$padWithN,
+						2,
+						_elm_lang$core$Native_Utils.chr('0'),
+						_elm_lang$core$Date$year(d)));
+			case 'm':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+						_elm_lang$core$Date$month(d)));
+			case '_m':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+						_elm_lang$core$Date$month(d)));
+			case '-m':
+				return _elm_lang$core$Basics$toString(
+					_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+						_elm_lang$core$Date$month(d)));
+			case 'B':
+				return config.i18n.monthName(
+					_elm_lang$core$Date$month(d));
+			case '^B':
+				return _elm_lang$core$String$toUpper(
+					config.i18n.monthName(
+						_elm_lang$core$Date$month(d)));
+			case 'b':
+				return config.i18n.monthShort(
+					_elm_lang$core$Date$month(d));
+			case '^b':
+				return _elm_lang$core$String$toUpper(
+					config.i18n.monthShort(
+						_elm_lang$core$Date$month(d)));
+			case 'd':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$day(d));
+			case '-d':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$day(d));
+			case '-@d':
+				return A2(
+					config.i18n.dayOfMonthWithSuffix,
+					false,
+					_elm_lang$core$Date$day(d));
+			case 'e':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_elm_lang$core$Date$day(d));
+			case '@e':
+				return A2(
+					config.i18n.dayOfMonthWithSuffix,
+					true,
+					_elm_lang$core$Date$day(d));
+			case 'A':
+				return config.i18n.dayName(
+					_elm_lang$core$Date$dayOfWeek(d));
+			case '^A':
+				return _elm_lang$core$String$toUpper(
+					config.i18n.dayName(
+						_elm_lang$core$Date$dayOfWeek(d)));
+			case 'a':
+				return config.i18n.dayShort(
+					_elm_lang$core$Date$dayOfWeek(d));
+			case '^a':
+				return _elm_lang$core$String$toUpper(
+					config.i18n.dayShort(
+						_elm_lang$core$Date$dayOfWeek(d)));
+			case 'H':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$hour(d));
+			case '-H':
+				return _elm_lang$core$Basics$toString(
+					_elm_lang$core$Date$hour(d));
+			case 'k':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_elm_lang$core$Date$hour(d));
+			case 'I':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_rluiten$elm_date_extra$Date_Extra_Format$hourMod12(
+						_elm_lang$core$Date$hour(d)));
+			case '-I':
+				return _elm_lang$core$Basics$toString(
+					_rluiten$elm_date_extra$Date_Extra_Format$hourMod12(
+						_elm_lang$core$Date$hour(d)));
+			case 'l':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr(' '),
+					_rluiten$elm_date_extra$Date_Extra_Format$hourMod12(
+						_elm_lang$core$Date$hour(d)));
+			case 'p':
+				return (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$Date$hour(d),
+					12) < 0) ? 'AM' : 'PM';
+			case 'P':
+				return (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$Date$hour(d),
+					12) < 0) ? 'am' : 'pm';
+			case 'M':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$minute(d));
+			case 'S':
+				return A2(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWith,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$second(d));
+			case 'L':
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Format$padWithN,
+					3,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Date$millisecond(d));
+			case '%':
+				return symbol;
+			case 'z':
+				return A2(_rluiten$elm_date_extra$Date_Extra_Format$formatOffsetStr, '', offset);
+			case ':z':
+				return A2(_rluiten$elm_date_extra$Date_Extra_Format$formatOffsetStr, ':', offset);
+			default:
+				return '';
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$formatRegex = _elm_lang$core$Regex$regex('%(y|Y|m|_m|-m|B|^B|b|^b|d|-d|-@d|e|@e|A|^A|a|^a|H|-H|k|I|-I|l|p|P|M|S|%|L|z|:z)');
+var _rluiten$elm_date_extra$Date_Extra_Format$formatOffset = F4(
+	function (config, targetOffset, formatStr, date) {
+		var dateOffset = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date);
+		var hackOffset = dateOffset - targetOffset;
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_rluiten$elm_date_extra$Date_Extra_Format$formatRegex,
+			A3(
+				_rluiten$elm_date_extra$Date_Extra_Format$formatToken,
+				config,
+				targetOffset,
+				A2(_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset, hackOffset, date)),
+			formatStr);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$format = F3(
+	function (config, formatStr, date) {
+		return A4(
+			_rluiten$elm_date_extra$Date_Extra_Format$formatOffset,
+			config,
+			_rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date),
+			formatStr,
+			date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$formatUtc = F3(
+	function (config, formatStr, date) {
+		return A4(_rluiten$elm_date_extra$Date_Extra_Format$formatOffset, config, 0, formatStr, date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Format$isoDateString = function (date) {
+	var day = _elm_lang$core$Date$day(date);
+	var month = _elm_lang$core$Date$month(date);
+	var year = _elm_lang$core$Date$year(date);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		A3(
+			_elm_lang$core$String$padLeft,
+			4,
+			_elm_lang$core$Native_Utils.chr('0'),
+			_elm_lang$core$Basics$toString(year)),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'-',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(
+					_elm_lang$core$String$padLeft,
+					2,
+					_elm_lang$core$Native_Utils.chr('0'),
+					_elm_lang$core$Basics$toString(
+						_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month))),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'-',
+					A3(
+						_elm_lang$core$String$padLeft,
+						2,
+						_elm_lang$core$Native_Utils.chr('0'),
+						_elm_lang$core$Basics$toString(day))))));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$utcIsoDateString = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Format$isoDateString(
+		_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsUtc(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$yearInt = function (year) {
+	return A3(
+		_elm_lang$core$String$padLeft,
+		4,
+		_elm_lang$core$Native_Utils.chr('0'),
+		_elm_lang$core$Basics$toString(year));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$year = function (date) {
+	return A3(
+		_elm_lang$core$String$padLeft,
+		4,
+		_elm_lang$core$Native_Utils.chr('0'),
+		_elm_lang$core$Basics$toString(
+			_elm_lang$core$Date$year(date)));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$monthMonth = function (month) {
+	return A3(
+		_elm_lang$core$String$padLeft,
+		2,
+		_elm_lang$core$Native_Utils.chr('0'),
+		_elm_lang$core$Basics$toString(
+			_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month)));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$month = function (date) {
+	return A3(
+		_elm_lang$core$String$padLeft,
+		2,
+		_elm_lang$core$Native_Utils.chr('0'),
+		_elm_lang$core$Basics$toString(
+			_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+				_elm_lang$core$Date$month(date))));
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$isoTimeFormat = '%H:%M:%S';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoDateFormat = '%Y-%m-%d';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoMsecOffsetFormat = '%Y-%m-%dT%H:%M:%S.%L%z';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoString = A2(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config, _rluiten$elm_date_extra$Date_Extra_Format$isoMsecOffsetFormat);
+var _rluiten$elm_date_extra$Date_Extra_Format$isoOffsetFormat = '%Y-%m-%dT%H:%M:%S%z';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoMsecFormat = '%Y-%m-%dT%H:%M:%S.%L';
+var _rluiten$elm_date_extra$Date_Extra_Format$isoStringNoOffset = A2(_rluiten$elm_date_extra$Date_Extra_Format$format, _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config, _rluiten$elm_date_extra$Date_Extra_Format$isoMsecFormat);
+var _rluiten$elm_date_extra$Date_Extra_Format$utcIsoString = function (date) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		A3(_rluiten$elm_date_extra$Date_Extra_Format$formatUtc, _rluiten$elm_date_extra$Date_Extra_Config_Config_en_us$config, _rluiten$elm_date_extra$Date_Extra_Format$isoMsecFormat, date),
+		'Z');
+};
+var _rluiten$elm_date_extra$Date_Extra_Format$isoFormat = '%Y-%m-%dT%H:%M:%S';
+
+var _rluiten$elm_date_extra$Date_Extra_Duration$positiveDiff = F3(
+	function (date1, date2, mult) {
+		var accDiff = F4(
+			function (acc, v1, v2, maxV2) {
+				return (_elm_lang$core$Native_Utils.cmp(v1, v2) < 0) ? {ctor: '_Tuple2', _0: acc - 1, _1: (maxV2 + v1) - v2} : {ctor: '_Tuple2', _0: acc, _1: v1 - v2};
+			});
+		var msec2 = _elm_lang$core$Date$millisecond(date2);
+		var msec1 = _elm_lang$core$Date$millisecond(date1);
+		var second2 = _elm_lang$core$Date$second(date2);
+		var second1 = _elm_lang$core$Date$second(date1);
+		var minute2 = _elm_lang$core$Date$minute(date2);
+		var minute1 = _elm_lang$core$Date$minute(date1);
+		var hour2 = _elm_lang$core$Date$hour(date2);
+		var hour1 = _elm_lang$core$Date$hour(date1);
+		var day2 = _elm_lang$core$Date$day(date2);
+		var day1 = _elm_lang$core$Date$day(date1);
+		var month2Mon = _elm_lang$core$Date$month(date2);
+		var month2 = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month2Mon);
+		var month1Mon = _elm_lang$core$Date$month(date1);
+		var month1 = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month1Mon);
+		var year2 = _elm_lang$core$Date$year(date2);
+		var daysInDate2Month = A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, year2, month2Mon);
+		var year1 = _elm_lang$core$Date$year(date1);
+		var _p0 = A4(accDiff, year1 - year2, month1, month2, 12);
+		var yearDiff = _p0._0;
+		var monthDiffA = _p0._1;
+		var _p1 = A4(accDiff, monthDiffA, day1, day2, daysInDate2Month);
+		var monthDiff = _p1._0;
+		var dayDiffA = _p1._1;
+		var _p2 = A4(accDiff, dayDiffA, hour1, hour2, 24);
+		var dayDiff = _p2._0;
+		var hourDiffA = _p2._1;
+		var _p3 = A4(accDiff, hourDiffA, minute1, minute2, 60);
+		var hourDiff = _p3._0;
+		var minuteDiffA = _p3._1;
+		var _p4 = A4(accDiff, minuteDiffA, second1, second2, 60);
+		var minuteDiff = _p4._0;
+		var secondDiffA = _p4._1;
+		var _p5 = A4(accDiff, secondDiffA, msec1, msec2, 1000);
+		var secondDiff = _p5._0;
+		var msecDiff = _p5._1;
+		return {year: yearDiff * mult, month: monthDiff * mult, day: dayDiff * mult, hour: hourDiff * mult, minute: minuteDiff * mult, second: secondDiff * mult, millisecond: msecDiff * mult};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$diff = F2(
+	function (date1, date2) {
+		return A3(_rluiten$elm_date_extra$Date_Extra_Compare$is, _rluiten$elm_date_extra$Date_Extra_Compare$After, date1, date2) ? A3(_rluiten$elm_date_extra$Date_Extra_Duration$positiveDiff, date1, date2, 1) : A3(_rluiten$elm_date_extra$Date_Extra_Duration$positiveDiff, date2, date1, -1);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$addMonth = F2(
+	function (monthCount, date) {
+		var day = _elm_lang$core$Date$day(date);
+		var monthInt = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+			_elm_lang$core$Date$month(date));
+		var newMonthInt = monthInt + monthCount;
+		var targetMonthInt = A2(_elm_lang$core$Basics_ops['%'], newMonthInt, 12);
+		var yearOffset = (_elm_lang$core$Native_Utils.cmp(newMonthInt, 0) < 0) ? (((newMonthInt / 12) | 0) - 1) : ((newMonthInt / 12) | 0);
+		var year = _elm_lang$core$Date$year(date);
+		var inputCivil = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, year, monthInt, day);
+		var newYear = year + yearOffset;
+		var newDay = A2(
+			_elm_lang$core$Basics$min,
+			A2(
+				_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth,
+				newYear,
+				_rluiten$elm_date_extra$Date_Extra_Core$intToMonth(newMonthInt)),
+			day);
+		var newCivil = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, newYear, targetMonthInt, newDay);
+		var daysDifferent = newCivil - inputCivil;
+		return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Day, daysDifferent, date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$addYear = F2(
+	function (yearCount, date) {
+		return A2(_rluiten$elm_date_extra$Date_Extra_Duration$addMonth, 12 * yearCount, date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$daylightOffsetCompensate = F2(
+	function (dateBefore, dateAfter) {
+		var offsetAfter = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(dateAfter);
+		var offsetBefore = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(dateBefore);
+		if (!_elm_lang$core$Native_Utils.eq(offsetBefore, offsetAfter)) {
+			var adjustedDate = A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Millisecond, (offsetAfter - offsetBefore) * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute, dateAfter);
+			var adjustedOffset = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(adjustedDate);
+			return (!_elm_lang$core$Native_Utils.eq(adjustedOffset, offsetAfter)) ? dateAfter : adjustedDate;
+		} else {
+			return dateAfter;
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$requireDaylightCompensateInAdd = function (duration) {
+	var _p6 = duration;
+	switch (_p6.ctor) {
+		case 'Millisecond':
+			return false;
+		case 'Second':
+			return false;
+		case 'Minute':
+			return false;
+		case 'Hour':
+			return false;
+		case 'Day':
+			return true;
+		case 'Week':
+			return true;
+		case 'Month':
+			return true;
+		case 'Year':
+			return true;
+		default:
+			var _p7 = _p6._0;
+			return (!_elm_lang$core$Native_Utils.eq(_p7.day, 0)) || ((!_elm_lang$core$Native_Utils.eq(_p7.month, 0)) || (!_elm_lang$core$Native_Utils.eq(_p7.year, 0)));
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Duration$zeroDelta = {year: 0, month: 0, day: 0, hour: 0, minute: 0, second: 0, millisecond: 0};
+var _rluiten$elm_date_extra$Date_Extra_Duration$DeltaRecord = F7(
+	function (a, b, c, d, e, f, g) {
+		return {year: a, month: b, day: c, hour: d, minute: e, second: f, millisecond: g};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$Delta = function (a) {
+	return {ctor: 'Delta', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Year = {ctor: 'Year'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Month = {ctor: 'Month'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$doAdd = F3(
+	function (duration, addend, date) {
+		var _p8 = duration;
+		switch (_p8.ctor) {
+			case 'Millisecond':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Millisecond, addend, date);
+			case 'Second':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Second, addend, date);
+			case 'Minute':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Minute, addend, date);
+			case 'Hour':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Hour, addend, date);
+			case 'Day':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Day, addend, date);
+			case 'Week':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Week, addend, date);
+			case 'Month':
+				return A2(_rluiten$elm_date_extra$Date_Extra_Duration$addMonth, addend, date);
+			case 'Year':
+				return A2(_rluiten$elm_date_extra$Date_Extra_Duration$addYear, addend, date);
+			default:
+				var _p9 = _p8._0;
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Period$add,
+					_rluiten$elm_date_extra$Date_Extra_Period$Delta(
+						{week: 0, day: _p9.day, hour: _p9.hour, minute: _p9.minute, second: _p9.second, millisecond: _p9.millisecond}),
+					addend,
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Duration$doAdd,
+						_rluiten$elm_date_extra$Date_Extra_Duration$Month,
+						_p9.month,
+						A3(_rluiten$elm_date_extra$Date_Extra_Duration$doAdd, _rluiten$elm_date_extra$Date_Extra_Duration$Year, _p9.year, date)));
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$add = F3(
+	function (duration, addend, date) {
+		var outputDate = A3(_rluiten$elm_date_extra$Date_Extra_Duration$doAdd, duration, addend, date);
+		return _rluiten$elm_date_extra$Date_Extra_Duration$requireDaylightCompensateInAdd(duration) ? A2(_rluiten$elm_date_extra$Date_Extra_Duration$daylightOffsetCompensate, date, outputDate) : outputDate;
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$Week = {ctor: 'Week'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Day = {ctor: 'Day'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Hour = {ctor: 'Hour'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Minute = {ctor: 'Minute'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Second = {ctor: 'Second'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Millisecond = {ctor: 'Millisecond'};
 
 var _user$project$App_Color$stopPickerButton = '#674982';
 var _user$project$App_Color$defaultUnderlay = 'rgba(0,0,0,0.05)';
@@ -8338,10 +9584,8 @@ var _user$project$Model$directionName = function (direction) {
 };
 var _user$project$Model$initialModel = {
 	direction: _user$project$Types$Inbound,
-	schedule: _elm_lang$core$Native_List.fromArray(
-		[]),
-	routes: _elm_lang$core$Native_List.fromArray(
-		[]),
+	schedule: {ctor: '[]'},
+	routes: {ctor: '[]'},
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
 	stopPickerOpen: false
@@ -8358,74 +9602,115 @@ var _user$project$ViewHelpers$underlayColor = function (val) {
 		_elm_lang$core$Json_Encode$string(val));
 };
 
-var _user$project$DirectionPicker_View$defaultDirectionStyle = _elm_lang$core$Native_List.fromArray(
-	[
-		_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
-		_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
-		_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
-		_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(20)
-	]);
+var _user$project$DirectionPicker_View$defaultDirectionStyle = {
+	ctor: '::',
+	_0: _elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
+	_1: {
+		ctor: '::',
+		_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+		_1: {
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
+			_1: {
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(20),
+				_1: {ctor: '[]'}
+			}
+		}
+	}
+};
 var _user$project$DirectionPicker_View$directionStyle = F2(
 	function (direction, currentDirection) {
-		var activeStyle = _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? _elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white)
-			]) : _elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightHeader)
-			]);
+		var activeStyle = _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? {
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white),
+			_1: {ctor: '[]'}
+		} : {
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightHeader),
+			_1: {ctor: '[]'}
+		};
 		return A2(_elm_lang$core$List$append, _user$project$DirectionPicker_View$defaultDirectionStyle, activeStyle);
 	});
 var _user$project$DirectionPicker_View$directionButton = F3(
 	function (currentDirection, direction, label) {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
 					_user$project$Message$ChangeDirection(direction)),
-					_user$project$ViewHelpers$underlayColor(_user$project$App_Color$darkPurple),
-					_elm_native_ui$elm_native_ui$NativeUi$style(
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$padding(20)
-						]))
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
+				_1: {
+					ctor: '::',
+					_0: _user$project$ViewHelpers$underlayColor(_user$project$App_Color$darkPurple),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+							{
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
 					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$style(
-							A2(_user$project$DirectionPicker_View$directionStyle, currentDirection, direction))
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$string(label)
-						]))
-				]));
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+							A2(_user$project$DirectionPicker_View$directionStyle, currentDirection, direction)),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$string(label),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
 	});
 var _user$project$DirectionPicker_View$view = function (direction) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(20)
-					]))
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Inbound, 'To Boston'),
-				A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Outbound, 'From Boston')
-			]));
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(20),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Inbound, 'To Boston'),
+			_1: {
+				ctor: '::',
+				_0: A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Outbound, 'From Boston'),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 
 var _user$project$FetchRoutes$decodeStop = _elm_lang$core$Json_Decode$string;
@@ -8546,9 +9831,9 @@ var _user$project$Update$update = F2(
 								stopPickerOpen: false
 							}),
 						_1: _elm_lang$core$Platform_Cmd$batch(
-							_elm_lang$core$Native_List.fromArray(
-								[
-									A2(
+							{
+								ctor: '::',
+								_0: A2(
 									_elm_lang$core$Task$attempt,
 									_user$project$Message$SetItem,
 									A2(
@@ -8558,11 +9843,15 @@ var _user$project$Update$update = F2(
 											_elm_lang$core$Basics_ops['++'],
 											_p3.route.id,
 											A2(_elm_lang$core$Basics_ops['++'], '@', _p3.stop)))),
-									A2(
-									_user$project$FetchSchedule$fetchSchedule,
-									model.direction,
-									_elm_lang$core$Maybe$Just(_p3))
-								]))
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_user$project$FetchSchedule$fetchSchedule,
+										model.direction,
+										_elm_lang$core$Maybe$Just(_p3)),
+									_1: {ctor: '[]'}
+								}
+							})
 					};
 				case 'GetItem':
 					var _p4 = _p0._0;
@@ -8579,8 +9868,7 @@ var _user$project$Update$update = F2(
 											A3(
 												_user$project$Types$Route,
 												'asdf',
-												_elm_lang$core$Native_List.fromArray(
-													[]),
+												{ctor: '[]'},
 												_p5._0),
 											_p5._1._0));
 								} else {
@@ -8593,11 +9881,15 @@ var _user$project$Update$update = F2(
 									model,
 									{selectedRouteStop: routeStop}),
 								_1: _elm_lang$core$Platform_Cmd$batch(
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_user$project$FetchRoutes$fetchRoutes,
-											A2(_user$project$FetchSchedule$fetchSchedule, model.direction, routeStop)
-										]))
+									{
+										ctor: '::',
+										_0: _user$project$FetchRoutes$fetchRoutes,
+										_1: {
+											ctor: '::',
+											_0: A2(_user$project$FetchSchedule$fetchSchedule, model.direction, routeStop),
+											_1: {ctor: '[]'}
+										}
+									})
 							};
 						}
 					} else {
@@ -8651,117 +9943,191 @@ var _user$project$Update$update = F2(
 var _user$project$StopPicker_View$routeButton = function (route) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
 				_user$project$StopPicker_Update$Internal(
 					_user$project$StopPicker_Update$PickRoute(route))),
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
-					])),
-				_elm_native_ui$elm_native_ui$NativeUi_Properties$key(route.name)
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$string(route.name)
-			]));
+			_1: {
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Properties$key(route.name),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$string(route.name),
+			_1: {ctor: '[]'}
+		});
 };
 var _user$project$StopPicker_View$pickerContainer = _elm_native_ui$elm_native_ui$NativeUi_Elements$view(
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_elm_native_ui$elm_native_ui$NativeUi$style(
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$bottom(96),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$shadowColor('rgb(49, 33, 64)'),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$shadowOpacity(0.2),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$shadowRadius(3)
-				]))
-		]));
+	{
+		ctor: '::',
+		_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
+				_1: {
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$bottom(96),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$shadowColor('rgb(49, 33, 64)'),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$shadowOpacity(0.2),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$shadowRadius(3),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}),
+		_1: {ctor: '[]'}
+	});
 var _user$project$StopPicker_View$pickerHeader = function (label) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$red),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$borderTopLeftRadius(10),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$borderTopRightRadius(10),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$padding(10)
-					]))
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$red),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderTopLeftRadius(10),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderTopRightRadius(10),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(10),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
-							]))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string(label)
-					]))
-			]));
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+						{
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi$string(label),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
 };
 var _user$project$StopPicker_View$pickerOptions = _elm_native_ui$elm_native_ui$NativeUi_Elements$scrollView(
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_elm_native_ui$elm_native_ui$NativeUi$style(
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$white),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomLeftRadius(10),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomRightRadius(10),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$padding(10),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$height(300)
-				]))
-		]));
+	{
+		ctor: '::',
+		_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$white),
+				_1: {
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomLeftRadius(10),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomRightRadius(10),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(10),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$height(300),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}),
+		_1: {ctor: '[]'}
+	});
 var _user$project$StopPicker_View$routeOptions = function (routes) {
 	return _user$project$StopPicker_View$pickerOptions(
 		A2(_elm_lang$core$List$map, _user$project$StopPicker_View$routeButton, routes));
 };
 var _user$project$StopPicker_View$routePicker = function (routes) {
 	return _user$project$StopPicker_View$pickerContainer(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$StopPicker_View$pickerHeader('Commuter Line'),
-				_user$project$StopPicker_View$routeOptions(routes)
-			]));
+		{
+			ctor: '::',
+			_0: _user$project$StopPicker_View$pickerHeader('Commuter Line'),
+			_1: {
+				ctor: '::',
+				_0: _user$project$StopPicker_View$routeOptions(routes),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _user$project$StopPicker_View$stopButton = F2(
 	function (route, stop) {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
 					_user$project$StopPicker_Update$Internal(
 						_user$project$StopPicker_Update$InternalPickStop(
 							A2(_user$project$Types$RouteStop, route, stop)))),
-					_elm_native_ui$elm_native_ui$NativeUi$style(
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
-							_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt)
-						]))
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi$string(stop)
-				]));
+				_1: {
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+						{
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi$string(stop),
+				_1: {ctor: '[]'}
+			});
 	});
 var _user$project$StopPicker_View$stopOptions = function (route) {
 	return _user$project$StopPicker_View$pickerOptions(
@@ -8772,12 +10138,16 @@ var _user$project$StopPicker_View$stopOptions = function (route) {
 };
 var _user$project$StopPicker_View$stopPicker = function (route) {
 	return _user$project$StopPicker_View$pickerContainer(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$StopPicker_View$pickerHeader(
+		{
+			ctor: '::',
+			_0: _user$project$StopPicker_View$pickerHeader(
 				A2(_elm_lang$core$Basics_ops['++'], route.name, ' Stops')),
-				_user$project$StopPicker_View$stopOptions(route)
-			]));
+			_1: {
+				ctor: '::',
+				_0: _user$project$StopPicker_View$stopOptions(route),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _user$project$StopPicker_View$view = F2(
 	function (routes, model) {
@@ -8789,146 +10159,287 @@ var _user$project$StopPicker_View$view = F2(
 		}
 	});
 
-var _user$project$Schedule_View$predictionText = function (_p0) {
-	var _p1 = _p0;
-	return _user$project$Model$prettyTime(_p1.predictedArrival);
+var _user$project$Schedule_View$minutesLateThreshold = 0;
+var _user$project$Schedule_View$predictionColor = function (minutesLate) {
+	var _p0 = minutesLate;
+	if (_p0.ctor === 'Nothing') {
+		return _user$project$App_Color$darkPurple;
+	} else {
+		return _user$project$App_Color$red;
+	}
 };
-var _user$project$Schedule_View$prediction = function (train) {
+var _user$project$Schedule_View$predictedMinutesLate = function (_p1) {
+	var _p2 = _p1;
+	var _p3 = _p2.minute;
+	return (_elm_lang$core$Native_Utils.cmp(_p3, _user$project$Schedule_View$minutesLateThreshold) > 0) ? _elm_lang$core$Maybe$Just(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(_p3),
+			'm late, ')) : _elm_lang$core$Maybe$Nothing;
+};
+var _user$project$Schedule_View$predictionText = F2(
+	function (minutesLate, predictedArrival) {
+		return _elm_lang$core$String$concat(
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: minutesLate,
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Maybe$Just(
+							_user$project$Model$prettyTime(predictedArrival)),
+						_1: {ctor: '[]'}
+					}
+				}));
+	});
+var _user$project$Schedule_View$prediction = function (_p4) {
+	var _p5 = _p4;
+	var _p6 = _p5.predictedArrival;
+	var predictionDiff = A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, _p6, _p5.scheduledArrival);
+	var minutesLate = _user$project$Schedule_View$predictedMinutesLate(predictionDiff);
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple)
-					]))
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$string(
-				_user$project$Schedule_View$predictionText(train))
-			]));
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(
+						_user$project$Schedule_View$predictionColor(minutesLate)),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$string(
+				A2(_user$project$Schedule_View$predictionText, minutesLate, _p6)),
+			_1: {ctor: '[]'}
+		});
 };
 var _user$project$Schedule_View$trainElement = function (train) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomWidth(1),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$borderColor(_user$project$App_Color$lightGray)
-					]))
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white'),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomWidth(1),
+										_1: {
+											ctor: '::',
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderColor(_user$project$App_Color$lightGray),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(36),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(-1),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$roboto)
-							]))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string(
-						_user$project$Model$prettyTime(train.scheduledArrival))
-					])),
-				_user$project$Schedule_View$prediction(train)
-			]));
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+						{
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(36),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(-1),
+										_1: {
+											ctor: '::',
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$roboto),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi$string(
+						_user$project$Model$prettyTime(train.scheduledArrival)),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Schedule_View$prediction(train),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _user$project$Schedule_View$view = function (trains) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch')
-					]))
-			]),
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		},
 		A2(
 			_elm_lang$core$List$append,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
+			{
+				ctor: '::',
+				_0: A2(
 					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$style(
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$white),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$color('#9F8AB3'),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(9),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('700'),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$letterSpacing(0.25),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$paddingTop(18),
-									_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center')
-								]))
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_native_ui$elm_native_ui$NativeUi$string('UPCOMING')
-						]))
-				]),
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+							{
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$white),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color('#9F8AB3'),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(9),
+										_1: {
+											ctor: '::',
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('700'),
+											_1: {
+												ctor: '::',
+												_0: _elm_native_ui$elm_native_ui$NativeUi_Style$letterSpacing(0.25),
+												_1: {
+													ctor: '::',
+													_0: _elm_native_ui$elm_native_ui$NativeUi_Style$paddingTop(18),
+													_1: {
+														ctor: '::',
+														_0: _elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$string('UPCOMING'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
 			A2(_elm_lang$core$List$map, _user$project$Schedule_View$trainElement, trains)));
 };
 
 var _user$project$View$stopPickerButton = function (buttonLabel) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$stopPickerButton),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$bottom(20),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$width(270)
-					])),
-				_elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker),
-				_user$project$ViewHelpers$underlayColor(_user$project$App_Color$stopPickerButton)
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$stopPickerButton),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
+										_1: {
+											ctor: '::',
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$bottom(20),
+											_1: {
+												ctor: '::',
+												_0: _elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker),
+				_1: {
+					ctor: '::',
+					_0: _user$project$ViewHelpers$underlayColor(_user$project$App_Color$stopPickerButton),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A2(
 				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_native_ui$elm_native_ui$NativeUi_Style$color('#C9B8D7'),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
-								_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('500')
-							]))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi$string(buttonLabel)
-					]))
-			]));
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+						{
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color('#C9B8D7'),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('500'),
+									_1: {ctor: '[]'}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi$string(buttonLabel),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
 };
 var _user$project$View$stopPicker = function (model) {
 	return A2(
@@ -8957,95 +10468,153 @@ var _user$project$View$picker = function (model) {
 	return A2(
 		_elm_lang$core$List$filterMap,
 		_elm_lang$core$Basics$identity,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$View$maybeStopPicker(model),
-				_elm_lang$core$Maybe$Just(
-				_user$project$View$stopPickerButton(buttonLabel))
-			]));
+		{
+			ctor: '::',
+			_0: _user$project$View$maybeStopPicker(model),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Maybe$Just(
+					_user$project$View$stopPickerButton(buttonLabel)),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _user$project$View$routeAndStop = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$width(270)
-					]))
-			]),
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		},
 		_user$project$View$picker(model));
 };
 var _user$project$View$topSection = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch')
-					]))
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$DirectionPicker_View$view(model.direction),
-				_user$project$Schedule_View$view(model.schedule)
-			]));
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _user$project$DirectionPicker_View$view(model.direction),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Schedule_View$view(model.schedule),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _user$project$View$welcomeScreen = A2(
 	_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_elm_native_ui$elm_native_ui$NativeUi$style(
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_native_ui$elm_native_ui$NativeUi_Style$color('#301d41'),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('800'),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(60),
-					_elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(48)
-				]))
-		]),
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_elm_native_ui$elm_native_ui$NativeUi$string('Purple Train')
-		]));
+	{
+		ctor: '::',
+		_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color('#301d41'),
+				_1: {
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('800'),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(60),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(48),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: _elm_native_ui$elm_native_ui$NativeUi$string('Purple Train'),
+		_1: {ctor: '[]'}
+	});
 var _user$project$View$mainView = function (model) {
 	var _p2 = model.selectedRouteStop;
 	if (_p2.ctor === 'Nothing') {
-		return _elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$View$welcomeScreen,
-				_user$project$View$routeAndStop(model)
-			]);
+		return {
+			ctor: '::',
+			_0: _user$project$View$welcomeScreen,
+			_1: {
+				ctor: '::',
+				_0: _user$project$View$routeAndStop(model),
+				_1: {ctor: '[]'}
+			}
+		};
 	} else {
-		return _elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$View$topSection(model),
-				_user$project$View$routeAndStop(model)
-			]);
+		return {
+			ctor: '::',
+			_0: _user$project$View$topSection(model),
+			_1: {
+				ctor: '::',
+				_0: _user$project$View$routeAndStop(model),
+				_1: {ctor: '[]'}
+			}
+		};
 	}
 };
 var _user$project$View$view = function (model) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_native_ui$elm_native_ui$NativeUi$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-						_elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$darkPurple)
-					]))
-			]),
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$darkPurple),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
 		_user$project$View$mainView(model));
 };
 

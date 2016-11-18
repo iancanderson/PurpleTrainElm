@@ -1,0 +1,202 @@
+var _user$project$Schedule_View$minutesLateThreshold = 0;
+var _user$project$Schedule_View$predictionColor = function (minutesLate) {
+	var _p0 = minutesLate;
+	if (_p0.ctor === 'Nothing') {
+		return _user$project$App_Color$darkPurple;
+	} else {
+		return _user$project$App_Color$red;
+	}
+};
+var _user$project$Schedule_View$predictedMinutesLate = function (_p1) {
+	var _p2 = _p1;
+	var _p3 = _p2.minute;
+	return (_elm_lang$core$Native_Utils.cmp(_p3, _user$project$Schedule_View$minutesLateThreshold) > 0) ? _elm_lang$core$Maybe$Just(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(_p3),
+			'm late, ')) : _elm_lang$core$Maybe$Nothing;
+};
+var _user$project$Schedule_View$predictionText = F2(
+	function (minutesLate, predictedArrival) {
+		return _elm_lang$core$String$concat(
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: minutesLate,
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Maybe$Just(
+							_user$project$Model$prettyTime(predictedArrival)),
+						_1: {ctor: '[]'}
+					}
+				}));
+	});
+var _user$project$Schedule_View$prediction = function (_p4) {
+	var _p5 = _p4;
+	var _p6 = _p5.predictedArrival;
+	var predictionDiff = A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, _p6, _p5.scheduledArrival);
+	var minutesLate = _user$project$Schedule_View$predictedMinutesLate(predictionDiff);
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(
+						_user$project$Schedule_View$predictionColor(minutesLate)),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$string(
+				A2(_user$project$Schedule_View$predictionText, minutesLate, _p6)),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Schedule_View$trainElement = function (train) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor('white'),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomWidth(1),
+										_1: {
+											ctor: '::',
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderColor(_user$project$App_Color$lightGray),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+						{
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$darkPurple),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(36),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(-1),
+										_1: {
+											ctor: '::',
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$roboto),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi$string(
+						_user$project$Model$prettyTime(train.scheduledArrival)),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Schedule_View$prediction(train),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _user$project$Schedule_View$view = function (trains) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+		{
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+				{
+					ctor: '::',
+					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$List$append,
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+							{
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$white),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color('#9F8AB3'),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(9),
+										_1: {
+											ctor: '::',
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('700'),
+											_1: {
+												ctor: '::',
+												_0: _elm_native_ui$elm_native_ui$NativeUi_Style$letterSpacing(0.25),
+												_1: {
+													ctor: '::',
+													_0: _elm_native_ui$elm_native_ui$NativeUi_Style$paddingTop(18),
+													_1: {
+														ctor: '::',
+														_0: _elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$string('UPCOMING'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
+			A2(_elm_lang$core$List$map, _user$project$Schedule_View$trainElement, trains)));
+};
