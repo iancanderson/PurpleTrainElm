@@ -78,26 +78,40 @@ var _user$project$StopPickerButton_View$stopPickerButton = function (buttonLabel
 		});
 };
 var _user$project$StopPickerButton_View$stopPicker = function (model) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$map,
-		_user$project$Message$StopPickerMsg,
-		A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker));
+	var _p0 = model.stops;
+	if (_p0.ctor === 'Loading') {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			{ctor: '[]'},
+			{ctor: '[]'});
+	} else {
+		return _user$project$StopPicker_View$view(_p0._0);
+	}
 };
 var _user$project$StopPickerButton_View$maybeStopPicker = function (model) {
 	return model.stopPickerOpen ? _elm_lang$core$Maybe$Just(
 		_user$project$StopPickerButton_View$stopPicker(model)) : _elm_lang$core$Maybe$Nothing;
 };
-var _user$project$StopPickerButton_View$stopPickerLabelText = function (_p0) {
-	var _p1 = _p0;
-	return _p1.stopPickerOpen ? 'Cancel' : A2(
-		_elm_lang$core$Maybe$withDefault,
-		'Select your home stop',
-		A2(
-			_elm_lang$core$Maybe$map,
-			function (_) {
-				return _.stop;
-			},
-			_p1.selectedRouteStop));
+var _user$project$StopPickerButton_View$stopPickerLabelText = function (_p1) {
+	var _p2 = _p1;
+	var _p3 = {ctor: '_Tuple2', _0: _p2.stopPickerOpen, _1: _p2.selectedStop};
+	_v2_0:
+	do {
+		if (_p3._1.ctor === 'Nothing') {
+			if (_p3._0 === true) {
+				break _v2_0;
+			} else {
+				return 'Select your home stop';
+			}
+		} else {
+			if (_p3._0 === true) {
+				break _v2_0;
+			} else {
+				return _p3._1._0;
+			}
+		}
+	} while(false);
+	return 'Cancel';
 };
 var _user$project$StopPickerButton_View$picker = function (model) {
 	var buttonLabel = _user$project$StopPickerButton_View$stopPickerLabelText(model);

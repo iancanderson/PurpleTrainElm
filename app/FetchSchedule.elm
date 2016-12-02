@@ -8,24 +8,19 @@ import Model exposing (..)
 import Message exposing (..)
 import Types exposing (..)
 
-fetchSchedule : Direction -> Maybe RouteStop -> Cmd Msg
-fetchSchedule direction maybeRouteStop =
-    case maybeRouteStop of
-        Nothing ->
-            Cmd.none
-        Just routeStop ->
-            Http.send (LoadSchedule direction) (getSchedule direction routeStop)
+fetchSchedule : Direction -> Stop -> Cmd Msg
+fetchSchedule direction stop =
+    Http.send (LoadSchedule direction) (getSchedule direction stop)
 
 
-getSchedule : Direction -> RouteStop -> Http.Request Schedule
-getSchedule direction {route, stop} =
+getSchedule : Direction -> Stop -> Http.Request Schedule
+getSchedule direction stop =
     Http.get
-        ( "https://commuter-api-production.herokuapp.com/api/v1/predictions?direction="
-          ++ toString direction
-          ++ "&route_id="
-          ++ route.id
-          ++ "&stop_id="
+        ( "https://commuter-api-production.herokuapp.com/api/v2/stops/"
           ++ stop
+          ++ "/"
+          ++ toString direction
+          ++ "/trips"
         )
         decodeSchedule
 
@@ -37,8 +32,8 @@ decodeSchedule = Decode.list decodeTrain
 decodeTrain : Decode.Decoder Train
 decodeTrain =
   Decode.map2 Train
-    (Decode.field "scheduled_arrival_utc" stringToDate)
-    (Decode.field "predicted_arrival_utc" stringToDate)
+    (Decode.field "scheduled_departure_utc" stringToDate)
+    (Decode.maybe (Decode.field "predicted_departure_utc" stringToDate))
 
 stringToDate : Decode.Decoder Date
 stringToDate =

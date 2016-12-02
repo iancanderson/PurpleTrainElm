@@ -3,13 +3,12 @@ var _user$project$Model$initialModel = {
 	direction: _user$project$Types$Inbound,
 	inboundSchedule: _user$project$Types$Loading,
 	outboundSchedule: _user$project$Types$Loading,
-	routes: {ctor: '[]'},
-	stopPicker: _user$project$StopPicker_Model$initialModel,
-	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
+	stops: _user$project$Types$Loading,
+	selectedStop: _elm_lang$core$Maybe$Nothing,
 	stopPickerOpen: false,
 	now: _elm_lang$core$Date$fromTime(0)
 };
-var _user$project$Model$Model = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {direction: a, inboundSchedule: b, outboundSchedule: c, routes: d, stopPicker: e, selectedRouteStop: f, stopPickerOpen: g, now: h};
+var _user$project$Model$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {direction: a, inboundSchedule: b, outboundSchedule: c, stops: d, selectedStop: e, stopPickerOpen: f, now: g};
 	});

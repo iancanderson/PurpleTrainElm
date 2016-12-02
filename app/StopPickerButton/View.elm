@@ -9,6 +9,7 @@ import NativeUi.Events exposing (..)
 import App.Color as Color
 import App.Font as Font
 import Model exposing (..)
+import Types exposing (..)
 import Message exposing (..)
 import StopPicker.View as StopPicker
 import ViewHelpers exposing (..)
@@ -35,12 +36,11 @@ picker model =
 
 
 stopPickerLabelText : Model -> String
-stopPickerLabelText {stopPickerOpen, selectedRouteStop} =
-    if stopPickerOpen then
-      "Cancel"
-    else
-      Maybe.map .stop selectedRouteStop
-      |> Maybe.withDefault "Select your home stop"
+stopPickerLabelText {stopPickerOpen, selectedStop} =
+    case (stopPickerOpen, selectedStop) of
+      (True, _) -> "Cancel"
+      (_, Nothing) -> "Select your home stop"
+      (_, Just stop) -> stop
 
 
 maybeStopPicker : Model -> Maybe (Node Msg)
@@ -53,7 +53,9 @@ maybeStopPicker model =
 
 stopPicker : Model -> Node Msg
 stopPicker model =
-    Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
+    case model.stops of
+        Loading-> Elements.view [] []
+        Ready stops -> StopPicker.view stops
 
 stopPickerButton : String -> Node Msg
 stopPickerButton buttonLabel =

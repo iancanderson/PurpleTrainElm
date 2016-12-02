@@ -67,13 +67,6 @@ var _user$project$StopPicker_View$pickerButton = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$StopPicker_View$routeButton = function (route) {
-	return A2(
-		_user$project$StopPicker_View$pickerButton,
-		_user$project$StopPicker_Update$Internal(
-			_user$project$StopPicker_Update$PickRoute(route)),
-		route.name);
-};
 var _user$project$StopPicker_View$pickerContainer = _elm_native_ui$elm_native_ui$NativeUi_Elements$view(
 	{
 		ctor: '::',
@@ -183,57 +176,25 @@ var _user$project$StopPicker_View$pickerOptions = _elm_native_ui$elm_native_ui$N
 			}),
 		_1: {ctor: '[]'}
 	});
-var _user$project$StopPicker_View$routeOptions = function (routes) {
-	return _user$project$StopPicker_View$pickerOptions(
-		A2(_elm_lang$core$List$map, _user$project$StopPicker_View$routeButton, routes));
+var _user$project$StopPicker_View$stopButton = function (stop) {
+	return A2(
+		_user$project$StopPicker_View$pickerButton,
+		_user$project$Message$PickStop(stop),
+		stop);
 };
-var _user$project$StopPicker_View$routePicker = function (routes) {
+var _user$project$StopPicker_View$stopOptions = function (stops) {
+	return _user$project$StopPicker_View$pickerOptions(
+		A2(_elm_lang$core$List$map, _user$project$StopPicker_View$stopButton, stops));
+};
+var _user$project$StopPicker_View$view = function (stops) {
 	return _user$project$StopPicker_View$pickerContainer(
 		{
 			ctor: '::',
-			_0: _user$project$StopPicker_View$pickerHeader('Commuter Line'),
+			_0: _user$project$StopPicker_View$pickerHeader('Select home stop'),
 			_1: {
 				ctor: '::',
-				_0: _user$project$StopPicker_View$routeOptions(routes),
+				_0: _user$project$StopPicker_View$stopOptions(stops),
 				_1: {ctor: '[]'}
 			}
 		});
 };
-var _user$project$StopPicker_View$stopButton = F2(
-	function (route, stop) {
-		return A2(
-			_user$project$StopPicker_View$pickerButton,
-			_user$project$StopPicker_Update$Internal(
-				_user$project$StopPicker_Update$InternalPickStop(
-					A2(_user$project$Types$RouteStop, route, stop))),
-			stop);
-	});
-var _user$project$StopPicker_View$stopOptions = function (route) {
-	return _user$project$StopPicker_View$pickerOptions(
-		A2(
-			_elm_lang$core$List$map,
-			_user$project$StopPicker_View$stopButton(route),
-			route.stops));
-};
-var _user$project$StopPicker_View$stopPicker = function (route) {
-	return _user$project$StopPicker_View$pickerContainer(
-		{
-			ctor: '::',
-			_0: _user$project$StopPicker_View$pickerHeader(
-				A2(_elm_lang$core$Basics_ops['++'], route.name, ' Stops')),
-			_1: {
-				ctor: '::',
-				_0: _user$project$StopPicker_View$stopOptions(route),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$StopPicker_View$view = F2(
-	function (routes, model) {
-		var _p0 = model.selectedRoute;
-		if (_p0.ctor === 'Just') {
-			return _user$project$StopPicker_View$stopPicker(_p0._0);
-		} else {
-			return _user$project$StopPicker_View$routePicker(routes);
-		}
-	});

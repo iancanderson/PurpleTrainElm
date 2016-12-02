@@ -3,9 +3,6 @@ module Update exposing (..)
 import Task
 import Date exposing (Date)
 
-import StopPicker.Update as StopPicker
-import StopPicker.Model as StopPicker
-import StopPicker.Translate as StopPicker
 import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
@@ -16,21 +13,13 @@ import NativeUi.AsyncStorage as AsyncStorage
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        StopPickerMsg (StopPicker.External msg) -> update (StopPicker.translate msg) model
-        StopPickerMsg (StopPicker.Internal subMsg) ->
-            let
-                ( updatedStopPicker, stopPickerCmd ) =
-                    StopPicker.update subMsg model.stopPicker
-            in
-                ( { model | stopPicker = updatedStopPicker }
-                , Cmd.map StopPickerMsg stopPickerCmd )
         ChangeDirection ->
             let newDirection = toggleDirection model.direction
             in
               ( { model | direction = newDirection }, Cmd.none )
-        PickStop routeStop ->
+        PickStop stop ->
             ( { model
-              | selectedRouteStop = Just routeStop
+              | selectedStop = Just stop
               , stopPickerOpen = False
               , inboundSchedule = Loading
               , outboundSchedule = Loading
@@ -38,26 +27,17 @@ update msg model =
             , Cmd.batch <|
                 [ Task.attempt
                     SetItem
-                    ( AsyncStorage.setItem
-                          "routeStop"
-                          (routeStop.route.id ++ "@" ++ routeStop.stop)
+                    ( AsyncStorage.setItem stopKey stop
                     )
-                ] ++ fetchSchedules (Just routeStop)
+                ] ++ fetchSchedules stop
             )
 
         GetItem result ->
             case result of
                 Ok Nothing -> ( model, Cmd.none )
-                Ok (Just routeStopString) ->
-                  let
-                    routeStop =
-                      case String.split "@" routeStopString of
-                          [routeId, stop] ->
-                            Just (RouteStop (Route "asdf" [] routeId) stop)
-                          _ -> Nothing
-                  in
-                    ( { model | selectedRouteStop = routeStop }
-                    , Cmd.batch <| fetchSchedules routeStop
+                Ok (Just stop) ->
+                    ( { model | selectedStop = Just stop }
+                    , Cmd.batch <| fetchSchedules stop
                     )
                 Result.Err _ -> ( model, Cmd.none )
         SetItem result ->
@@ -66,12 +46,12 @@ update msg model =
                   ( model, Cmd.none )
                 Result.Err a ->
                     ( model, Cmd.none )
-        LoadRoutes result ->
+        LoadStops result ->
             case result of
-                Ok routes -> ( { model | routes = routes }, Cmd.none)
+                Ok stops -> ( { model | stops = Ready stops }, Cmd.none)
                 Result.Err _ -> ( model, Cmd.none )
         LoadSchedule direction result ->
-            case result of
+            case (Debug.log "result" result) of
                 Ok schedule ->
                     case direction of
                         Inbound -> ( { model | inboundSchedule = Ready schedule }, Cmd.none)
@@ -84,8 +64,11 @@ update msg model =
             ( { model | now = Date.fromTime now }
             , Task.attempt
                   GetItem
-                  (AsyncStorage.getItem "routeStop")
+                  (AsyncStorage.getItem stopKey)
             )
+
+stopKey : String
+stopKey = "stop"
 
 
 toggleDirection : Direction -> Direction
@@ -95,8 +78,8 @@ toggleDirection direction =
         Outbound -> Inbound
 
 
-fetchSchedules : Maybe RouteStop -> List (Cmd Msg)
-fetchSchedules routeStop =
-    [ fetchSchedule Inbound routeStop
-    , fetchSchedule Outbound routeStop
+fetchSchedules : Stop -> List (Cmd Msg)
+fetchSchedules stop =
+    [ fetchSchedule Inbound stop
+    , fetchSchedule Outbound stop
     ]

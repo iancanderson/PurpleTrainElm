@@ -57,33 +57,38 @@ trainElement now train =
               , Style.fontFamily Font.roboto
               ]
             ]
-            [ Ui.string (prettyTime train.scheduledArrival) ]
-        , prediction now train
+            [ Ui.string (prettyTime train.scheduledDeparture) ]
+        , maybePrediction now train
         ]
 
+maybePrediction : Date -> Train -> Node Msg
+maybePrediction now model =
+    case model.predictedDeparture of
+        Nothing -> Elements.view [] []
+        Just predictedDeparture -> prediction now predictedDeparture model.scheduledDeparture
 
-prediction : Date -> Train -> Node Msg
-prediction now {predictedArrival, scheduledArrival} =
-    let predictionDiff = (Duration.diff predictedArrival scheduledArrival)
+prediction : Date -> Date -> Date -> Node Msg
+prediction now predictedDeparture scheduledDeparture =
+    let predictionDiff = (Duration.diff predictedDeparture scheduledDeparture)
         minutesLate = predictedMinutesLate predictionDiff
-        displayedArrival
+        displayedDeparture
           = if minutesLate == Nothing
-              then scheduledArrival
-              else predictedArrival
+              then scheduledDeparture
+              else predictedDeparture
     in
         text
             [ Ui.style
               [ Style.color <| predictionColor minutesLate
               ]
             ]
-            [ Ui.string <| predictionText now minutesLate displayedArrival ]
+            [ Ui.string <| predictionText now minutesLate displayedDeparture ]
 
 
 predictionText : Date -> Maybe String -> Date -> String
-predictionText now minutesLate predictedArrival =
+predictionText now minutesLate predictedDeparture =
     joinMaybe
         [ minutesLate
-        , Just <| prettyDuration <| Duration.diff predictedArrival now
+        , Just <| prettyDuration <| Duration.diff predictedDeparture now
         ]
 
 

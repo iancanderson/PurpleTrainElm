@@ -3,15 +3,13 @@ module Message exposing (..)
 import Http
 import Time exposing (Time)
 
-import StopPicker.Update as StopPicker
 import Types exposing (..)
 import NativeUi.AsyncStorage as AsyncStorage
 
 type Msg
-    = StopPickerMsg StopPicker.Msg
-    | ChangeDirection
-    | PickStop RouteStop
-    | LoadRoutes (Result Http.Error Routes)
+    = ChangeDirection
+    | PickStop Stop
+    | LoadStops (Result Http.Error Stops)
     | LoadSchedule Direction (Result Http.Error Schedule)
     | ToggleStopPicker
     | SetItem (Result AsyncStorage.Error ())

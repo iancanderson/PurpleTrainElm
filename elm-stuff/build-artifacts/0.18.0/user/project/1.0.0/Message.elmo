@@ -12,13 +12,10 @@ var _user$project$Message$LoadSchedule = F2(
 	function (a, b) {
 		return {ctor: 'LoadSchedule', _0: a, _1: b};
 	});
-var _user$project$Message$LoadRoutes = function (a) {
-	return {ctor: 'LoadRoutes', _0: a};
+var _user$project$Message$LoadStops = function (a) {
+	return {ctor: 'LoadStops', _0: a};
 };
 var _user$project$Message$PickStop = function (a) {
 	return {ctor: 'PickStop', _0: a};
 };
 var _user$project$Message$ChangeDirection = {ctor: 'ChangeDirection'};
-var _user$project$Message$StopPickerMsg = function (a) {
-	return {ctor: 'StopPickerMsg', _0: a};
-};

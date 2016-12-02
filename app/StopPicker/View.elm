@@ -9,35 +9,27 @@ import NativeUi.Events exposing (..)
 
 import App.Color as Color
 import App.Font as Font
-import StopPicker.Model exposing (..)
-import StopPicker.Update exposing (..)
 import Types exposing (..)
+import Message exposing (..)
 import ViewHelpers exposing (..)
 
-view : Routes -> Model -> Node Msg
-view routes model =
-    case model.selectedRoute of
-        Just route -> stopPicker route
-        Nothing -> routePicker routes
-
-
-stopPicker : Route -> Node Msg
-stopPicker route =
+view : Stops -> Node Msg
+view stops =
   pickerContainer
-      [ pickerHeader (route.name ++ " Stops")
-      , stopOptions route
+      [ pickerHeader "Select home stop"
+      , stopOptions stops
       ]
 
 
-stopOptions : Route -> Node Msg
-stopOptions route =
+stopOptions : Stops -> Node Msg
+stopOptions stops =
   pickerOptions
-      ( List.map (stopButton route) route.stops)
+      <| List.map stopButton stops
 
 
-stopButton : Route -> Stop -> Node Msg
-stopButton route stop =
-    pickerButton (Internal (InternalPickStop (RouteStop route stop))) stop
+stopButton : Stop -> Node Msg
+stopButton stop =
+    pickerButton (PickStop stop) stop
 
 
 pickerOptions : List (Node Msg) -> Node Msg
@@ -84,24 +76,6 @@ pickerContainer =
             , Style.borderRadius 10
             ]
         ]
-
-
-routePicker : Routes -> Node Msg
-routePicker routes =
-    pickerContainer
-        [ pickerHeader "Commuter Line"
-        , routeOptions routes
-        ]
-
-routeOptions : Routes -> Node Msg
-routeOptions routes =
-   pickerOptions
-        ( List.map routeButton routes)
-
-
-routeButton : Route -> Node Msg
-routeButton route =
-    pickerButton (Internal (PickRoute route)) route.name
 
 
 pickerButton : Msg -> String -> Node Msg

@@ -34,12 +34,12 @@ view model =
 
 mainView : Model -> List (Node Msg)
 mainView model =
-    case model.selectedRouteStop of
+    case model.selectedStop of
         Nothing ->
             [ welcomeScreen
             , StopPickerButton.view model
             ]
-        Just routeStop ->
+        Just _ ->
             [ DirectionPicker.view
                 [ topSection model Inbound model.inboundSchedule
                 , topSection model Outbound model.outboundSchedule

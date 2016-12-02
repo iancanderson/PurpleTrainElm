@@ -10,7 +10,7 @@ import NativeUi.AsyncStorage as AsyncStorage
 import Message exposing (..)
 import Task
 import Time exposing (every, minute)
-import FetchRoutes exposing (..)
+import FetchStops exposing (..)
 
 subscriptions : Model -> Sub Msg
 subscriptions _ = every minute Minute
@@ -21,7 +21,7 @@ init =
   ( initialModel
   , Cmd.batch
         [ Task.perform Minute Time.now
-        , fetchRoutes
+        , fetchStops
         ]
   )
 

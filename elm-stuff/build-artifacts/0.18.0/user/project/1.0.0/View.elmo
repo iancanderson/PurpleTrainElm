@@ -97,7 +97,7 @@ var _user$project$View$welcomeScreen = A2(
 		_1: {ctor: '[]'}
 	});
 var _user$project$View$mainView = function (model) {
-	var _p2 = model.selectedRouteStop;
+	var _p2 = model.selectedStop;
 	if (_p2.ctor === 'Nothing') {
 		return {
 			ctor: '::',

@@ -12,38 +12,33 @@ var _user$project$FetchSchedule$stringToDate = A2(
 var _user$project$FetchSchedule$decodeTrain = A3(
 	_elm_lang$core$Json_Decode$map2,
 	_user$project$Types$Train,
-	A2(_elm_lang$core$Json_Decode$field, 'scheduled_arrival_utc', _user$project$FetchSchedule$stringToDate),
-	A2(_elm_lang$core$Json_Decode$field, 'predicted_arrival_utc', _user$project$FetchSchedule$stringToDate));
+	A2(_elm_lang$core$Json_Decode$field, 'scheduled_departure_utc', _user$project$FetchSchedule$stringToDate),
+	_elm_lang$core$Json_Decode$maybe(
+		A2(_elm_lang$core$Json_Decode$field, 'predicted_departure_utc', _user$project$FetchSchedule$stringToDate)));
 var _user$project$FetchSchedule$decodeSchedule = _elm_lang$core$Json_Decode$list(_user$project$FetchSchedule$decodeTrain);
 var _user$project$FetchSchedule$getSchedule = F2(
-	function (direction, _p1) {
-		var _p2 = _p1;
+	function (direction, stop) {
 		return A2(
 			_elm_lang$http$Http$get,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				'https://commuter-api-production.herokuapp.com/api/v1/predictions?direction=',
+				'https://commuter-api-production.herokuapp.com/api/v2/stops/',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(direction),
+					stop,
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						'&route_id=',
+						'/',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_p2.route.id,
-							A2(_elm_lang$core$Basics_ops['++'], '&stop_id=', _p2.stop))))),
+							_elm_lang$core$Basics$toString(direction),
+							'/trips')))),
 			_user$project$FetchSchedule$decodeSchedule);
 	});
 var _user$project$FetchSchedule$fetchSchedule = F2(
-	function (direction, maybeRouteStop) {
-		var _p3 = maybeRouteStop;
-		if (_p3.ctor === 'Nothing') {
-			return _elm_lang$core$Platform_Cmd$none;
-		} else {
-			return A2(
-				_elm_lang$http$Http$send,
-				_user$project$Message$LoadSchedule(direction),
-				A2(_user$project$FetchSchedule$getSchedule, direction, _p3._0));
-		}
+	function (direction, stop) {
+		return A2(
+			_elm_lang$http$Http$send,
+			_user$project$Message$LoadSchedule(direction),
+			A2(_user$project$FetchSchedule$getSchedule, direction, stop));
 	});

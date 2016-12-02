@@ -7,7 +7,7 @@ var _user$project$Main$init = {
 			_0: A2(_elm_lang$core$Task$perform, _user$project$Message$Minute, _elm_lang$core$Time$now),
 			_1: {
 				ctor: '::',
-				_0: _user$project$FetchRoutes$fetchRoutes,
+				_0: _user$project$FetchStops$fetchStops,
 				_1: {ctor: '[]'}
 			}
 		})

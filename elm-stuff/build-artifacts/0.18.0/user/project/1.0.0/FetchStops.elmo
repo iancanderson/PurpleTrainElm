@@ -1,0 +1,4 @@
+var _user$project$FetchStops$decodeStop = _elm_lang$core$Json_Decode$string;
+var _user$project$FetchStops$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$FetchStops$decodeStop);
+var _user$project$FetchStops$getStops = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v2/stops', _user$project$FetchStops$decodeStops);
+var _user$project$FetchStops$fetchStops = A2(_elm_lang$http$Http$send, _user$project$Message$LoadStops, _user$project$FetchStops$getStops);

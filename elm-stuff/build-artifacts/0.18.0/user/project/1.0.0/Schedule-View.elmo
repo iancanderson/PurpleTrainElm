@@ -49,7 +49,7 @@ var _user$project$Schedule_View$prettyDuration = function (_p4) {
 		})));
 };
 var _user$project$Schedule_View$predictionText = F3(
-	function (now, minutesLate, predictedArrival) {
+	function (now, minutesLate, predictedDeparture) {
 		return _user$project$Schedule_View$joinMaybe(
 			{
 				ctor: '::',
@@ -58,19 +58,16 @@ var _user$project$Schedule_View$predictionText = F3(
 					ctor: '::',
 					_0: _elm_lang$core$Maybe$Just(
 						_user$project$Schedule_View$prettyDuration(
-							A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, predictedArrival, now))),
+							A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, predictedDeparture, now))),
 					_1: {ctor: '[]'}
 				}
 			});
 	});
-var _user$project$Schedule_View$prediction = F2(
-	function (now, _p11) {
-		var _p12 = _p11;
-		var _p14 = _p12.scheduledArrival;
-		var _p13 = _p12.predictedArrival;
-		var predictionDiff = A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, _p13, _p14);
+var _user$project$Schedule_View$prediction = F3(
+	function (now, predictedDeparture, scheduledDeparture) {
+		var predictionDiff = A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, predictedDeparture, scheduledDeparture);
 		var minutesLate = _user$project$Schedule_View$predictedMinutesLate(predictionDiff);
-		var displayedArrival = _elm_lang$core$Native_Utils.eq(minutesLate, _elm_lang$core$Maybe$Nothing) ? _p14 : _p13;
+		var displayedDeparture = _elm_lang$core$Native_Utils.eq(minutesLate, _elm_lang$core$Maybe$Nothing) ? scheduledDeparture : predictedDeparture;
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 			{
@@ -87,9 +84,21 @@ var _user$project$Schedule_View$prediction = F2(
 			{
 				ctor: '::',
 				_0: _elm_native_ui$elm_native_ui$NativeUi$string(
-					A3(_user$project$Schedule_View$predictionText, now, minutesLate, displayedArrival)),
+					A3(_user$project$Schedule_View$predictionText, now, minutesLate, displayedDeparture)),
 				_1: {ctor: '[]'}
 			});
+	});
+var _user$project$Schedule_View$maybePrediction = F2(
+	function (now, model) {
+		var _p11 = model.predictedDeparture;
+		if (_p11.ctor === 'Nothing') {
+			return A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+				{ctor: '[]'},
+				{ctor: '[]'});
+		} else {
+			return A3(_user$project$Schedule_View$prediction, now, _p11._0, model.scheduledDeparture);
+		}
 	});
 var _user$project$Schedule_View$trainElement = F2(
 	function (now, train) {
@@ -162,19 +171,19 @@ var _user$project$Schedule_View$trainElement = F2(
 					{
 						ctor: '::',
 						_0: _elm_native_ui$elm_native_ui$NativeUi$string(
-							_user$project$Model$prettyTime(train.scheduledArrival)),
+							_user$project$Model$prettyTime(train.scheduledDeparture)),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
 					ctor: '::',
-					_0: A2(_user$project$Schedule_View$prediction, now, train),
+					_0: A2(_user$project$Schedule_View$maybePrediction, now, train),
 					_1: {ctor: '[]'}
 				}
 			});
 	});
 var _user$project$Schedule_View$view = F2(
-	function (_p15, schedule) {
-		var _p16 = _p15;
+	function (_p12, schedule) {
+		var _p13 = _p12;
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 			{
@@ -236,6 +245,6 @@ var _user$project$Schedule_View$view = F2(
 				},
 				A2(
 					_elm_lang$core$List$map,
-					_user$project$Schedule_View$trainElement(_p16.now),
+					_user$project$Schedule_View$trainElement(_p13.now),
 					schedule)));
 	});

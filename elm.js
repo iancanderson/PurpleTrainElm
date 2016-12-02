@@ -9487,15 +9487,7 @@ var _user$project$Date_Format$formatISO8601 = _user$project$Date_Format$format('
 
 var _user$project$Types$Train = F2(
 	function (a, b) {
-		return {scheduledArrival: a, predictedArrival: b};
-	});
-var _user$project$Types$Route = F3(
-	function (a, b, c) {
-		return {name: a, stops: b, id: c};
-	});
-var _user$project$Types$RouteStop = F2(
-	function (a, b) {
-		return {route: a, stop: b};
+		return {scheduledDeparture: a, predictedDeparture: b};
 	});
 var _user$project$Types$Outbound = {ctor: 'Outbound'};
 var _user$project$Types$Inbound = {ctor: 'Inbound'};
@@ -9503,56 +9495,6 @@ var _user$project$Types$Ready = function (a) {
 	return {ctor: 'Ready', _0: a};
 };
 var _user$project$Types$Loading = {ctor: 'Loading'};
-
-var _user$project$StopPicker_Model$initialModel = {selectedRoute: _elm_lang$core$Maybe$Nothing};
-var _user$project$StopPicker_Model$Model = function (a) {
-	return {selectedRoute: a};
-};
-
-var _user$project$StopPicker_Update$External = function (a) {
-	return {ctor: 'External', _0: a};
-};
-var _user$project$StopPicker_Update$Internal = function (a) {
-	return {ctor: 'Internal', _0: a};
-};
-var _user$project$StopPicker_Update$PickStop = function (a) {
-	return {ctor: 'PickStop', _0: a};
-};
-var _user$project$StopPicker_Update$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'PickRoute') {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{
-						selectedRoute: _elm_lang$core$Maybe$Just(_p0._0)
-					}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{selectedRoute: _elm_lang$core$Maybe$Nothing}),
-				_1: A2(
-					_elm_lang$core$Task$perform,
-					function (_p1) {
-						return _user$project$StopPicker_Update$External(
-							_user$project$StopPicker_Update$PickStop(_p1));
-					},
-					_elm_lang$core$Task$succeed(_p0._0))
-			};
-		}
-	});
-var _user$project$StopPicker_Update$InternalPickStop = function (a) {
-	return {ctor: 'InternalPickStop', _0: a};
-};
-var _user$project$StopPicker_Update$PickRoute = function (a) {
-	return {ctor: 'PickRoute', _0: a};
-};
 
 var _user$project$Message$Minute = function (a) {
 	return {ctor: 'Minute', _0: a};
@@ -9568,16 +9510,13 @@ var _user$project$Message$LoadSchedule = F2(
 	function (a, b) {
 		return {ctor: 'LoadSchedule', _0: a, _1: b};
 	});
-var _user$project$Message$LoadRoutes = function (a) {
-	return {ctor: 'LoadRoutes', _0: a};
+var _user$project$Message$LoadStops = function (a) {
+	return {ctor: 'LoadStops', _0: a};
 };
 var _user$project$Message$PickStop = function (a) {
 	return {ctor: 'PickStop', _0: a};
 };
 var _user$project$Message$ChangeDirection = {ctor: 'ChangeDirection'};
-var _user$project$Message$StopPickerMsg = function (a) {
-	return {ctor: 'StopPickerMsg', _0: a};
-};
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
@@ -9664,38 +9603,19 @@ var _user$project$DirectionPicker_View$view = _user$project$ScrollableTabView$vi
 		}
 	});
 
-var _user$project$FetchRoutes$decodeStop = _elm_lang$core$Json_Decode$string;
-var _user$project$FetchRoutes$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$FetchRoutes$decodeStop);
-var _user$project$FetchRoutes$decodeRoute = A3(
-	_elm_lang$core$Json_Decode$map2,
-	_user$project$Types$Route,
-	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$FetchRoutes$decodeStops));
-var _user$project$FetchRoutes$decodeRoutes = A2(
-	_elm_lang$core$Json_Decode$map,
-	_elm_lang$core$List$map(
-		function (_p0) {
-			var _p1 = _p0;
-			return _p1._1(_p1._0);
-		}),
-	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$FetchRoutes$decodeRoute));
-var _user$project$FetchRoutes$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$FetchRoutes$decodeRoutes);
-var _user$project$FetchRoutes$fetchRoutes = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$FetchRoutes$getRoutes);
-
 var _user$project$Model$prettyTime = _user$project$Date_Format$format('%l:%M %P');
 var _user$project$Model$initialModel = {
 	direction: _user$project$Types$Inbound,
 	inboundSchedule: _user$project$Types$Loading,
 	outboundSchedule: _user$project$Types$Loading,
-	routes: {ctor: '[]'},
-	stopPicker: _user$project$StopPicker_Model$initialModel,
-	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
+	stops: _user$project$Types$Loading,
+	selectedStop: _elm_lang$core$Maybe$Nothing,
 	stopPickerOpen: false,
 	now: _elm_lang$core$Date$fromTime(0)
 };
-var _user$project$Model$Model = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {direction: a, inboundSchedule: b, outboundSchedule: c, routes: d, stopPicker: e, selectedRouteStop: f, stopPickerOpen: g, now: h};
+var _user$project$Model$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {direction: a, inboundSchedule: b, outboundSchedule: c, stops: d, selectedStop: e, stopPickerOpen: f, now: g};
 	});
 
 var _user$project$FetchSchedule$stringToDate = A2(
@@ -9712,54 +9632,49 @@ var _user$project$FetchSchedule$stringToDate = A2(
 var _user$project$FetchSchedule$decodeTrain = A3(
 	_elm_lang$core$Json_Decode$map2,
 	_user$project$Types$Train,
-	A2(_elm_lang$core$Json_Decode$field, 'scheduled_arrival_utc', _user$project$FetchSchedule$stringToDate),
-	A2(_elm_lang$core$Json_Decode$field, 'predicted_arrival_utc', _user$project$FetchSchedule$stringToDate));
+	A2(_elm_lang$core$Json_Decode$field, 'scheduled_departure_utc', _user$project$FetchSchedule$stringToDate),
+	_elm_lang$core$Json_Decode$maybe(
+		A2(_elm_lang$core$Json_Decode$field, 'predicted_departure_utc', _user$project$FetchSchedule$stringToDate)));
 var _user$project$FetchSchedule$decodeSchedule = _elm_lang$core$Json_Decode$list(_user$project$FetchSchedule$decodeTrain);
 var _user$project$FetchSchedule$getSchedule = F2(
-	function (direction, _p1) {
-		var _p2 = _p1;
+	function (direction, stop) {
 		return A2(
 			_elm_lang$http$Http$get,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				'https://commuter-api-production.herokuapp.com/api/v1/predictions?direction=',
+				'https://commuter-api-production.herokuapp.com/api/v2/stops/',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(direction),
+					stop,
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						'&route_id=',
+						'/',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_p2.route.id,
-							A2(_elm_lang$core$Basics_ops['++'], '&stop_id=', _p2.stop))))),
+							_elm_lang$core$Basics$toString(direction),
+							'/trips')))),
 			_user$project$FetchSchedule$decodeSchedule);
 	});
 var _user$project$FetchSchedule$fetchSchedule = F2(
-	function (direction, maybeRouteStop) {
-		var _p3 = maybeRouteStop;
-		if (_p3.ctor === 'Nothing') {
-			return _elm_lang$core$Platform_Cmd$none;
-		} else {
-			return A2(
-				_elm_lang$http$Http$send,
-				_user$project$Message$LoadSchedule(direction),
-				A2(_user$project$FetchSchedule$getSchedule, direction, _p3._0));
-		}
+	function (direction, stop) {
+		return A2(
+			_elm_lang$http$Http$send,
+			_user$project$Message$LoadSchedule(direction),
+			A2(_user$project$FetchSchedule$getSchedule, direction, stop));
 	});
 
-var _user$project$StopPicker_Translate$translate = function (_p0) {
-	var _p1 = _p0;
-	return _user$project$Message$PickStop(_p1._0);
-};
+var _user$project$FetchStops$decodeStop = _elm_lang$core$Json_Decode$string;
+var _user$project$FetchStops$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$FetchStops$decodeStop);
+var _user$project$FetchStops$getStops = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v2/stops', _user$project$FetchStops$decodeStops);
+var _user$project$FetchStops$fetchStops = A2(_elm_lang$http$Http$send, _user$project$Message$LoadStops, _user$project$FetchStops$getStops);
 
-var _user$project$Update$fetchSchedules = function (routeStop) {
+var _user$project$Update$fetchSchedules = function (stop) {
 	return {
 		ctor: '::',
-		_0: A2(_user$project$FetchSchedule$fetchSchedule, _user$project$Types$Inbound, routeStop),
+		_0: A2(_user$project$FetchSchedule$fetchSchedule, _user$project$Types$Inbound, stop),
 		_1: {
 			ctor: '::',
-			_0: A2(_user$project$FetchSchedule$fetchSchedule, _user$project$Types$Outbound, routeStop),
+			_0: A2(_user$project$FetchSchedule$fetchSchedule, _user$project$Types$Outbound, stop),
 			_1: {ctor: '[]'}
 		}
 	};
@@ -9772,177 +9687,138 @@ var _user$project$Update$toggleDirection = function (direction) {
 		return _user$project$Types$Inbound;
 	}
 };
+var _user$project$Update$stopKey = 'stop';
 var _user$project$Update$update = F2(
 	function (msg, model) {
-		update:
-		while (true) {
-			var _p1 = msg;
-			switch (_p1.ctor) {
-				case 'StopPickerMsg':
-					if (_p1._0.ctor === 'External') {
-						var _v2 = _user$project$StopPicker_Translate$translate(_p1._0._0),
-							_v3 = model;
-						msg = _v2;
-						model = _v3;
-						continue update;
+		var _p1 = msg;
+		switch (_p1.ctor) {
+			case 'ChangeDirection':
+				var newDirection = _user$project$Update$toggleDirection(model.direction);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{direction: newDirection}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'PickStop':
+				var _p2 = _p1._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							selectedStop: _elm_lang$core$Maybe$Just(_p2),
+							stopPickerOpen: false,
+							inboundSchedule: _user$project$Types$Loading,
+							outboundSchedule: _user$project$Types$Loading
+						}),
+					_1: _elm_lang$core$Platform_Cmd$batch(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Task$attempt,
+									_user$project$Message$SetItem,
+									A2(_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$setItem, _user$project$Update$stopKey, _p2)),
+								_1: {ctor: '[]'}
+							},
+							_user$project$Update$fetchSchedules(_p2)))
+				};
+			case 'GetItem':
+				var _p3 = _p1._0;
+				if (_p3.ctor === 'Ok') {
+					if (_p3._0.ctor === 'Nothing') {
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					} else {
-						var _p2 = A2(_user$project$StopPicker_Update$update, _p1._0._0, model.stopPicker);
-						var updatedStopPicker = _p2._0;
-						var stopPickerCmd = _p2._1;
+						var _p4 = _p3._0._0;
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{stopPicker: updatedStopPicker}),
-							_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Message$StopPickerMsg, stopPickerCmd)
+								{
+									selectedStop: _elm_lang$core$Maybe$Just(_p4)
+								}),
+							_1: _elm_lang$core$Platform_Cmd$batch(
+								_user$project$Update$fetchSchedules(_p4))
 						};
 					}
-				case 'ChangeDirection':
-					var newDirection = _user$project$Update$toggleDirection(model.direction);
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{direction: newDirection}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				case 'PickStop':
-					var _p3 = _p1._0;
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'SetItem':
+				var _p5 = _p1._0;
+				if (_p5.ctor === 'Ok') {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'LoadStops':
+				var _p6 = _p1._0;
+				if (_p6.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								selectedRouteStop: _elm_lang$core$Maybe$Just(_p3),
-								stopPickerOpen: false,
-								inboundSchedule: _user$project$Types$Loading,
-								outboundSchedule: _user$project$Types$Loading
+								stops: _user$project$Types$Ready(_p6._0)
 							}),
-						_1: _elm_lang$core$Platform_Cmd$batch(
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$core$Task$attempt,
-										_user$project$Message$SetItem,
-										A2(
-											_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$setItem,
-											'routeStop',
-											A2(
-												_elm_lang$core$Basics_ops['++'],
-												_p3.route.id,
-												A2(_elm_lang$core$Basics_ops['++'], '@', _p3.stop)))),
-									_1: {ctor: '[]'}
-								},
-								_user$project$Update$fetchSchedules(
-									_elm_lang$core$Maybe$Just(_p3))))
+						_1: _elm_lang$core$Platform_Cmd$none
 					};
-				case 'GetItem':
-					var _p4 = _p1._0;
-					if (_p4.ctor === 'Ok') {
-						if (_p4._0.ctor === 'Nothing') {
-							return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-						} else {
-							var routeStop = function () {
-								var _p5 = A2(_elm_lang$core$String$split, '@', _p4._0._0);
-								if (((_p5.ctor === '::') && (_p5._1.ctor === '::')) && (_p5._1._1.ctor === '[]')) {
-									return _elm_lang$core$Maybe$Just(
-										A2(
-											_user$project$Types$RouteStop,
-											A3(
-												_user$project$Types$Route,
-												'asdf',
-												{ctor: '[]'},
-												_p5._0),
-											_p5._1._0));
-								} else {
-									return _elm_lang$core$Maybe$Nothing;
-								}
-							}();
-							return {
-								ctor: '_Tuple2',
-								_0: _elm_lang$core$Native_Utils.update(
-									model,
-									{selectedRouteStop: routeStop}),
-								_1: _elm_lang$core$Platform_Cmd$batch(
-									_user$project$Update$fetchSchedules(routeStop))
-							};
-						}
-					} else {
-						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-					}
-				case 'SetItem':
-					var _p6 = _p1._0;
-					if (_p6.ctor === 'Ok') {
-						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-					} else {
-						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-					}
-				case 'LoadRoutes':
-					var _p7 = _p1._0;
-					if (_p7.ctor === 'Ok') {
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'LoadSchedule':
+				var _p7 = A2(_elm_lang$core$Debug$log, 'result', _p1._1);
+				if (_p7.ctor === 'Ok') {
+					var _p9 = _p7._0;
+					var _p8 = _p1._0;
+					if (_p8.ctor === 'Inbound') {
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{routes: _p7._0}),
+								{
+									inboundSchedule: _user$project$Types$Ready(_p9)
+								}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
-						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									outboundSchedule: _user$project$Types$Ready(_p9)
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
 					}
-				case 'LoadSchedule':
-					var _p8 = _p1._1;
-					if (_p8.ctor === 'Ok') {
-						var _p10 = _p8._0;
-						var _p9 = _p1._0;
-						if (_p9.ctor === 'Inbound') {
-							return {
-								ctor: '_Tuple2',
-								_0: _elm_lang$core$Native_Utils.update(
-									model,
-									{
-										inboundSchedule: _user$project$Types$Ready(_p10)
-									}),
-								_1: _elm_lang$core$Platform_Cmd$none
-							};
-						} else {
-							return {
-								ctor: '_Tuple2',
-								_0: _elm_lang$core$Native_Utils.update(
-									model,
-									{
-										outboundSchedule: _user$project$Types$Ready(_p10)
-									}),
-								_1: _elm_lang$core$Platform_Cmd$none
-							};
-						}
-					} else {
-						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-					}
-				case 'ToggleStopPicker':
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{stopPickerOpen: !model.stopPickerOpen}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				default:
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{
-								now: _elm_lang$core$Date$fromTime(_p1._0)
-							}),
-						_1: A2(
-							_elm_lang$core$Task$attempt,
-							_user$project$Message$GetItem,
-							_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$getItem('routeStop'))
-					};
-			}
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'ToggleStopPicker':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{stopPickerOpen: !model.stopPickerOpen}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							now: _elm_lang$core$Date$fromTime(_p1._0)
+						}),
+					_1: A2(
+						_elm_lang$core$Task$attempt,
+						_user$project$Message$GetItem,
+						_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$getItem(_user$project$Update$stopKey))
+				};
 		}
 	});
 
@@ -10022,13 +9898,6 @@ var _user$project$StopPicker_View$pickerButton = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$StopPicker_View$routeButton = function (route) {
-	return A2(
-		_user$project$StopPicker_View$pickerButton,
-		_user$project$StopPicker_Update$Internal(
-			_user$project$StopPicker_Update$PickRoute(route)),
-		route.name);
-};
 var _user$project$StopPicker_View$pickerContainer = _elm_native_ui$elm_native_ui$NativeUi_Elements$view(
 	{
 		ctor: '::',
@@ -10138,60 +10007,28 @@ var _user$project$StopPicker_View$pickerOptions = _elm_native_ui$elm_native_ui$N
 			}),
 		_1: {ctor: '[]'}
 	});
-var _user$project$StopPicker_View$routeOptions = function (routes) {
-	return _user$project$StopPicker_View$pickerOptions(
-		A2(_elm_lang$core$List$map, _user$project$StopPicker_View$routeButton, routes));
+var _user$project$StopPicker_View$stopButton = function (stop) {
+	return A2(
+		_user$project$StopPicker_View$pickerButton,
+		_user$project$Message$PickStop(stop),
+		stop);
 };
-var _user$project$StopPicker_View$routePicker = function (routes) {
+var _user$project$StopPicker_View$stopOptions = function (stops) {
+	return _user$project$StopPicker_View$pickerOptions(
+		A2(_elm_lang$core$List$map, _user$project$StopPicker_View$stopButton, stops));
+};
+var _user$project$StopPicker_View$view = function (stops) {
 	return _user$project$StopPicker_View$pickerContainer(
 		{
 			ctor: '::',
-			_0: _user$project$StopPicker_View$pickerHeader('Commuter Line'),
+			_0: _user$project$StopPicker_View$pickerHeader('Select home stop'),
 			_1: {
 				ctor: '::',
-				_0: _user$project$StopPicker_View$routeOptions(routes),
+				_0: _user$project$StopPicker_View$stopOptions(stops),
 				_1: {ctor: '[]'}
 			}
 		});
 };
-var _user$project$StopPicker_View$stopButton = F2(
-	function (route, stop) {
-		return A2(
-			_user$project$StopPicker_View$pickerButton,
-			_user$project$StopPicker_Update$Internal(
-				_user$project$StopPicker_Update$InternalPickStop(
-					A2(_user$project$Types$RouteStop, route, stop))),
-			stop);
-	});
-var _user$project$StopPicker_View$stopOptions = function (route) {
-	return _user$project$StopPicker_View$pickerOptions(
-		A2(
-			_elm_lang$core$List$map,
-			_user$project$StopPicker_View$stopButton(route),
-			route.stops));
-};
-var _user$project$StopPicker_View$stopPicker = function (route) {
-	return _user$project$StopPicker_View$pickerContainer(
-		{
-			ctor: '::',
-			_0: _user$project$StopPicker_View$pickerHeader(
-				A2(_elm_lang$core$Basics_ops['++'], route.name, ' Stops')),
-			_1: {
-				ctor: '::',
-				_0: _user$project$StopPicker_View$stopOptions(route),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$StopPicker_View$view = F2(
-	function (routes, model) {
-		var _p0 = model.selectedRoute;
-		if (_p0.ctor === 'Just') {
-			return _user$project$StopPicker_View$stopPicker(_p0._0);
-		} else {
-			return _user$project$StopPicker_View$routePicker(routes);
-		}
-	});
 
 var _user$project$StopPickerButton_View$stopPickerButton = function (buttonLabel) {
 	return A2(
@@ -10273,26 +10110,40 @@ var _user$project$StopPickerButton_View$stopPickerButton = function (buttonLabel
 		});
 };
 var _user$project$StopPickerButton_View$stopPicker = function (model) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$map,
-		_user$project$Message$StopPickerMsg,
-		A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker));
+	var _p0 = model.stops;
+	if (_p0.ctor === 'Loading') {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			{ctor: '[]'},
+			{ctor: '[]'});
+	} else {
+		return _user$project$StopPicker_View$view(_p0._0);
+	}
 };
 var _user$project$StopPickerButton_View$maybeStopPicker = function (model) {
 	return model.stopPickerOpen ? _elm_lang$core$Maybe$Just(
 		_user$project$StopPickerButton_View$stopPicker(model)) : _elm_lang$core$Maybe$Nothing;
 };
-var _user$project$StopPickerButton_View$stopPickerLabelText = function (_p0) {
-	var _p1 = _p0;
-	return _p1.stopPickerOpen ? 'Cancel' : A2(
-		_elm_lang$core$Maybe$withDefault,
-		'Select your home stop',
-		A2(
-			_elm_lang$core$Maybe$map,
-			function (_) {
-				return _.stop;
-			},
-			_p1.selectedRouteStop));
+var _user$project$StopPickerButton_View$stopPickerLabelText = function (_p1) {
+	var _p2 = _p1;
+	var _p3 = {ctor: '_Tuple2', _0: _p2.stopPickerOpen, _1: _p2.selectedStop};
+	_v2_0:
+	do {
+		if (_p3._1.ctor === 'Nothing') {
+			if (_p3._0 === true) {
+				break _v2_0;
+			} else {
+				return 'Select your home stop';
+			}
+		} else {
+			if (_p3._0 === true) {
+				break _v2_0;
+			} else {
+				return _p3._1._0;
+			}
+		}
+	} while(false);
+	return 'Cancel';
 };
 var _user$project$StopPickerButton_View$picker = function (model) {
 	var buttonLabel = _user$project$StopPickerButton_View$stopPickerLabelText(model);
@@ -10377,7 +10228,7 @@ var _user$project$Schedule_View$prettyDuration = function (_p4) {
 		})));
 };
 var _user$project$Schedule_View$predictionText = F3(
-	function (now, minutesLate, predictedArrival) {
+	function (now, minutesLate, predictedDeparture) {
 		return _user$project$Schedule_View$joinMaybe(
 			{
 				ctor: '::',
@@ -10386,19 +10237,16 @@ var _user$project$Schedule_View$predictionText = F3(
 					ctor: '::',
 					_0: _elm_lang$core$Maybe$Just(
 						_user$project$Schedule_View$prettyDuration(
-							A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, predictedArrival, now))),
+							A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, predictedDeparture, now))),
 					_1: {ctor: '[]'}
 				}
 			});
 	});
-var _user$project$Schedule_View$prediction = F2(
-	function (now, _p11) {
-		var _p12 = _p11;
-		var _p14 = _p12.scheduledArrival;
-		var _p13 = _p12.predictedArrival;
-		var predictionDiff = A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, _p13, _p14);
+var _user$project$Schedule_View$prediction = F3(
+	function (now, predictedDeparture, scheduledDeparture) {
+		var predictionDiff = A2(_rluiten$elm_date_extra$Date_Extra_Duration$diff, predictedDeparture, scheduledDeparture);
 		var minutesLate = _user$project$Schedule_View$predictedMinutesLate(predictionDiff);
-		var displayedArrival = _elm_lang$core$Native_Utils.eq(minutesLate, _elm_lang$core$Maybe$Nothing) ? _p14 : _p13;
+		var displayedDeparture = _elm_lang$core$Native_Utils.eq(minutesLate, _elm_lang$core$Maybe$Nothing) ? scheduledDeparture : predictedDeparture;
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 			{
@@ -10415,9 +10263,21 @@ var _user$project$Schedule_View$prediction = F2(
 			{
 				ctor: '::',
 				_0: _elm_native_ui$elm_native_ui$NativeUi$string(
-					A3(_user$project$Schedule_View$predictionText, now, minutesLate, displayedArrival)),
+					A3(_user$project$Schedule_View$predictionText, now, minutesLate, displayedDeparture)),
 				_1: {ctor: '[]'}
 			});
+	});
+var _user$project$Schedule_View$maybePrediction = F2(
+	function (now, model) {
+		var _p11 = model.predictedDeparture;
+		if (_p11.ctor === 'Nothing') {
+			return A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+				{ctor: '[]'},
+				{ctor: '[]'});
+		} else {
+			return A3(_user$project$Schedule_View$prediction, now, _p11._0, model.scheduledDeparture);
+		}
 	});
 var _user$project$Schedule_View$trainElement = F2(
 	function (now, train) {
@@ -10490,19 +10350,19 @@ var _user$project$Schedule_View$trainElement = F2(
 					{
 						ctor: '::',
 						_0: _elm_native_ui$elm_native_ui$NativeUi$string(
-							_user$project$Model$prettyTime(train.scheduledArrival)),
+							_user$project$Model$prettyTime(train.scheduledDeparture)),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
 					ctor: '::',
-					_0: A2(_user$project$Schedule_View$prediction, now, train),
+					_0: A2(_user$project$Schedule_View$maybePrediction, now, train),
 					_1: {ctor: '[]'}
 				}
 			});
 	});
 var _user$project$Schedule_View$view = F2(
-	function (_p15, schedule) {
-		var _p16 = _p15;
+	function (_p12, schedule) {
+		var _p13 = _p12;
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 			{
@@ -10564,7 +10424,7 @@ var _user$project$Schedule_View$view = F2(
 				},
 				A2(
 					_elm_lang$core$List$map,
-					_user$project$Schedule_View$trainElement(_p16.now),
+					_user$project$Schedule_View$trainElement(_p13.now),
 					schedule)));
 	});
 
@@ -10667,7 +10527,7 @@ var _user$project$View$welcomeScreen = A2(
 		_1: {ctor: '[]'}
 	});
 var _user$project$View$mainView = function (model) {
-	var _p2 = model.selectedRouteStop;
+	var _p2 = model.selectedStop;
 	if (_p2.ctor === 'Nothing') {
 		return {
 			ctor: '::',
@@ -10740,7 +10600,7 @@ var _user$project$Main$init = {
 			_0: A2(_elm_lang$core$Task$perform, _user$project$Message$Minute, _elm_lang$core$Time$now),
 			_1: {
 				ctor: '::',
-				_0: _user$project$FetchRoutes$fetchRoutes,
+				_0: _user$project$FetchStops$fetchStops,
 				_1: {ctor: '[]'}
 			}
 		})
