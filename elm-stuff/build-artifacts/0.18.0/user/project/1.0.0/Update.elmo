@@ -38,7 +38,7 @@ var _user$project$Update$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{direction: newDirection}),
-						_1: A2(_user$project$FetchSchedule$fetchSchedule, newDirection, model.selectedRouteStop)
+						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				case 'PickStop':
 					var _p3 = _p1._0;

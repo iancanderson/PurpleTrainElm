@@ -28,8 +28,7 @@ update msg model =
         ChangeDirection ->
             let newDirection = toggleDirection model.direction
             in
-              ( { model | direction = newDirection }
-              , fetchSchedule newDirection model.selectedRouteStop )
+              ( { model | direction = newDirection }, Cmd.none )
         PickStop routeStop ->
             ( { model
               | selectedRouteStop = Just routeStop
