@@ -10,7 +10,6 @@ import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
 import FetchSchedule exposing (..)
-import FetchRoutes exposing (..)
 import String
 import NativeUi.AsyncStorage as AsyncStorage
 
@@ -34,20 +33,19 @@ update msg model =
               | selectedRouteStop = Just routeStop
               , stopPickerOpen = False
               }
-            , Cmd.batch
-              [ Task.attempt
-                  SetItem
-                  ( AsyncStorage.setItem
-                        "routeStop"
-                        (routeStop.route.id ++ "@" ++ routeStop.stop)
-                  )
-              , fetchSchedule model.direction (Just routeStop)
-              ]
+            , Cmd.batch <|
+                [ Task.attempt
+                    SetItem
+                    ( AsyncStorage.setItem
+                          "routeStop"
+                          (routeStop.route.id ++ "@" ++ routeStop.stop)
+                    )
+                ] ++ fetchSchedules (Just routeStop)
             )
 
         GetItem result ->
             case result of
-                Ok Nothing -> ( model, fetchRoutes )
+                Ok Nothing -> ( model, Cmd.none )
                 Ok (Just routeStopString) ->
                   let
                     routeStop =
@@ -57,12 +55,9 @@ update msg model =
                           _ -> Nothing
                   in
                     ( { model | selectedRouteStop = routeStop }
-                    , Cmd.batch
-                        [ fetchRoutes
-                        , fetchSchedule model.direction routeStop
-                        ]
+                    , Cmd.batch <| fetchSchedules routeStop
                     )
-                Result.Err _ -> ( model, fetchRoutes )
+                Result.Err _ -> ( model, Cmd.none )
         SetItem result ->
             case result of
                 Ok _ ->
@@ -90,8 +85,16 @@ update msg model =
                   (AsyncStorage.getItem "routeStop")
             )
 
+
 toggleDirection : Direction -> Direction
 toggleDirection direction =
     case direction of
         Inbound -> Outbound
         Outbound -> Inbound
+
+
+fetchSchedules : Maybe RouteStop -> List (Cmd Msg)
+fetchSchedules routeStop =
+    [ fetchSchedule Inbound routeStop
+    , fetchSchedule Outbound routeStop
+    ]

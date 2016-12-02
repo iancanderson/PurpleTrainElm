@@ -1,7 +1,16 @@
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
 	_0: _user$project$Model$initialModel,
-	_1: A2(_elm_lang$core$Task$perform, _user$project$Message$Minute, _elm_lang$core$Time$now)
+	_1: _elm_lang$core$Platform_Cmd$batch(
+		{
+			ctor: '::',
+			_0: A2(_elm_lang$core$Task$perform, _user$project$Message$Minute, _elm_lang$core$Time$now),
+			_1: {
+				ctor: '::',
+				_0: _user$project$FetchRoutes$fetchRoutes,
+				_1: {ctor: '[]'}
+			}
+		})
 };
 var _user$project$Main$subscriptions = function (_p0) {
 	return A2(_elm_lang$core$Time$every, _elm_lang$core$Time$minute, _user$project$Message$Minute);

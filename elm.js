@@ -9749,6 +9749,17 @@ var _user$project$StopPicker_Translate$translate = function (_p0) {
 	return _user$project$Message$PickStop(_p1._0);
 };
 
+var _user$project$Update$fetchSchedules = function (routeStop) {
+	return {
+		ctor: '::',
+		_0: A2(_user$project$FetchSchedule$fetchSchedule, _user$project$Types$Inbound, routeStop),
+		_1: {
+			ctor: '::',
+			_0: A2(_user$project$FetchSchedule$fetchSchedule, _user$project$Types$Outbound, routeStop),
+			_1: {ctor: '[]'}
+		}
+	};
+};
 var _user$project$Update$toggleDirection = function (direction) {
 	var _p0 = direction;
 	if (_p0.ctor === 'Inbound') {
@@ -9802,33 +9813,30 @@ var _user$project$Update$update = F2(
 								stopPickerOpen: false
 							}),
 						_1: _elm_lang$core$Platform_Cmd$batch(
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$core$Task$attempt,
-									_user$project$Message$SetItem,
-									A2(
-										_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$setItem,
-										'routeStop',
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											_p3.route.id,
-											A2(_elm_lang$core$Basics_ops['++'], '@', _p3.stop)))),
-								_1: {
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								{
 									ctor: '::',
 									_0: A2(
-										_user$project$FetchSchedule$fetchSchedule,
-										model.direction,
-										_elm_lang$core$Maybe$Just(_p3)),
+										_elm_lang$core$Task$attempt,
+										_user$project$Message$SetItem,
+										A2(
+											_elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$setItem,
+											'routeStop',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												_p3.route.id,
+												A2(_elm_lang$core$Basics_ops['++'], '@', _p3.stop)))),
 									_1: {ctor: '[]'}
-								}
-							})
+								},
+								_user$project$Update$fetchSchedules(
+									_elm_lang$core$Maybe$Just(_p3))))
 					};
 				case 'GetItem':
 					var _p4 = _p1._0;
 					if (_p4.ctor === 'Ok') {
 						if (_p4._0.ctor === 'Nothing') {
-							return {ctor: '_Tuple2', _0: model, _1: _user$project$FetchRoutes$fetchRoutes};
+							return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 						} else {
 							var routeStop = function () {
 								var _p5 = A2(_elm_lang$core$String$split, '@', _p4._0._0);
@@ -9852,19 +9860,11 @@ var _user$project$Update$update = F2(
 									model,
 									{selectedRouteStop: routeStop}),
 								_1: _elm_lang$core$Platform_Cmd$batch(
-									{
-										ctor: '::',
-										_0: _user$project$FetchRoutes$fetchRoutes,
-										_1: {
-											ctor: '::',
-											_0: A2(_user$project$FetchSchedule$fetchSchedule, model.direction, routeStop),
-											_1: {ctor: '[]'}
-										}
-									})
+									_user$project$Update$fetchSchedules(routeStop))
 							};
 						}
 					} else {
-						return {ctor: '_Tuple2', _0: model, _1: _user$project$FetchRoutes$fetchRoutes};
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
 				case 'SetItem':
 					var _p6 = _p1._0;
@@ -10712,7 +10712,16 @@ var _user$project$View$view = function (model) {
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
 	_0: _user$project$Model$initialModel,
-	_1: A2(_elm_lang$core$Task$perform, _user$project$Message$Minute, _elm_lang$core$Time$now)
+	_1: _elm_lang$core$Platform_Cmd$batch(
+		{
+			ctor: '::',
+			_0: A2(_elm_lang$core$Task$perform, _user$project$Message$Minute, _elm_lang$core$Time$now),
+			_1: {
+				ctor: '::',
+				_0: _user$project$FetchRoutes$fetchRoutes,
+				_1: {ctor: '[]'}
+			}
+		})
 };
 var _user$project$Main$subscriptions = function (_p0) {
 	return A2(_elm_lang$core$Time$every, _elm_lang$core$Time$minute, _user$project$Message$Minute);
