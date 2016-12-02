@@ -51,7 +51,7 @@ update msg model =
                 Ok stops -> ( { model | stops = Ready stops }, Cmd.none)
                 Result.Err _ -> ( model, Cmd.none )
         LoadSchedule direction result ->
-            case (Debug.log "result" result) of
+            case result of
                 Ok schedule ->
                     case direction of
                         Inbound -> ( { model | inboundSchedule = Ready schedule }, Cmd.none)

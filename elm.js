@@ -9770,7 +9770,7 @@ var _user$project$Update$update = F2(
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'LoadSchedule':
-				var _p7 = A2(_elm_lang$core$Debug$log, 'result', _p1._1);
+				var _p7 = _p1._1;
 				if (_p7.ctor === 'Ok') {
 					var _p9 = _p7._0;
 					var _p8 = _p1._0;
@@ -10271,10 +10271,7 @@ var _user$project$Schedule_View$maybePrediction = F2(
 	function (now, model) {
 		var _p11 = model.predictedDeparture;
 		if (_p11.ctor === 'Nothing') {
-			return A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-				{ctor: '[]'},
-				{ctor: '[]'});
+			return A3(_user$project$Schedule_View$prediction, now, model.scheduledDeparture, model.scheduledDeparture);
 		} else {
 			return A3(_user$project$Schedule_View$prediction, now, _p11._0, model.scheduledDeparture);
 		}

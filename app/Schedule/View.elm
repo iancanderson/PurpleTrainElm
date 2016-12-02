@@ -64,7 +64,7 @@ trainElement now train =
 maybePrediction : Date -> Train -> Node Msg
 maybePrediction now model =
     case model.predictedDeparture of
-        Nothing -> Elements.view [] []
+        Nothing -> prediction now model.scheduledDeparture model.scheduledDeparture
         Just predictedDeparture -> prediction now predictedDeparture model.scheduledDeparture
 
 prediction : Date -> Date -> Date -> Node Msg
