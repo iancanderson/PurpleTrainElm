@@ -1,66 +1,31 @@
 module DirectionPicker.View exposing (view)
 
 import NativeUi as Ui exposing (Node, Property)
-import NativeUi.Style as Style exposing (defaultTransform)
-import NativeUi.Elements as Elements exposing (..)
-import NativeUi.Events exposing (..)
+import NativeUi.Style as Style
+import Json.Decode as Decode
+import Json.Encode
 
 import App.Color as Color
 import App.Font as Font
-import Types exposing (..)
 import Message exposing (..)
-import Model exposing (..)
-import ViewHelpers exposing (..)
-
-view : Direction -> Node Msg
-view direction =
-    Elements.view
-        [ Ui.style
-            [ Style.flexDirection "row"
-            , Style.alignItems "center"
-            , Style.alignSelf "stretch"
-            , Style.marginTop 20
-            ]
-        ]
-        [ directionButton direction Inbound "To Boston"
-        , directionButton direction Outbound "From Boston"
-        ]
+import ScrollableTabView exposing (..)
 
 
-directionButton : Direction -> Direction -> String -> Node Msg
-directionButton currentDirection direction label =
-    Elements.touchableHighlight
-        [ onPress (ChangeDirection direction)
-        , underlayColor Color.darkPurple
-        , Ui.style
-            [ Style.flex 1
-            , Style.padding 20
+view : List (Node Msg) -> Node Msg
+view =
+    ScrollableTabView.view
+        [ Ui.on "ChangeTab" (Decode.succeed ChangeDirection)
+        , tabBarActiveTextColor Color.white
+        , tabBarInactiveTextColor Color.lightHeader
+        , tabBarUnderlineStyle
+            [ Style.backgroundColor Color.lightHeader
+            , Style.height 1
             ]
-        ]
-        [ text
-            [ Ui.style (directionStyle currentDirection direction)
+        , tabBarTextStyle
+            [ Style.fontFamily Font.hkCompakt
+            , Style.fontWeight "400"
+            , Style.fontSize 20
             ]
-            [ Ui.string label ]
+        , Ui.style [ Style.marginTop 20 ]
         ]
 
-
-directionStyle : Direction -> Direction -> List Style.Style
-directionStyle direction currentDirection =
-    let activeStyle =
-        if direction == currentDirection then
-            [ Style.color Color.white
-            ]
-        else
-            [ Style.color Color.lightHeader
-            ]
-    in
-        List.append defaultDirectionStyle activeStyle
-
-
-defaultDirectionStyle : List Style.Style
-defaultDirectionStyle =
-    [ Style.textAlign "center"
-    , Style.fontFamily Font.hkCompakt
-    , Style.fontWeight "400"
-    , Style.fontSize 20
-    ]

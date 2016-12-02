@@ -4,6 +4,8 @@ import NativeUi as Ui exposing (Node, Property)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Events exposing (..)
+import NativeUi.Properties exposing (..)
+import Json.Encode
 
 import App.Color as Color
 import App.Font as Font
@@ -11,8 +13,8 @@ import Model exposing (..)
 import Message exposing (..)
 import Types exposing (..)
 import Update exposing (..)
-import StopPicker.View as StopPicker
 import DirectionPicker.View as DirectionPicker
+import StopPicker.View as StopPicker
 import Schedule.View as Schedule
 import ViewHelpers exposing (..)
 
@@ -38,7 +40,10 @@ mainView model =
             , routeAndStop model
             ]
         Just routeStop ->
-            [ topSection model
+            [ DirectionPicker.view
+              [ topSection model Inbound
+              , topSection model Outbound
+              ]
             , routeAndStop model
             ]
 
@@ -58,21 +63,29 @@ welcomeScreen =
         [ Ui.string "Purple Train" ]
 
 
-topSection : Model -> Node Msg
-topSection model =
+topSection : Model -> Direction -> Node Msg
+topSection model direction =
     Elements.view
         [ Ui.style
             [ Style.flex 1
             , Style.flexDirection "column"
             , Style.alignSelf "stretch"
             ]
+        , Ui.property "tabLabel" (Json.Encode.string (directionString direction))
+        , key (toString direction)
         ]
-        [ DirectionPicker.view model.direction
-        , Schedule.view model
+        [ Schedule.view model
         ]
 
 
-routeAndStop : Model -> Node Msg
+directionString : Direction -> String
+directionString direction =
+    case direction of
+        Inbound -> "To Boston"
+        Outbound -> "From Boston"
+
+
+routeAndStop : Model  -> Node Msg
 routeAndStop model =
   Elements.view
       [ Ui.style

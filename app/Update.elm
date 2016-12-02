@@ -25,9 +25,11 @@ update msg model =
             in
                 ( { model | stopPicker = updatedStopPicker }
                 , Cmd.map StopPickerMsg stopPickerCmd )
-        ChangeDirection direction ->
-            ( { model | direction = direction }
-            , fetchSchedule direction model.selectedRouteStop )
+        ChangeDirection ->
+            let newDirection = toggleDirection model.direction
+            in
+              ( { model | direction = newDirection }
+              , fetchSchedule newDirection model.selectedRouteStop )
         PickStop routeStop ->
             ( { model
               | selectedRouteStop = Just routeStop
@@ -85,3 +87,9 @@ update msg model =
                   GetItem
                   (AsyncStorage.getItem "routeStop")
             )
+
+toggleDirection : Direction -> Direction
+toggleDirection direction =
+    case direction of
+        Inbound -> Outbound
+        Outbound -> Inbound

@@ -9569,12 +9569,113 @@ var _user$project$Message$LoadRoutes = function (a) {
 var _user$project$Message$PickStop = function (a) {
 	return {ctor: 'PickStop', _0: a};
 };
-var _user$project$Message$ChangeDirection = function (a) {
-	return {ctor: 'ChangeDirection', _0: a};
-};
+var _user$project$Message$ChangeDirection = {ctor: 'ChangeDirection'};
 var _user$project$Message$StopPickerMsg = function (a) {
 	return {ctor: 'StopPickerMsg', _0: a};
 };
+
+var ScrollableTabView = require('react-native-scrollable-tab-view');
+
+var _user$project$ScrollableTabView$tabBarTextStyle = function (_p0) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'tabBarTextStyle',
+		_elm_native_ui$elm_native_ui$NativeUi_Style$encode(_p0));
+};
+var _user$project$ScrollableTabView$tabBarUnderlineStyle = function (_p1) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'tabBarUnderlineStyle',
+		_elm_native_ui$elm_native_ui$NativeUi_Style$encode(_p1));
+};
+var _user$project$ScrollableTabView$tabBarInactiveTextColor = function (_p2) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'tabBarInactiveTextColor',
+		_elm_lang$core$Json_Encode$string(_p2));
+};
+var _user$project$ScrollableTabView$tabBarActiveTextColor = function (_p3) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'tabBarActiveTextColor',
+		_elm_lang$core$Json_Encode$string(_p3));
+};
+var _user$project$ScrollableTabView$view = A3(_elm_native_ui$elm_native_ui$NativeUi$customNode, 'ScrollableTabView', 'react-native-scrollable-tab-view/index.js', _elm_lang$core$Maybe$Nothing);
+
+var _user$project$DirectionPicker_View$view = _user$project$ScrollableTabView$view(
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_native_ui$elm_native_ui$NativeUi$on,
+			'ChangeTab',
+			_elm_lang$core$Json_Decode$succeed(_user$project$Message$ChangeDirection)),
+		_1: {
+			ctor: '::',
+			_0: _user$project$ScrollableTabView$tabBarActiveTextColor(_user$project$App_Color$white),
+			_1: {
+				ctor: '::',
+				_0: _user$project$ScrollableTabView$tabBarInactiveTextColor(_user$project$App_Color$lightHeader),
+				_1: {
+					ctor: '::',
+					_0: _user$project$ScrollableTabView$tabBarUnderlineStyle(
+						{
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$lightHeader),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$height(1),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _user$project$ScrollableTabView$tabBarTextStyle(
+							{
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(20),
+										_1: {ctor: '[]'}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+								{
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(20),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		}
+	});
+
+var _user$project$FetchRoutes$decodeStop = _elm_lang$core$Json_Decode$string;
+var _user$project$FetchRoutes$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$FetchRoutes$decodeStop);
+var _user$project$FetchRoutes$decodeRoute = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$Types$Route,
+	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$FetchRoutes$decodeStops));
+var _user$project$FetchRoutes$decodeRoutes = A2(
+	_elm_lang$core$Json_Decode$map,
+	_elm_lang$core$List$map(
+		function (_p0) {
+			var _p1 = _p0;
+			return _p1._1(_p1._0);
+		}),
+	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$FetchRoutes$decodeRoute));
+var _user$project$FetchRoutes$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$FetchRoutes$decodeRoutes);
+var _user$project$FetchRoutes$fetchRoutes = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$FetchRoutes$getRoutes);
 
 var _user$project$Model$prettyTime = _user$project$Date_Format$format('%l:%M %P');
 var _user$project$Model$directionName = function (direction) {
@@ -9598,142 +9699,6 @@ var _user$project$Model$Model = F7(
 	function (a, b, c, d, e, f, g) {
 		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e, stopPickerOpen: f, now: g};
 	});
-
-var _user$project$ViewHelpers$underlayColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'underlayColor',
-		_elm_lang$core$Json_Encode$string(val));
-};
-
-var _user$project$DirectionPicker_View$defaultDirectionStyle = {
-	ctor: '::',
-	_0: _elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
-	_1: {
-		ctor: '::',
-		_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
-		_1: {
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
-			_1: {
-				ctor: '::',
-				_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(20),
-				_1: {ctor: '[]'}
-			}
-		}
-	}
-};
-var _user$project$DirectionPicker_View$directionStyle = F2(
-	function (direction, currentDirection) {
-		var activeStyle = _elm_lang$core$Native_Utils.eq(direction, currentDirection) ? {
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$white),
-			_1: {ctor: '[]'}
-		} : {
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightHeader),
-			_1: {ctor: '[]'}
-		};
-		return A2(_elm_lang$core$List$append, _user$project$DirectionPicker_View$defaultDirectionStyle, activeStyle);
-	});
-var _user$project$DirectionPicker_View$directionButton = F3(
-	function (currentDirection, direction, label) {
-		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight,
-			{
-				ctor: '::',
-				_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-					_user$project$Message$ChangeDirection(direction)),
-				_1: {
-					ctor: '::',
-					_0: _user$project$ViewHelpers$underlayColor(_user$project$App_Color$darkPurple),
-					_1: {
-						ctor: '::',
-						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-							{
-								ctor: '::',
-								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
-								_1: {
-									ctor: '::',
-									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(20),
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {ctor: '[]'}
-					}
-				}
-			},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-					{
-						ctor: '::',
-						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-							A2(_user$project$DirectionPicker_View$directionStyle, currentDirection, direction)),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_native_ui$elm_native_ui$NativeUi$string(label),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			});
-	});
-var _user$project$DirectionPicker_View$view = function (direction) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		{
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-				{
-					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
-					_1: {
-						ctor: '::',
-						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-						_1: {
-							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
-							_1: {
-								ctor: '::',
-								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(20),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Inbound, 'To Boston'),
-			_1: {
-				ctor: '::',
-				_0: A3(_user$project$DirectionPicker_View$directionButton, direction, _user$project$Types$Outbound, 'From Boston'),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-
-var _user$project$FetchRoutes$decodeStop = _elm_lang$core$Json_Decode$string;
-var _user$project$FetchRoutes$decodeStops = _elm_lang$core$Json_Decode$list(_user$project$FetchRoutes$decodeStop);
-var _user$project$FetchRoutes$decodeRoute = A3(
-	_elm_lang$core$Json_Decode$map2,
-	_user$project$Types$Route,
-	A2(_elm_lang$core$Json_Decode$field, 'route_name', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'stops', _user$project$FetchRoutes$decodeStops));
-var _user$project$FetchRoutes$decodeRoutes = A2(
-	_elm_lang$core$Json_Decode$map,
-	_elm_lang$core$List$map(
-		function (_p0) {
-			var _p1 = _p0;
-			return _p1._1(_p1._0);
-		}),
-	_elm_lang$core$Json_Decode$keyValuePairs(_user$project$FetchRoutes$decodeRoute));
-var _user$project$FetchRoutes$getRoutes = A2(_elm_lang$http$Http$get, 'https://commuter-api-production.herokuapp.com/api/v1/routes', _user$project$FetchRoutes$decodeRoutes);
-var _user$project$FetchRoutes$fetchRoutes = A2(_elm_lang$http$Http$send, _user$project$Message$LoadRoutes, _user$project$FetchRoutes$getRoutes);
 
 var _user$project$FetchSchedule$stringToDate = A2(
 	_elm_lang$core$Json_Decode$andThen,
@@ -9790,23 +9755,31 @@ var _user$project$StopPicker_Translate$translate = function (_p0) {
 	return _user$project$Message$PickStop(_p1._0);
 };
 
+var _user$project$Update$toggleDirection = function (direction) {
+	var _p0 = direction;
+	if (_p0.ctor === 'Inbound') {
+		return _user$project$Types$Outbound;
+	} else {
+		return _user$project$Types$Inbound;
+	}
+};
 var _user$project$Update$update = F2(
 	function (msg, model) {
 		update:
 		while (true) {
-			var _p0 = msg;
-			switch (_p0.ctor) {
+			var _p1 = msg;
+			switch (_p1.ctor) {
 				case 'StopPickerMsg':
-					if (_p0._0.ctor === 'External') {
-						var _v1 = _user$project$StopPicker_Translate$translate(_p0._0._0),
-							_v2 = model;
-						msg = _v1;
-						model = _v2;
+					if (_p1._0.ctor === 'External') {
+						var _v2 = _user$project$StopPicker_Translate$translate(_p1._0._0),
+							_v3 = model;
+						msg = _v2;
+						model = _v3;
 						continue update;
 					} else {
-						var _p1 = A2(_user$project$StopPicker_Update$update, _p0._0._0, model.stopPicker);
-						var updatedStopPicker = _p1._0;
-						var stopPickerCmd = _p1._1;
+						var _p2 = A2(_user$project$StopPicker_Update$update, _p1._0._0, model.stopPicker);
+						var updatedStopPicker = _p2._0;
+						var stopPickerCmd = _p2._1;
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
@@ -9816,16 +9789,16 @@ var _user$project$Update$update = F2(
 						};
 					}
 				case 'ChangeDirection':
-					var _p2 = _p0._0;
+					var newDirection = _user$project$Update$toggleDirection(model.direction);
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{direction: _p2}),
-						_1: A2(_user$project$FetchSchedule$fetchSchedule, _p2, model.selectedRouteStop)
+							{direction: newDirection}),
+						_1: A2(_user$project$FetchSchedule$fetchSchedule, newDirection, model.selectedRouteStop)
 					};
 				case 'PickStop':
-					var _p3 = _p0._0;
+					var _p3 = _p1._0;
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -9858,7 +9831,7 @@ var _user$project$Update$update = F2(
 							})
 					};
 				case 'GetItem':
-					var _p4 = _p0._0;
+					var _p4 = _p1._0;
 					if (_p4.ctor === 'Ok') {
 						if (_p4._0.ctor === 'Nothing') {
 							return {ctor: '_Tuple2', _0: model, _1: _user$project$FetchRoutes$fetchRoutes};
@@ -9900,14 +9873,14 @@ var _user$project$Update$update = F2(
 						return {ctor: '_Tuple2', _0: model, _1: _user$project$FetchRoutes$fetchRoutes};
 					}
 				case 'SetItem':
-					var _p6 = _p0._0;
+					var _p6 = _p1._0;
 					if (_p6.ctor === 'Ok') {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					} else {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
 				case 'LoadRoutes':
-					var _p7 = _p0._0;
+					var _p7 = _p1._0;
 					if (_p7.ctor === 'Ok') {
 						return {
 							ctor: '_Tuple2',
@@ -9920,7 +9893,7 @@ var _user$project$Update$update = F2(
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
 				case 'LoadSchedule':
-					var _p8 = _p0._0;
+					var _p8 = _p1._0;
 					if (_p8.ctor === 'Ok') {
 						return {
 							ctor: '_Tuple2',
@@ -9946,7 +9919,7 @@ var _user$project$Update$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								now: _elm_lang$core$Date$fromTime(_p0._0)
+								now: _elm_lang$core$Date$fromTime(_p1._0)
 							}),
 						_1: A2(
 							_elm_lang$core$Task$attempt,
@@ -10417,6 +10390,13 @@ var _user$project$Schedule_View$view = function (_p15) {
 				_p16.schedule)));
 };
 
+var _user$project$ViewHelpers$underlayColor = function (val) {
+	return A2(
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'underlayColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+
 var _user$project$View$stopPickerButton = function (buttonLabel) {
 	return A2(
 		_elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight,
@@ -10549,37 +10529,55 @@ var _user$project$View$routeAndStop = function (model) {
 		},
 		_user$project$View$picker(model));
 };
-var _user$project$View$topSection = function (model) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		{
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-				{
-					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
-					_1: {
+var _user$project$View$directionString = function (direction) {
+	var _p2 = direction;
+	if (_p2.ctor === 'Inbound') {
+		return 'To Boston';
+	} else {
+		return 'From Boston';
+	}
+};
+var _user$project$View$topSection = F2(
+	function (model, direction) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+					{
 						ctor: '::',
-						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flex(1),
 						_1: {
 							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
-							_1: {ctor: '[]'}
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('column'),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
+								_1: {ctor: '[]'}
+							}
 						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_native_ui$elm_native_ui$NativeUi$property,
+						'tabLabel',
+						_elm_lang$core$Json_Encode$string(
+							_user$project$View$directionString(direction))),
+					_1: {
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Properties$key(
+							_elm_lang$core$Basics$toString(direction)),
+						_1: {ctor: '[]'}
 					}
-				}),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _user$project$DirectionPicker_View$view(model.direction),
-			_1: {
+				}
+			},
+			{
 				ctor: '::',
 				_0: _user$project$Schedule_View$view(model),
 				_1: {ctor: '[]'}
-			}
-		});
-};
+			});
+	});
 var _user$project$View$welcomeScreen = A2(
 	_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
 	{
@@ -10618,8 +10616,8 @@ var _user$project$View$welcomeScreen = A2(
 		_1: {ctor: '[]'}
 	});
 var _user$project$View$mainView = function (model) {
-	var _p2 = model.selectedRouteStop;
-	if (_p2.ctor === 'Nothing') {
+	var _p3 = model.selectedRouteStop;
+	if (_p3.ctor === 'Nothing') {
 		return {
 			ctor: '::',
 			_0: _user$project$View$welcomeScreen,
@@ -10632,7 +10630,16 @@ var _user$project$View$mainView = function (model) {
 	} else {
 		return {
 			ctor: '::',
-			_0: _user$project$View$topSection(model),
+			_0: _user$project$DirectionPicker_View$view(
+				{
+					ctor: '::',
+					_0: A2(_user$project$View$topSection, model, _user$project$Types$Inbound),
+					_1: {
+						ctor: '::',
+						_0: A2(_user$project$View$topSection, model, _user$project$Types$Outbound),
+						_1: {ctor: '[]'}
+					}
+				}),
 			_1: {
 				ctor: '::',
 				_0: _user$project$View$routeAndStop(model),
