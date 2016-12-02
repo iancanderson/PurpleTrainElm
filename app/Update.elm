@@ -74,9 +74,12 @@ update msg model =
             case result of
                 Ok routes -> ( { model | routes = routes }, Cmd.none)
                 Result.Err _ -> ( model, Cmd.none )
-        LoadSchedule result ->
+        LoadSchedule direction result ->
             case result of
-                Ok schedule -> ( { model | schedule = schedule }, Cmd.none)
+                Ok schedule ->
+                    case direction of
+                        Inbound -> ( { model | inboundSchedule = schedule }, Cmd.none)
+                        Outbound -> ( { model | outboundSchedule = schedule }, Cmd.none)
                 Result.Err _ -> ( model, Cmd.none )
         ToggleStopPicker ->
             ( { model | stopPickerOpen = not model.stopPickerOpen }, Cmd.none)

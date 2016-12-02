@@ -10,7 +10,8 @@ import StopPicker.Model as StopPicker
 
 type alias Model =
     { direction : Direction
-    , schedule : Schedule
+    , inboundSchedule : Schedule
+    , outboundSchedule : Schedule
     , routes : Routes
     , stopPicker : StopPicker.Model
     , selectedRouteStop : Maybe RouteStop
@@ -22,20 +23,14 @@ type alias Model =
 initialModel : Model
 initialModel =
     { direction = Inbound
-    , schedule = []
+    , inboundSchedule = []
+    , outboundSchedule = []
     , routes = []
     , stopPicker = StopPicker.initialModel
     , selectedRouteStop = Nothing
     , stopPickerOpen = False
     , now = Date.fromTime 0
     }
-
-
-directionName : Direction -> String
-directionName direction =
-    case direction of
-        Inbound -> "Inbound"
-        Outbound -> "Outbound"
 
 
 prettyTime : Date -> String

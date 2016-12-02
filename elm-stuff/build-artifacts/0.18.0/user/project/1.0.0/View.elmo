@@ -1,145 +1,13 @@
-var _user$project$View$stopPickerButton = function (buttonLabel) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight,
-		{
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-				{
-					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$stopPickerButton),
-					_1: {
-						ctor: '::',
-						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(40),
-						_1: {
-							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$height(56),
-							_1: {
-								ctor: '::',
-								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('center'),
-								_1: {
-									ctor: '::',
-									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
-									_1: {
-										ctor: '::',
-										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$position('absolute'),
-										_1: {
-											ctor: '::',
-											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$bottom(20),
-											_1: {
-												ctor: '::',
-												_0: _elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}),
-			_1: {
-				ctor: '::',
-				_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(_user$project$Message$ToggleStopPicker),
-				_1: {
-					ctor: '::',
-					_0: _user$project$ViewHelpers$underlayColor(_user$project$App_Color$stopPickerButton),
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-				{
-					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-						{
-							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color('#C9B8D7'),
-							_1: {
-								ctor: '::',
-								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
-								_1: {
-									ctor: '::',
-									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('500'),
-									_1: {ctor: '[]'}
-								}
-							}
-						}),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi$string(buttonLabel),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$View$stopPicker = function (model) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$map,
-		_user$project$Message$StopPickerMsg,
-		A2(_user$project$StopPicker_View$view, model.routes, model.stopPicker));
-};
-var _user$project$View$maybeStopPicker = function (model) {
-	return model.stopPickerOpen ? _elm_lang$core$Maybe$Just(
-		_user$project$View$stopPicker(model)) : _elm_lang$core$Maybe$Nothing;
-};
-var _user$project$View$stopPickerLabelText = function (_p0) {
-	var _p1 = _p0;
-	return _p1.stopPickerOpen ? 'Cancel' : A2(
-		_elm_lang$core$Maybe$withDefault,
-		'Select your home stop',
-		A2(
-			_elm_lang$core$Maybe$map,
-			function (_) {
-				return _.stop;
-			},
-			_p1.selectedRouteStop));
-};
-var _user$project$View$picker = function (model) {
-	var buttonLabel = _user$project$View$stopPickerLabelText(model);
-	return A2(
-		_elm_lang$core$List$filterMap,
-		_elm_lang$core$Basics$identity,
-		{
-			ctor: '::',
-			_0: _user$project$View$maybeStopPicker(model),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$core$Maybe$Just(
-					_user$project$View$stopPickerButton(buttonLabel)),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$View$routeAndStop = function (model) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
-		{
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-				{
-					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi_Style$width(270),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		},
-		_user$project$View$picker(model));
-};
 var _user$project$View$directionString = function (direction) {
-	var _p2 = direction;
-	if (_p2.ctor === 'Inbound') {
+	var _p0 = direction;
+	if (_p0.ctor === 'Inbound') {
 		return 'To Boston';
 	} else {
 		return 'From Boston';
 	}
 };
-var _user$project$View$topSection = F2(
-	function (model, direction) {
+var _user$project$View$topSection = F3(
+	function (model, direction, schedule) {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 			{
@@ -175,7 +43,7 @@ var _user$project$View$topSection = F2(
 			},
 			{
 				ctor: '::',
-				_0: _user$project$Schedule_View$view(model),
+				_0: A2(_user$project$Schedule_View$view, model, schedule),
 				_1: {ctor: '[]'}
 			});
 	});
@@ -217,14 +85,14 @@ var _user$project$View$welcomeScreen = A2(
 		_1: {ctor: '[]'}
 	});
 var _user$project$View$mainView = function (model) {
-	var _p3 = model.selectedRouteStop;
-	if (_p3.ctor === 'Nothing') {
+	var _p1 = model.selectedRouteStop;
+	if (_p1.ctor === 'Nothing') {
 		return {
 			ctor: '::',
 			_0: _user$project$View$welcomeScreen,
 			_1: {
 				ctor: '::',
-				_0: _user$project$View$routeAndStop(model),
+				_0: _user$project$StopPickerButton_View$view(model),
 				_1: {ctor: '[]'}
 			}
 		};
@@ -234,16 +102,16 @@ var _user$project$View$mainView = function (model) {
 			_0: _user$project$DirectionPicker_View$view(
 				{
 					ctor: '::',
-					_0: A2(_user$project$View$topSection, model, _user$project$Types$Inbound),
+					_0: A3(_user$project$View$topSection, model, _user$project$Types$Inbound, model.inboundSchedule),
 					_1: {
 						ctor: '::',
-						_0: A2(_user$project$View$topSection, model, _user$project$Types$Outbound),
+						_0: A3(_user$project$View$topSection, model, _user$project$Types$Outbound, model.outboundSchedule),
 						_1: {ctor: '[]'}
 					}
 				}),
 			_1: {
 				ctor: '::',
-				_0: _user$project$View$routeAndStop(model),
+				_0: _user$project$StopPickerButton_View$view(model),
 				_1: {ctor: '[]'}
 			}
 		};

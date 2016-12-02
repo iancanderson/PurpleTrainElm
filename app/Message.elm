@@ -12,7 +12,7 @@ type Msg
     | ChangeDirection
     | PickStop RouteStop
     | LoadRoutes (Result Http.Error Routes)
-    | LoadSchedule (Result Http.Error Schedule)
+    | LoadSchedule Direction (Result Http.Error Schedule)
     | ToggleStopPicker
     | SetItem (Result AsyncStorage.Error ())
     | GetItem (Result AsyncStorage.Error (Maybe String))

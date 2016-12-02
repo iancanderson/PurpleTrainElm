@@ -14,7 +14,7 @@ import Message exposing (..)
 import Types exposing (..)
 import Update exposing (..)
 import DirectionPicker.View as DirectionPicker
-import StopPicker.View as StopPicker
+import StopPickerButton.View as StopPickerButton
 import Schedule.View as Schedule
 import ViewHelpers exposing (..)
 
@@ -37,14 +37,14 @@ mainView model =
     case model.selectedRouteStop of
         Nothing ->
             [ welcomeScreen
-            , routeAndStop model
+            , StopPickerButton.view model
             ]
         Just routeStop ->
             [ DirectionPicker.view
-              [ topSection model Inbound
-              , topSection model Outbound
-              ]
-            , routeAndStop model
+                [ topSection model Inbound model.inboundSchedule
+                , topSection model Outbound model.outboundSchedule
+                ]
+            , StopPickerButton.view model
             ]
 
 
@@ -63,8 +63,8 @@ welcomeScreen =
         [ Ui.string "Purple Train" ]
 
 
-topSection : Model -> Direction -> Node Msg
-topSection model direction =
+topSection : Model -> Direction -> Schedule -> Node Msg
+topSection model direction schedule =
     Elements.view
         [ Ui.style
             [ Style.flex 1
@@ -74,7 +74,7 @@ topSection model direction =
         , Ui.property "tabLabel" (Json.Encode.string (directionString direction))
         , key (toString direction)
         ]
-        [ Schedule.view model
+        [ Schedule.view model schedule
         ]
 
 
@@ -83,72 +83,3 @@ directionString direction =
     case direction of
         Inbound -> "To Boston"
         Outbound -> "From Boston"
-
-
-routeAndStop : Model  -> Node Msg
-routeAndStop model =
-  Elements.view
-      [ Ui.style
-          [ Style.width 270
-          ]
-      ]
-      (picker model)
-
-
-picker : Model -> List (Node Msg)
-picker model =
-    let buttonLabel = stopPickerLabelText model
-    in
-        List.filterMap
-          identity
-          [ maybeStopPicker model
-          , Just <| stopPickerButton buttonLabel
-          ]
-
-
-stopPickerLabelText : Model -> String
-stopPickerLabelText {stopPickerOpen, selectedRouteStop} =
-    if stopPickerOpen then
-      "Cancel"
-    else
-      Maybe.map .stop selectedRouteStop
-      |> Maybe.withDefault "Select your home stop"
-
-
-maybeStopPicker : Model -> Maybe (Node Msg)
-maybeStopPicker model =
-    if model.stopPickerOpen then
-        Just <| stopPicker model
-    else
-        Nothing
-
-
-stopPicker : Model -> Node Msg
-stopPicker model =
-    Ui.map StopPickerMsg (StopPicker.view model.routes model.stopPicker)
-
-stopPickerButton : String -> Node Msg
-stopPickerButton buttonLabel =
-    Elements.touchableHighlight
-        [ Ui.style
-            [ Style.backgroundColor Color.stopPickerButton
-            , Style.borderRadius 40
-            , Style.height 56
-            , Style.justifyContent "center"
-            , Style.alignItems "center"
-            , Style.position "absolute"
-            , Style.bottom 20
-            , Style.width 270
-            ]
-        , onPress ToggleStopPicker
-        , underlayColor Color.stopPickerButton
-        ]
-        [ text
-            [ Ui.style
-                [ Style.color "#C9B8D7"
-                , Style.fontFamily Font.hkCompakt
-                , Style.fontWeight "500"
-                ]
-            ]
-            [ Ui.string buttonLabel ]
-        ]

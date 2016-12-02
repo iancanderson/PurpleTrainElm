@@ -14,14 +14,14 @@ fetchSchedule direction maybeRouteStop =
         Nothing ->
             Cmd.none
         Just routeStop ->
-            Http.send LoadSchedule (getSchedule direction routeStop)
+            Http.send (LoadSchedule direction) (getSchedule direction routeStop)
 
 
 getSchedule : Direction -> RouteStop -> Http.Request Schedule
 getSchedule direction {route, stop} =
     Http.get
         ( "https://commuter-api-production.herokuapp.com/api/v1/predictions?direction="
-          ++ directionName direction
+          ++ toString direction
           ++ "&route_id="
           ++ route.id
           ++ "&stop_id="

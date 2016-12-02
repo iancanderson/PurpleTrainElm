@@ -12,8 +12,8 @@ import Types exposing (..)
 import Message exposing (..)
 import Model exposing (..)
 
-view : Model -> Node Msg
-view {schedule, now} =
+view : Model -> Schedule -> Node Msg
+view {now} schedule =
     Elements.view
         [ Ui.style
             [ Style.alignSelf "stretch" ]

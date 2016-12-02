@@ -8,9 +8,10 @@ var _user$project$Message$SetItem = function (a) {
 	return {ctor: 'SetItem', _0: a};
 };
 var _user$project$Message$ToggleStopPicker = {ctor: 'ToggleStopPicker'};
-var _user$project$Message$LoadSchedule = function (a) {
-	return {ctor: 'LoadSchedule', _0: a};
-};
+var _user$project$Message$LoadSchedule = F2(
+	function (a, b) {
+		return {ctor: 'LoadSchedule', _0: a, _1: b};
+	});
 var _user$project$Message$LoadRoutes = function (a) {
 	return {ctor: 'LoadRoutes', _0: a};
 };

@@ -1,22 +1,15 @@
 var _user$project$Model$prettyTime = _user$project$Date_Format$format('%l:%M %P');
-var _user$project$Model$directionName = function (direction) {
-	var _p0 = direction;
-	if (_p0.ctor === 'Inbound') {
-		return 'Inbound';
-	} else {
-		return 'Outbound';
-	}
-};
 var _user$project$Model$initialModel = {
 	direction: _user$project$Types$Inbound,
-	schedule: {ctor: '[]'},
+	inboundSchedule: {ctor: '[]'},
+	outboundSchedule: {ctor: '[]'},
 	routes: {ctor: '[]'},
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
 	stopPickerOpen: false,
 	now: _elm_lang$core$Date$fromTime(0)
 };
-var _user$project$Model$Model = F7(
-	function (a, b, c, d, e, f, g) {
-		return {direction: a, schedule: b, routes: c, stopPicker: d, selectedRouteStop: e, stopPickerOpen: f, now: g};
+var _user$project$Model$Model = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {direction: a, inboundSchedule: b, outboundSchedule: c, routes: d, stopPicker: e, selectedRouteStop: f, stopPickerOpen: g, now: h};
 	});
