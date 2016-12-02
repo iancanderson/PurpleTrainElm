@@ -9930,38 +9930,88 @@ var _user$project$Update$update = F2(
 		}
 	});
 
-var _user$project$StopPicker_View$routeButton = function (route) {
+var _user$project$ViewHelpers$underlayColor = function (val) {
 	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-		{
+		_elm_native_ui$elm_native_ui$NativeUi$property,
+		'underlayColor',
+		_elm_lang$core$Json_Encode$string(val));
+};
+
+var _user$project$StopPicker_View$buttonTextStyle = _elm_native_ui$elm_native_ui$NativeUi$style(
+	{
+		ctor: '::',
+		_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
+		_1: {
 			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-				_user$project$StopPicker_Update$Internal(
-					_user$project$StopPicker_Update$PickRoute(route))),
+			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('400'),
 			_1: {
 				ctor: '::',
-				_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-					{
-						ctor: '::',
-						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
-						_1: {
-							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
-							_1: {ctor: '[]'}
-						}
-					}),
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$purple),
+				_1: {ctor: '[]'}
+			}
+		}
+	});
+var _user$project$StopPicker_View$buttonStyle = _elm_native_ui$elm_native_ui$NativeUi$style(
+	{
+		ctor: '::',
+		_0: _elm_native_ui$elm_native_ui$NativeUi_Style$height(40),
+		_1: {
+			ctor: '::',
+			_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(12),
+			_1: {ctor: '[]'}
+		}
+	});
+var _user$project$StopPicker_View$pickerButton = F2(
+	function (message, label) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$touchableHighlight,
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(message),
 				_1: {
 					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi_Properties$key(route.name),
-					_1: {ctor: '[]'}
+					_0: _user$project$ViewHelpers$underlayColor(_user$project$App_Color$defaultUnderlay),
+					_1: {
+						ctor: '::',
+						_0: _user$project$StopPicker_View$buttonStyle,
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Properties$key(label),
+							_1: {ctor: '[]'}
+						}
+					}
 				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: _elm_native_ui$elm_native_ui$NativeUi$string(route.name),
-			_1: {ctor: '[]'}
-		});
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+							{
+								ctor: '::',
+								_0: _user$project$StopPicker_View$buttonTextStyle,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi$string(label),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$StopPicker_View$routeButton = function (route) {
+	return A2(
+		_user$project$StopPicker_View$pickerButton,
+		_user$project$StopPicker_Update$Internal(
+			_user$project$StopPicker_Update$PickRoute(route)),
+		route.name);
 };
 var _user$project$StopPicker_View$pickerContainer = _elm_native_ui$elm_native_ui$NativeUi_Elements$view(
 	{
@@ -9985,7 +10035,11 @@ var _user$project$StopPicker_View$pickerContainer = _elm_native_ui$elm_native_ui
 								_1: {
 									ctor: '::',
 									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$shadowRadius(3),
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderRadius(10),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						}
@@ -10060,12 +10114,8 @@ var _user$project$StopPicker_View$pickerOptions = _elm_native_ui$elm_native_ui$N
 						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomRightRadius(10),
 						_1: {
 							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$padding(10),
-							_1: {
-								ctor: '::',
-								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$height(300),
-								_1: {ctor: '[]'}
-							}
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$height(300),
+							_1: {ctor: '[]'}
 						}
 					}
 				}
@@ -10091,33 +10141,11 @@ var _user$project$StopPicker_View$routePicker = function (routes) {
 var _user$project$StopPicker_View$stopButton = F2(
 	function (route, stop) {
 		return A2(
-			_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
-			{
-				ctor: '::',
-				_0: _elm_native_ui$elm_native_ui$NativeUi_Events$onPress(
-					_user$project$StopPicker_Update$Internal(
-						_user$project$StopPicker_Update$InternalPickStop(
-							A2(_user$project$Types$RouteStop, route, stop)))),
-				_1: {
-					ctor: '::',
-					_0: _elm_native_ui$elm_native_ui$NativeUi$style(
-						{
-							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginVertical(5),
-							_1: {
-								ctor: '::',
-								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$hkCompakt),
-								_1: {ctor: '[]'}
-							}
-						}),
-					_1: {ctor: '[]'}
-				}
-			},
-			{
-				ctor: '::',
-				_0: _elm_native_ui$elm_native_ui$NativeUi$string(stop),
-				_1: {ctor: '[]'}
-			});
+			_user$project$StopPicker_View$pickerButton,
+			_user$project$StopPicker_Update$Internal(
+				_user$project$StopPicker_Update$InternalPickStop(
+					A2(_user$project$Types$RouteStop, route, stop))),
+			stop);
 	});
 var _user$project$StopPicker_View$stopOptions = function (route) {
 	return _user$project$StopPicker_View$pickerOptions(
@@ -10388,13 +10416,6 @@ var _user$project$Schedule_View$view = function (_p15) {
 				_elm_lang$core$List$map,
 				_user$project$Schedule_View$trainElement(_p16.now),
 				_p16.schedule)));
-};
-
-var _user$project$ViewHelpers$underlayColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'underlayColor',
-		_elm_lang$core$Json_Encode$string(val));
 };
 
 var _user$project$View$stopPickerButton = function (buttonLabel) {

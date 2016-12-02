@@ -12,6 +12,7 @@ import App.Font as Font
 import StopPicker.Model exposing (..)
 import StopPicker.Update exposing (..)
 import Types exposing (..)
+import ViewHelpers exposing (..)
 
 view : Routes -> Model -> Node Msg
 view routes model =
@@ -33,16 +34,11 @@ stopOptions route =
   pickerOptions
       ( List.map (stopButton route) route.stops)
 
+
 stopButton : Route -> Stop -> Node Msg
 stopButton route stop =
-  text
-    [ onPress (Internal (InternalPickStop (RouteStop route stop)))
-    , Ui.style
-        [ Style.marginVertical 5
-        , Style.fontFamily Font.hkCompakt
-        ]
-    ]
-    [ Ui.string stop ]
+    pickerButton (Internal (InternalPickStop (RouteStop route stop))) stop
+
 
 pickerOptions : List (Node Msg) -> Node Msg
 pickerOptions =
@@ -51,7 +47,6 @@ pickerOptions =
             [ Style.backgroundColor Color.white
             , Style.borderBottomLeftRadius 10
             , Style.borderBottomRightRadius 10
-            , Style.padding 10
             , Style.height 300
             ]
         ]
@@ -86,6 +81,7 @@ pickerContainer =
             , Style.shadowColor "rgb(49, 33, 64)"
             , Style.shadowOpacity 0.2
             , Style.shadowRadius 3
+            , Style.borderRadius 10
             ]
         ]
 
@@ -105,12 +101,38 @@ routeOptions routes =
 
 routeButton : Route -> Node Msg
 routeButton route =
-  text
-    [ onPress (Internal (PickRoute route))
-    , Ui.style
-        [ Style.marginVertical 5
-        , Style.fontFamily Font.hkCompakt
+    pickerButton (Internal (PickRoute route)) route.name
+
+
+pickerButton : Msg -> String -> Node Msg
+pickerButton message label =
+    Elements.touchableHighlight
+        [ onPress message
+        , underlayColor Color.defaultUnderlay
+        , buttonStyle
+        , key label
         ]
-    , key route.name
-    ]
-    [ Ui.string route.name ]
+        [ Elements.view
+              []
+              [ text
+                  [ buttonTextStyle ]
+                  [ Ui.string label ]
+              ]
+        ]
+
+
+buttonStyle : Ui.Property Msg
+buttonStyle =
+    Ui.style
+        [ Style.height 40
+        , Style.padding 12
+        ]
+
+
+buttonTextStyle : Ui.Property Msg
+buttonTextStyle =
+    Ui.style
+        [ Style.fontFamily Font.hkCompakt
+        , Style.fontWeight "400"
+        , Style.color Color.purple
+        ]
