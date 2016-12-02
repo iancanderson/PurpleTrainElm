@@ -1,8 +1,8 @@
 var _user$project$Model$prettyTime = _user$project$Date_Format$format('%l:%M %P');
 var _user$project$Model$initialModel = {
 	direction: _user$project$Types$Inbound,
-	inboundSchedule: {ctor: '[]'},
-	outboundSchedule: {ctor: '[]'},
+	inboundSchedule: _user$project$Types$Loading,
+	outboundSchedule: _user$project$Types$Loading,
 	routes: {ctor: '[]'},
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing,

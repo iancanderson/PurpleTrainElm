@@ -32,6 +32,8 @@ update msg model =
             ( { model
               | selectedRouteStop = Just routeStop
               , stopPickerOpen = False
+              , inboundSchedule = Loading
+              , outboundSchedule = Loading
               }
             , Cmd.batch <|
                 [ Task.attempt
@@ -72,8 +74,8 @@ update msg model =
             case result of
                 Ok schedule ->
                     case direction of
-                        Inbound -> ( { model | inboundSchedule = schedule }, Cmd.none)
-                        Outbound -> ( { model | outboundSchedule = schedule }, Cmd.none)
+                        Inbound -> ( { model | inboundSchedule = Ready schedule }, Cmd.none)
+                        Outbound -> ( { model | outboundSchedule = Ready schedule }, Cmd.none)
                 Result.Err _ -> ( model, Cmd.none )
         ToggleStopPicker ->
             ( { model | stopPickerOpen = not model.stopPickerOpen }, Cmd.none)

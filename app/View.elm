@@ -63,8 +63,8 @@ welcomeScreen =
         [ Ui.string "Purple Train" ]
 
 
-topSection : Model -> Direction -> Schedule -> Node Msg
-topSection model direction schedule =
+topSection : Model -> Direction -> Loadable Schedule -> Node Msg
+topSection model direction loadableSchedule =
     Elements.view
         [ Ui.style
             [ Style.flex 1
@@ -74,8 +74,15 @@ topSection model direction schedule =
         , Ui.property "tabLabel" (Json.Encode.string (directionString direction))
         , key (toString direction)
         ]
-        [ Schedule.view model schedule
+        [ scheduleOrLoading model loadableSchedule
         ]
+
+scheduleOrLoading : Model -> Loadable Schedule -> Node Msg
+scheduleOrLoading model loadableSchedule =
+    case loadableSchedule of
+        Loading -> Elements.view [] []
+        Ready schedule ->
+            Schedule.view model schedule
 
 
 directionString : Direction -> String

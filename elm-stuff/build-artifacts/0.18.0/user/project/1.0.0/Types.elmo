@@ -12,3 +12,7 @@ var _user$project$Types$RouteStop = F2(
 	});
 var _user$project$Types$Outbound = {ctor: 'Outbound'};
 var _user$project$Types$Inbound = {ctor: 'Inbound'};
+var _user$project$Types$Ready = function (a) {
+	return {ctor: 'Ready', _0: a};
+};
+var _user$project$Types$Loading = {ctor: 'Loading'};

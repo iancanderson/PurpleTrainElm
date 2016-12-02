@@ -9499,6 +9499,10 @@ var _user$project$Types$RouteStop = F2(
 	});
 var _user$project$Types$Outbound = {ctor: 'Outbound'};
 var _user$project$Types$Inbound = {ctor: 'Inbound'};
+var _user$project$Types$Ready = function (a) {
+	return {ctor: 'Ready', _0: a};
+};
+var _user$project$Types$Loading = {ctor: 'Loading'};
 
 var _user$project$StopPicker_Model$initialModel = {selectedRoute: _elm_lang$core$Maybe$Nothing};
 var _user$project$StopPicker_Model$Model = function (a) {
@@ -9681,8 +9685,8 @@ var _user$project$FetchRoutes$fetchRoutes = A2(_elm_lang$http$Http$send, _user$p
 var _user$project$Model$prettyTime = _user$project$Date_Format$format('%l:%M %P');
 var _user$project$Model$initialModel = {
 	direction: _user$project$Types$Inbound,
-	inboundSchedule: {ctor: '[]'},
-	outboundSchedule: {ctor: '[]'},
+	inboundSchedule: _user$project$Types$Loading,
+	outboundSchedule: _user$project$Types$Loading,
 	routes: {ctor: '[]'},
 	stopPicker: _user$project$StopPicker_Model$initialModel,
 	selectedRouteStop: _elm_lang$core$Maybe$Nothing,
@@ -9810,7 +9814,9 @@ var _user$project$Update$update = F2(
 							model,
 							{
 								selectedRouteStop: _elm_lang$core$Maybe$Just(_p3),
-								stopPickerOpen: false
+								stopPickerOpen: false,
+								inboundSchedule: _user$project$Types$Loading,
+								outboundSchedule: _user$project$Types$Loading
 							}),
 						_1: _elm_lang$core$Platform_Cmd$batch(
 							A2(
@@ -9896,7 +9902,9 @@ var _user$project$Update$update = F2(
 								ctor: '_Tuple2',
 								_0: _elm_lang$core$Native_Utils.update(
 									model,
-									{inboundSchedule: _p10}),
+									{
+										inboundSchedule: _user$project$Types$Ready(_p10)
+									}),
 								_1: _elm_lang$core$Platform_Cmd$none
 							};
 						} else {
@@ -9904,7 +9912,9 @@ var _user$project$Update$update = F2(
 								ctor: '_Tuple2',
 								_0: _elm_lang$core$Native_Utils.update(
 									model,
-									{outboundSchedule: _p10}),
+									{
+										outboundSchedule: _user$project$Types$Ready(_p10)
+									}),
 								_1: _elm_lang$core$Platform_Cmd$none
 							};
 						}
@@ -10566,8 +10576,20 @@ var _user$project$View$directionString = function (direction) {
 		return 'From Boston';
 	}
 };
+var _user$project$View$scheduleOrLoading = F2(
+	function (model, loadableSchedule) {
+		var _p1 = loadableSchedule;
+		if (_p1.ctor === 'Loading') {
+			return A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+				{ctor: '[]'},
+				{ctor: '[]'});
+		} else {
+			return A2(_user$project$Schedule_View$view, model, _p1._0);
+		}
+	});
 var _user$project$View$topSection = F3(
-	function (model, direction, schedule) {
+	function (model, direction, loadableSchedule) {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 			{
@@ -10603,7 +10625,7 @@ var _user$project$View$topSection = F3(
 			},
 			{
 				ctor: '::',
-				_0: A2(_user$project$Schedule_View$view, model, schedule),
+				_0: A2(_user$project$View$scheduleOrLoading, model, loadableSchedule),
 				_1: {ctor: '[]'}
 			});
 	});
@@ -10645,8 +10667,8 @@ var _user$project$View$welcomeScreen = A2(
 		_1: {ctor: '[]'}
 	});
 var _user$project$View$mainView = function (model) {
-	var _p1 = model.selectedRouteStop;
-	if (_p1.ctor === 'Nothing') {
+	var _p2 = model.selectedRouteStop;
+	if (_p2.ctor === 'Nothing') {
 		return {
 			ctor: '::',
 			_0: _user$project$View$welcomeScreen,

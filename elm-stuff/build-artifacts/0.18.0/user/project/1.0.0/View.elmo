@@ -6,8 +6,20 @@ var _user$project$View$directionString = function (direction) {
 		return 'From Boston';
 	}
 };
+var _user$project$View$scheduleOrLoading = F2(
+	function (model, loadableSchedule) {
+		var _p1 = loadableSchedule;
+		if (_p1.ctor === 'Loading') {
+			return A2(
+				_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+				{ctor: '[]'},
+				{ctor: '[]'});
+		} else {
+			return A2(_user$project$Schedule_View$view, model, _p1._0);
+		}
+	});
 var _user$project$View$topSection = F3(
-	function (model, direction, schedule) {
+	function (model, direction, loadableSchedule) {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 			{
@@ -43,7 +55,7 @@ var _user$project$View$topSection = F3(
 			},
 			{
 				ctor: '::',
-				_0: A2(_user$project$Schedule_View$view, model, schedule),
+				_0: A2(_user$project$View$scheduleOrLoading, model, loadableSchedule),
 				_1: {ctor: '[]'}
 			});
 	});
@@ -85,8 +97,8 @@ var _user$project$View$welcomeScreen = A2(
 		_1: {ctor: '[]'}
 	});
 var _user$project$View$mainView = function (model) {
-	var _p1 = model.selectedRouteStop;
-	if (_p1.ctor === 'Nothing') {
+	var _p2 = model.selectedRouteStop;
+	if (_p2.ctor === 'Nothing') {
 		return {
 			ctor: '::',
 			_0: _user$project$View$welcomeScreen,

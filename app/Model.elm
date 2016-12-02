@@ -10,8 +10,8 @@ import StopPicker.Model as StopPicker
 
 type alias Model =
     { direction : Direction
-    , inboundSchedule : Schedule
-    , outboundSchedule : Schedule
+    , inboundSchedule : Loadable Schedule
+    , outboundSchedule : Loadable Schedule
     , routes : Routes
     , stopPicker : StopPicker.Model
     , selectedRouteStop : Maybe RouteStop
@@ -23,8 +23,8 @@ type alias Model =
 initialModel : Model
 initialModel =
     { direction = Inbound
-    , inboundSchedule = []
-    , outboundSchedule = []
+    , inboundSchedule = Loading
+    , outboundSchedule = Loading
     , routes = []
     , stopPicker = StopPicker.initialModel
     , selectedRouteStop = Nothing

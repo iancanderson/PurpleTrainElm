@@ -32,3 +32,6 @@ type alias RouteStop =
     { route : Route
     , stop : Stop
     }
+
+
+type Loadable a = Loading | Ready a
