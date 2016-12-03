@@ -17,7 +17,7 @@ getSchedule : Direction -> Stop -> Http.Request Schedule
 getSchedule direction stop =
     Http.get
         ("https://commuter-api-production.herokuapp.com/api/v2/stops/"
-            ++ stop
+            ++ (Http.encodeUri stop)
             ++ "/"
             ++ toString direction
             ++ "/trips"

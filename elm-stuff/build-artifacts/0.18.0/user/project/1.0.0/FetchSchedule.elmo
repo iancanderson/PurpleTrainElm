@@ -25,7 +25,7 @@ var _user$project$FetchSchedule$getSchedule = F2(
 				'https://commuter-api-production.herokuapp.com/api/v2/stops/',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					stop,
+					_elm_lang$http$Http$encodeUri(stop),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						'/',
