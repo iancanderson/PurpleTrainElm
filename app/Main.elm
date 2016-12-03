@@ -1,7 +1,6 @@
 module Main exposing (..)
 
 import NativeUi
-
 import Model exposing (Model, initialModel)
 import Update exposing (update)
 import Message exposing (Msg)
@@ -12,18 +11,20 @@ import Task
 import Time exposing (every, minute)
 import FetchStops exposing (..)
 
+
 subscriptions : Model -> Sub Msg
-subscriptions _ = every minute Minute
+subscriptions _ =
+    every minute Minute
 
 
-init : (Model, Cmd Msg)
+init : ( Model, Cmd Msg )
 init =
-  ( initialModel
-  , Cmd.batch
+    ( initialModel
+    , Cmd.batch
         [ Task.perform Minute Time.now
         , fetchStops
         ]
-  )
+    )
 
 
 main : Program Never Model Msg

@@ -3,7 +3,6 @@ module Model exposing (..)
 import Date.Format as Date
 import Date exposing (Date)
 import Time exposing (Time)
-
 import Types exposing (..)
 
 
@@ -31,4 +30,5 @@ initialModel =
 
 
 prettyTime : Date -> String
-prettyTime = Date.format "%l:%M %P"
+prettyTime =
+    Date.format "%l:%M %P"

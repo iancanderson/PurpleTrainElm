@@ -6,25 +6,25 @@ import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
-
 import App.Color as Color
 import App.Font as Font
 import Types exposing (..)
 import Message exposing (..)
 import ViewHelpers exposing (..)
 
+
 view : Stops -> Node Msg
 view stops =
-  pickerContainer
-      [ pickerHeader "Select home stop"
-      , stopOptions stops
-      ]
+    pickerContainer
+        [ pickerHeader "Select home stop"
+        , stopOptions stops
+        ]
 
 
 stopOptions : Stops -> Node Msg
 stopOptions stops =
-  pickerOptions
-      <| List.map stopButton stops
+    pickerOptions <|
+        List.map stopButton stops
 
 
 stopButton : Stop -> Node Msg
@@ -55,13 +55,14 @@ pickerHeader label =
             ]
         ]
         [ text
-             [ Ui.style
-                  [ Style.color Color.white
-                  , Style.fontFamily Font.hkCompakt
-                  ]
-             ]
-             [ Ui.string label ]
+            [ Ui.style
+                [ Style.color Color.white
+                , Style.fontFamily Font.hkCompakt
+                ]
+            ]
+            [ Ui.string label ]
         ]
+
 
 pickerContainer : List (Node Msg) -> Node Msg
 pickerContainer =
@@ -87,11 +88,11 @@ pickerButton message label =
         , key label
         ]
         [ Elements.view
-              []
-              [ text
-                  [ buttonTextStyle ]
-                  [ Ui.string label ]
-              ]
+            []
+            [ text
+                [ buttonTextStyle ]
+                [ Ui.string label ]
+            ]
         ]
 
 

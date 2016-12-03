@@ -2,9 +2,9 @@ module Message exposing (..)
 
 import Http
 import Time exposing (Time)
-
 import Types exposing (..)
 import NativeUi.AsyncStorage as AsyncStorage
+
 
 type Msg
     = ChangeDirection

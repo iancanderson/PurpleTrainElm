@@ -4,7 +4,6 @@ import NativeUi as Ui exposing (Node, Property)
 import NativeUi.Style as Style
 import Json.Decode as Decode
 import Json.Encode
-
 import App.Color as Color
 import App.Font as Font
 import Message exposing (..)
@@ -28,4 +27,3 @@ view =
             ]
         , Ui.style [ Style.marginTop 20 ]
         ]
-

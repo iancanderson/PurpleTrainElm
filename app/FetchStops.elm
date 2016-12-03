@@ -2,13 +2,13 @@ module FetchStops exposing (fetchStops)
 
 import Http
 import Json.Decode as Decode
-
 import Message exposing (..)
 import Types exposing (..)
 
-fetchStops: Cmd Msg
+
+fetchStops : Cmd Msg
 fetchStops =
-  Http.send LoadStops getStops
+    Http.send LoadStops getStops
 
 
 getStops : Http.Request Stops
@@ -19,8 +19,10 @@ getStops =
 
 
 decodeStops : Decode.Decoder Stops
-decodeStops = Decode.list decodeStop
+decodeStops =
+    Decode.list decodeStop
 
 
 decodeStop : Decode.Decoder Stop
-decodeStop = Decode.string
+decodeStop =
+    Decode.string

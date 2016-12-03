@@ -6,7 +6,6 @@ import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Events exposing (..)
 import NativeUi.Properties exposing (..)
 import Json.Encode
-
 import App.Color as Color
 import App.Font as Font
 import Model exposing (..)
@@ -17,6 +16,7 @@ import DirectionPicker.View as DirectionPicker
 import StopPickerButton.View as StopPickerButton
 import Schedule.View as Schedule
 import ViewHelpers exposing (..)
+
 
 view : Model -> Node Msg
 view model =
@@ -29,7 +29,7 @@ view model =
             , Style.backgroundColor Color.darkPurple
             ]
         ]
-        ( mainView model )
+        (mainView model)
 
 
 mainView : Model -> List (Node Msg)
@@ -39,6 +39,7 @@ mainView model =
             [ welcomeScreen
             , StopPickerButton.view model
             ]
+
         Just _ ->
             [ DirectionPicker.view
                 [ topSection model Inbound model.inboundSchedule
@@ -77,10 +78,13 @@ topSection model direction loadableSchedule =
         [ scheduleOrLoading model loadableSchedule
         ]
 
+
 scheduleOrLoading : Model -> Loadable Schedule -> Node Msg
 scheduleOrLoading model loadableSchedule =
     case loadableSchedule of
-        Loading -> Elements.view [] []
+        Loading ->
+            Elements.view [] []
+
         Ready schedule ->
             Schedule.view model schedule
 
@@ -88,5 +92,8 @@ scheduleOrLoading model loadableSchedule =
 directionString : Direction -> String
 directionString direction =
     case direction of
-        Inbound -> "To Boston"
-        Outbound -> "From Boston"
+        Inbound ->
+            "To Boston"
+
+        Outbound ->
+            "From Boston"

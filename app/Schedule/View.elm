@@ -5,21 +5,21 @@ import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import Date.Extra.Duration as Duration
 import Date exposing (Date)
-
 import App.Color as Color
 import App.Font as Font
 import Types exposing (..)
 import Message exposing (..)
 import Model exposing (..)
 
+
 view : Model -> Schedule -> Node Msg
-view {now} schedule =
+view { now } schedule =
     Elements.view
         [ Ui.style
             [ Style.alignSelf "stretch" ]
         ]
-        ( List.append
-          [ text
+        (List.append
+            [ text
                 [ Ui.style
                     [ Style.backgroundColor Color.white
                     , Style.color "#9F8AB3"
@@ -30,8 +30,9 @@ view {now} schedule =
                     , Style.textAlign "center"
                     ]
                 ]
-                [ Ui.string "UPCOMING" ] ]
-          ( List.map (trainElement now) schedule )
+                [ Ui.string "UPCOMING" ]
+            ]
+            (List.map (trainElement now) schedule)
         )
 
 
@@ -50,36 +51,47 @@ trainElement now train =
         ]
         [ text
             [ Ui.style
-              [ Style.color Color.darkPurple
-              , Style.fontSize 36
-              , Style.fontWeight "400"
-              , Style.marginBottom -1
-              , Style.fontFamily Font.roboto
-              ]
+                [ Style.color Color.darkPurple
+                , Style.fontSize 36
+                , Style.fontWeight "400"
+                , Style.marginBottom -1
+                , Style.fontFamily Font.roboto
+                ]
             ]
             [ Ui.string (prettyTime train.scheduledDeparture) ]
         , maybePrediction now train
         ]
 
+
 maybePrediction : Date -> Train -> Node Msg
 maybePrediction now model =
     case model.predictedDeparture of
-        Nothing -> prediction now model.scheduledDeparture model.scheduledDeparture
-        Just predictedDeparture -> prediction now predictedDeparture model.scheduledDeparture
+        Nothing ->
+            prediction now model.scheduledDeparture model.scheduledDeparture
+
+        Just predictedDeparture ->
+            prediction now predictedDeparture model.scheduledDeparture
+
 
 prediction : Date -> Date -> Date -> Node Msg
 prediction now predictedDeparture scheduledDeparture =
-    let predictionDiff = (Duration.diff predictedDeparture scheduledDeparture)
-        minutesLate = predictedMinutesLate predictionDiff
-        displayedDeparture
-          = if minutesLate == Nothing
-              then scheduledDeparture
-              else predictedDeparture
+    let
+        predictionDiff =
+            (Duration.diff predictedDeparture scheduledDeparture)
+
+        minutesLate =
+            predictedMinutesLate predictionDiff
+
+        displayedDeparture =
+            if minutesLate == Nothing then
+                scheduledDeparture
+            else
+                predictedDeparture
     in
         text
             [ Ui.style
-              [ Style.color <| predictionColor minutesLate
-              ]
+                [ Style.color <| predictionColor minutesLate
+                ]
             ]
             [ Ui.string <| predictionText now minutesLate displayedDeparture ]
 
@@ -93,8 +105,11 @@ predictionText now minutesLate predictedDeparture =
 
 
 prettyDuration : Duration.DeltaRecord -> String
-prettyDuration {year,month,day,hour,minute} =
-    let unitSum = year + month + day + hour + minute in
+prettyDuration { year, month, day, hour, minute } =
+    let
+        unitSum =
+            year + month + day + hour + minute
+    in
         if unitSum < 0 then
             "departed"
         else if unitSum == 0 then
@@ -110,11 +125,13 @@ prettyDuration {year,month,day,hour,minute} =
 
 
 joinMaybe : List (Maybe String) -> String
-joinMaybe = String.join " " << catMaybes
+joinMaybe =
+    String.join " " << catMaybes
 
 
 catMaybes : List (Maybe a) -> List a
-catMaybes = List.filterMap identity
+catMaybes =
+    List.filterMap identity
 
 
 prettyDurationUnit : Int -> String -> Maybe String
@@ -126,11 +143,15 @@ prettyDurationUnit amount unit =
 
 
 predictedMinutesLate : Duration.DeltaRecord -> Maybe String
-predictedMinutesLate {minute} = prettyDurationUnit minute "m late,"
+predictedMinutesLate { minute } =
+    prettyDurationUnit minute "m late,"
 
 
 predictionColor : Maybe String -> String
 predictionColor minutesLate =
     case minutesLate of
-        Nothing -> Color.darkPurple
-        Just _ -> Color.red
+        Nothing ->
+            Color.darkPurple
+
+        Just _ ->
+            Color.red

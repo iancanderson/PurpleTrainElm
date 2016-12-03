@@ -1,4 +1,6 @@
 -- copied from https://github.com/mgold/elm-date-format
+
+
 module Date.Format exposing (format, formatISO8601)
 
 {-| Format strings for dates.
@@ -52,7 +54,7 @@ formatToken d m =
 
             "Y" ->
                 d |> Date.year |> toString
-            
+
             "y" ->
                 d |> Date.year |> toString |> right 2
 

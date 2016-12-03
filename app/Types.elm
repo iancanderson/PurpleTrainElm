@@ -8,7 +8,8 @@ type Direction
     | Outbound
 
 
-type alias Schedule = List Train
+type alias Schedule =
+    List Train
 
 
 type alias Train =
@@ -17,8 +18,14 @@ type alias Train =
     }
 
 
-type alias Stops = List Stop
-type alias Stop = String
+type alias Stops =
+    List Stop
 
 
-type Loadable a = Loading | Ready a
+type alias Stop =
+    String
+
+
+type Loadable a
+    = Loading
+    | Ready a
