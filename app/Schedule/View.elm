@@ -82,7 +82,7 @@ nextTrainView now train =
     Elements.view
         [ Ui.style
             [ Style.flexDirection "row"
-            , Style.alignItems "center"
+            , Style.alignItems "flex-end"
             , Style.justifyContent "space-between"
             , Style.backgroundColor "white"
             , Style.padding 20
@@ -152,6 +152,9 @@ prediction now predictedDeparture scheduledDeparture =
         text
             [ Ui.style
                 [ Style.color <| predictionColor minutesLate
+                , Style.marginBottom 5
+                , Style.marginTop 5
+                , Style.fontSize 12
                 ]
             ]
             [ Ui.string <| predictionText now minutesLate displayedDeparture ]
@@ -212,7 +215,7 @@ predictionColor : Maybe String -> String
 predictionColor minutesLate =
     case minutesLate of
         Nothing ->
-            Color.darkPurple
+            Color.onTimePredictionText
 
         Just _ ->
             Color.red

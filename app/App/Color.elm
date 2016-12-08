@@ -39,3 +39,7 @@ stopPickerButton =
 
 laterTrainText =
     "#F1E2FF"
+
+
+onTimePredictionText =
+    "#798283"

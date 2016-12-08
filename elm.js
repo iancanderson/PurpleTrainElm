@@ -9269,6 +9269,7 @@ var _rluiten$elm_date_extra$Date_Extra_Duration$Minute = {ctor: 'Minute'};
 var _rluiten$elm_date_extra$Date_Extra_Duration$Second = {ctor: 'Second'};
 var _rluiten$elm_date_extra$Date_Extra_Duration$Millisecond = {ctor: 'Millisecond'};
 
+var _user$project$App_Color$onTimePredictionText = '#798283';
 var _user$project$App_Color$laterTrainText = '#F1E2FF';
 var _user$project$App_Color$stopPickerButton = '#674982';
 var _user$project$App_Color$defaultUnderlay = 'rgba(0,0,0,0.05)';
@@ -10184,7 +10185,7 @@ var _user$project$StopPickerButton_View$view = function (model) {
 var _user$project$Schedule_View$predictionColor = function (minutesLate) {
 	var _p0 = minutesLate;
 	if (_p0.ctor === 'Nothing') {
-		return _user$project$App_Color$darkPurple;
+		return _user$project$App_Color$onTimePredictionText;
 	} else {
 		return _user$project$App_Color$red;
 	}
@@ -10260,7 +10261,19 @@ var _user$project$Schedule_View$prediction = F3(
 						ctor: '::',
 						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(
 							_user$project$Schedule_View$predictionColor(minutesLate)),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginBottom(5),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$marginTop(5),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(12),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
 					}),
 				_1: {ctor: '[]'}
 			},
@@ -10345,7 +10358,7 @@ var _user$project$Schedule_View$nextTrainView = F2(
 						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$flexDirection('row'),
 						_1: {
 							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('flex-end'),
 							_1: {
 								ctor: '::',
 								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$justifyContent('space-between'),
