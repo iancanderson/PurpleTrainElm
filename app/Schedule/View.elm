@@ -13,16 +13,16 @@ import Model exposing (..)
 
 
 view : Model -> Schedule -> Node Msg
-view { now } schedule =
+view { direction, now } schedule =
     Elements.view
         []
-        [ nextTrainsView now (nextTrains schedule)
+        [ nextTrainsView direction now (nextTrains schedule)
         , laterTrainsView now (laterTrains schedule)
         ]
 
 
-nextTrainsView : Date -> Schedule -> Node Msg
-nextTrainsView now schedule =
+nextTrainsView : Direction -> Date -> Schedule -> Node Msg
+nextTrainsView direction now schedule =
     Elements.view
         [ Ui.style
             [ Style.alignSelf "stretch" ]
@@ -41,7 +41,7 @@ nextTrainsView now schedule =
                 ]
                 [ Ui.string "UPCOMING" ]
             ]
-            (List.map (nextTrainView now) schedule)
+            (List.map (nextTrainView direction now) schedule)
         )
 
 
@@ -77,8 +77,8 @@ laterTrainsView now schedule =
             )
 
 
-nextTrainView : Date -> Train -> Node Msg
-nextTrainView now train =
+nextTrainView : Direction -> Date -> Train -> Node Msg
+nextTrainView direction now train =
     Elements.view
         [ Ui.style
             [ Style.flexDirection "row"
@@ -100,8 +100,61 @@ nextTrainView now train =
                 ]
             ]
             [ Ui.string (prettyTime train.scheduledDeparture) ]
+        , nextTrainMetadata direction now train
+        ]
+
+
+nextTrainMetadata : Direction -> Date -> Train -> Node Msg
+nextTrainMetadata direction now train =
+    Elements.view []
+        [ maybeVehicleInfo direction train
         , maybePrediction now train
         ]
+
+
+maybeVehicleInfo : Direction -> Train -> Node Msg
+maybeVehicleInfo direction train =
+    case ( direction, train.track, train.coach ) of
+        ( Outbound, Just track, _ ) ->
+            trackMetadata track
+
+        ( Outbound, _, Just coach ) ->
+            coachMetadata coach
+
+        ( _, _, _ ) ->
+            Elements.view [] []
+
+
+coachMetadata : String -> Node Msg
+coachMetadata coach =
+    Elements.view
+        []
+        [ nextTrainMetadataRow ("coach " ++ coach) ]
+
+
+trackMetadata : String -> Node Msg
+trackMetadata track =
+    Elements.view
+        []
+        [ nextTrainMetadataRow ("track " ++ track) ]
+
+
+nextTrainMetadataRowWithColor : String -> String -> Node Msg
+nextTrainMetadataRowWithColor string color =
+    text
+        [ Ui.style
+            [ Style.color color
+            , Style.marginBottom 5
+            , Style.fontSize 12
+            , Style.textAlign "right"
+            ]
+        ]
+        [ Ui.string <| string ]
+
+
+nextTrainMetadataRow : String -> Node Msg
+nextTrainMetadataRow string =
+    nextTrainMetadataRowWithColor string Color.onTimePredictionText
 
 
 laterTrainView : Date -> Train -> Node Msg
@@ -148,16 +201,11 @@ prediction now predictedDeparture scheduledDeparture =
                 scheduledDeparture
             else
                 predictedDeparture
+
+        predictionString =
+            predictionText now minutesLate displayedDeparture
     in
-        text
-            [ Ui.style
-                [ Style.color <| predictionColor minutesLate
-                , Style.marginBottom 5
-                , Style.marginTop 5
-                , Style.fontSize 12
-                ]
-            ]
-            [ Ui.string <| predictionText now minutesLate displayedDeparture ]
+        nextTrainMetadataRowWithColor predictionString (predictionColor minutesLate)
 
 
 predictionText : Date -> Maybe String -> Date -> String
