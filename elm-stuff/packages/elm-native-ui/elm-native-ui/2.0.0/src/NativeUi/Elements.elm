@@ -1,11 +1,12 @@
-module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, view, navigationCardStack)
+module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationCardStack, navigationHeader, navigationHeaderTitle)
 
 {-| elm-native-ui Elements
 
-@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, view, navigationCardStack
+@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationCardStack, navigationHeader, navigationHeaderTitle
 -}
 
 import NativeUi exposing (Property, Node, customNode, node)
+import Native.NativeUi.Elements
 
 
 {-| -}
@@ -111,6 +112,12 @@ touchableHighlight =
 
 
 {-| -}
+touchableOpacity : List (Property msg) -> List (Node msg) -> Node msg
+touchableOpacity =
+    node "TouchableOpacity"
+
+
+{-| -}
 view : List (Property msg) -> List (Node msg) -> Node msg
 view =
     node "View"
@@ -119,4 +126,16 @@ view =
 {-| -}
 navigationCardStack : List (Property msg) -> List (Node msg) -> Node msg
 navigationCardStack =
-    customNode "NavigationCardStack" "NavigationCardStack" Nothing
+    customNode "NavigationCardStack" Native.NativeUi.Elements.navigationCardStack
+
+
+{-| -}
+navigationHeader : List (Property msg) -> List (Node msg) -> Node msg
+navigationHeader =
+    customNode "NavigationHeader" Native.NativeUi.Elements.navigationHeader
+
+
+{-| -}
+navigationHeaderTitle : List (Property msg) -> List (Node msg) -> Node msg
+navigationHeaderTitle =
+    customNode "NavigationHeaderTitle" Native.NativeUi.Elements.navigationHeaderTitle

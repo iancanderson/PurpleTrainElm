@@ -15,7 +15,7 @@ import Json.Encode
 
 view : List (Property msg) -> List (Node msg) -> Node msg
 view =
-    NativeUi.customNode "ScrollableTabView" "react-native-scrollable-tab-view/index.js" Nothing
+    NativeUi.customNode "ScrollableTabView" Native.ScrollableTabView.view
 
 
 tabBarActiveTextColor : String -> Property msg

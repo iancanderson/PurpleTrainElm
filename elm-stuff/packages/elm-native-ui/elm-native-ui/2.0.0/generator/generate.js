@@ -37,9 +37,13 @@ const rnModuleFiles = [
   "Components/TextInput/TextInput.js",
   "Components/ToolbarAndroid/ToolbarAndroid.android.js",
   "Components/Touchable/TouchableHighlight.js",
+  "Components/Touchable/TouchableOpacity.js",
   "Components/View/View.js",
-  "CustomComponents/NavigationExperimental/NavigationCardStack.js"
+  "CustomComponents/NavigationExperimental/NavigationCardStack.js",
+  "CustomComponents/NavigationExperimental/NavigationHeader.js",
+  "CustomComponents/NavigationExperimental/NavigationHeaderTitle.js",
 ];
+
 const exceptions = {
   "Slider": {
     "onValueChange": {
@@ -119,12 +123,12 @@ const allowedPropTypes = [
   "func"
 ];
 
-const customElements = {
-  "NavigationCardStack": {
-    moduleName: "NavigationCardStack",
-    exportedName: "Nothing"
-  },
-};
+const customElements = [
+  "NavigationCardStack",
+  "NavigationHeader",
+  "NavigationHeaderTitle"
+];
+
 
 const elmTransformer = new ElmTransformer();
 
@@ -156,11 +160,10 @@ function generateElm(moduleJson) {
 
     let elementFuncName = decapitalize(moduleName);
 
-    if (customElements[moduleName]) {
-      elements[elementFuncName] = elmTransformer.elementCustom(moduleName, elementFuncName,
-        customElements[moduleName].moduleName, customElements[moduleName].exportedName);
-    } else {
+    if (customElements.indexOf(moduleName) == -1) {
       elements[elementFuncName] = elmTransformer.element(moduleName, elementFuncName);
+    } else {
+      elements[elementFuncName] = elmTransformer.elementCustom(moduleName, elementFuncName);
     }
 
     propNames.forEach(function(propName) {
