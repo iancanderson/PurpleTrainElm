@@ -35,3 +35,7 @@ defaultUnderlay =
 
 stopPickerButton =
     "#674982"
+
+
+laterTrainText =
+    "#F1E2FF"

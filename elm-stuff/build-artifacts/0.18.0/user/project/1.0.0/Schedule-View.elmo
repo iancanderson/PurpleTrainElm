@@ -97,7 +97,60 @@ var _user$project$Schedule_View$maybePrediction = F2(
 			return A3(_user$project$Schedule_View$prediction, now, _p11._0, model.scheduledDeparture);
 		}
 	});
-var _user$project$Schedule_View$trainElement = F2(
+var _user$project$Schedule_View$laterTrainView = F2(
+	function (now, train) {
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$paddingTop(12),
+							_1: {
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$width(200),
+								_1: {ctor: '[]'}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+							{
+								ctor: '::',
+								_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$laterTrainText),
+								_1: {
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(22),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontFamily(_user$project$App_Font$roboto),
+										_1: {ctor: '[]'}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi$string(
+							_user$project$Model$prettyTime(train.scheduledDeparture)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Schedule_View$nextTrainView = F2(
 	function (now, train) {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
@@ -178,9 +231,75 @@ var _user$project$Schedule_View$trainElement = F2(
 				}
 			});
 	});
-var _user$project$Schedule_View$view = F2(
-	function (_p12, schedule) {
-		var _p13 = _p12;
+var _user$project$Schedule_View$laterTrainsView = F2(
+	function (now, schedule) {
+		var sectionLabel = _elm_lang$core$List$isEmpty(schedule) ? '' : 'LATER';
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			{
+				ctor: '::',
+				_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+					{
+						ctor: '::',
+						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignSelf('stretch'),
+						_1: {
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$alignItems('center'),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			},
+			A2(
+				_elm_lang$core$List$append,
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_native_ui$elm_native_ui$NativeUi_Elements$text,
+						{
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi$style(
+								{
+									ctor: '::',
+									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightHeader),
+									_1: {
+										ctor: '::',
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(9),
+										_1: {
+											ctor: '::',
+											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontWeight('700'),
+											_1: {
+												ctor: '::',
+												_0: _elm_native_ui$elm_native_ui$NativeUi_Style$letterSpacing(0.25),
+												_1: {
+													ctor: '::',
+													_0: _elm_native_ui$elm_native_ui$NativeUi_Style$paddingTop(18),
+													_1: {
+														ctor: '::',
+														_0: _elm_native_ui$elm_native_ui$NativeUi_Style$textAlign('center'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_native_ui$elm_native_ui$NativeUi$string(sectionLabel),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				},
+				A2(
+					_elm_lang$core$List$map,
+					_user$project$Schedule_View$laterTrainView(now),
+					schedule)));
+	});
+var _user$project$Schedule_View$nextTrainsView = F2(
+	function (now, schedule) {
 		return A2(
 			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
 			{
@@ -207,7 +326,7 @@ var _user$project$Schedule_View$view = F2(
 									_0: _elm_native_ui$elm_native_ui$NativeUi_Style$backgroundColor(_user$project$App_Color$white),
 									_1: {
 										ctor: '::',
-										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color('#9F8AB3'),
+										_0: _elm_native_ui$elm_native_ui$NativeUi_Style$color(_user$project$App_Color$lightHeader),
 										_1: {
 											ctor: '::',
 											_0: _elm_native_ui$elm_native_ui$NativeUi_Style$fontSize(9),
@@ -242,6 +361,29 @@ var _user$project$Schedule_View$view = F2(
 				},
 				A2(
 					_elm_lang$core$List$map,
-					_user$project$Schedule_View$trainElement(_p13.now),
+					_user$project$Schedule_View$nextTrainView(now),
 					schedule)));
+	});
+var _user$project$Schedule_View$view = F2(
+	function (_p12, schedule) {
+		var _p13 = _p12;
+		var _p14 = _p13.now;
+		return A2(
+			_elm_native_ui$elm_native_ui$NativeUi_Elements$view,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_user$project$Schedule_View$nextTrainsView,
+					_p14,
+					_user$project$Model$nextTrains(schedule)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_user$project$Schedule_View$laterTrainsView,
+						_p14,
+						_user$project$Model$laterTrains(schedule)),
+					_1: {ctor: '[]'}
+				}
+			});
 	});

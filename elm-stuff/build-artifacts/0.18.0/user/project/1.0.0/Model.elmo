@@ -1,3 +1,6 @@
+var _user$project$Model$nextTrainCount = 2;
+var _user$project$Model$nextTrains = _elm_lang$core$List$take(_user$project$Model$nextTrainCount);
+var _user$project$Model$laterTrains = _elm_lang$core$List$drop(_user$project$Model$nextTrainCount);
 var _user$project$Model$prettyTime = _user$project$Date_Format$format('%l:%M %P');
 var _user$project$Model$initialModel = {
 	direction: _user$project$Types$Inbound,

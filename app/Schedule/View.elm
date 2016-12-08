@@ -15,6 +15,15 @@ import Model exposing (..)
 view : Model -> Schedule -> Node Msg
 view { now } schedule =
     Elements.view
+        []
+        [ nextTrainsView now (nextTrains schedule)
+        , laterTrainsView now (laterTrains schedule)
+        ]
+
+
+nextTrainsView : Date -> Schedule -> Node Msg
+nextTrainsView now schedule =
+    Elements.view
         [ Ui.style
             [ Style.alignSelf "stretch" ]
         ]
@@ -22,7 +31,7 @@ view { now } schedule =
             [ text
                 [ Ui.style
                     [ Style.backgroundColor Color.white
-                    , Style.color "#9F8AB3"
+                    , Style.color Color.lightHeader
                     , Style.fontSize 9
                     , Style.fontWeight "700"
                     , Style.letterSpacing 0.25
@@ -32,12 +41,44 @@ view { now } schedule =
                 ]
                 [ Ui.string "UPCOMING" ]
             ]
-            (List.map (trainElement now) schedule)
+            (List.map (nextTrainView now) schedule)
         )
 
 
-trainElement : Date -> Train -> Node Msg
-trainElement now train =
+laterTrainsView : Date -> Schedule -> Node Msg
+laterTrainsView now schedule =
+    let
+        sectionLabel =
+            if List.isEmpty schedule then
+                ""
+            else
+                "LATER"
+    in
+        Elements.view
+            [ Ui.style
+                [ Style.alignSelf "stretch"
+                , Style.alignItems "center"
+                ]
+            ]
+            (List.append
+                [ text
+                    [ Ui.style
+                        [ Style.color Color.lightHeader
+                        , Style.fontSize 9
+                        , Style.fontWeight "700"
+                        , Style.letterSpacing 0.25
+                        , Style.paddingTop 18
+                        , Style.textAlign "center"
+                        ]
+                    ]
+                    [ Ui.string sectionLabel ]
+                ]
+                (List.map (laterTrainView now) schedule)
+            )
+
+
+nextTrainView : Date -> Train -> Node Msg
+nextTrainView now train =
     Elements.view
         [ Ui.style
             [ Style.flexDirection "row"
@@ -60,6 +101,26 @@ trainElement now train =
             ]
             [ Ui.string (prettyTime train.scheduledDeparture) ]
         , maybePrediction now train
+        ]
+
+
+laterTrainView : Date -> Train -> Node Msg
+laterTrainView now train =
+    Elements.view
+        [ Ui.style
+            [ Style.alignItems "center"
+            , Style.paddingTop 12
+            , Style.width 200
+            ]
+        ]
+        [ text
+            [ Ui.style
+                [ Style.color Color.laterTrainText
+                , Style.fontSize 22
+                , Style.fontFamily Font.roboto
+                ]
+            ]
+            [ Ui.string (prettyTime train.scheduledDeparture) ]
         ]
 
 
