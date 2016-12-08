@@ -39,7 +39,7 @@ pickerOptions =
             [ Style.backgroundColor Color.white
             , Style.borderBottomLeftRadius 10
             , Style.borderBottomRightRadius 10
-            , Style.height 300
+            , Style.height 252
             ]
         ]
 

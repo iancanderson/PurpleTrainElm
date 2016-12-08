@@ -10003,7 +10003,7 @@ var _user$project$StopPicker_View$pickerOptions = _elm_native_ui$elm_native_ui$N
 						_0: _elm_native_ui$elm_native_ui$NativeUi_Style$borderBottomRightRadius(10),
 						_1: {
 							ctor: '::',
-							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$height(300),
+							_0: _elm_native_ui$elm_native_ui$NativeUi_Style$height(252),
 							_1: {ctor: '[]'}
 						}
 					}
