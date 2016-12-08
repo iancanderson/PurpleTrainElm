@@ -1,4 +1,0 @@
-var _rluiten$elm_date_extra$Date_Extra_Config$Config = F2(
-	function (a, b) {
-		return {i18n: a, format: b};
-	});

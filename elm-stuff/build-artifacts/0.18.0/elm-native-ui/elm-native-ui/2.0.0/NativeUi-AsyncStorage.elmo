@@ -1,6 +1,0 @@
-var _elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$removeItem = _elm_native_ui$elm_native_ui$Native_NativeUi_AsyncStorage.removeItem;
-var _elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$setItem = _elm_native_ui$elm_native_ui$Native_NativeUi_AsyncStorage.setItem;
-var _elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$getItem = _elm_native_ui$elm_native_ui$Native_NativeUi_AsyncStorage.getItem;
-var _elm_native_ui$elm_native_ui$NativeUi_AsyncStorage$Error = function (a) {
-	return {ctor: 'Error', _0: a};
-};

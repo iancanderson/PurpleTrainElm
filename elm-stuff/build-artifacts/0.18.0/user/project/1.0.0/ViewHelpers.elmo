@@ -1,6 +1,0 @@
-var _user$project$ViewHelpers$underlayColor = function (val) {
-	return A2(
-		_elm_native_ui$elm_native_ui$NativeUi$property,
-		'underlayColor',
-		_elm_lang$core$Json_Encode$string(val));
-};
