@@ -23,6 +23,8 @@
 		1637D7081DD15E2A00306CED /* HK Compakt_bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1637D7051DD15E2A00306CED /* HK Compakt_bold.otf */; };
 		1637D7091DD15E2A00306CED /* HK Compakt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1637D7061DD15E2A00306CED /* HK Compakt.otf */; };
 		1637D70A1DD15E2A00306CED /* Roboto Condensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1637D7071DD15E2A00306CED /* Roboto Condensed.ttf */; };
+		3C5D34121DF9EAED00740867 /* purple-train-512x512@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5D34101DF9EAED00740867 /* purple-train-512x512@2x.png */; };
+		3C5D34131DF9EAED00740867 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5D34111DF9EAED00740867 /* Default-568h@2x.png */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -170,6 +172,8 @@
 		1637D7051DD15E2A00306CED /* HK Compakt_bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "HK Compakt_bold.otf"; path = "../app/assets/fonts/HK Compakt_bold.otf"; sourceTree = "<group>"; };
 		1637D7061DD15E2A00306CED /* HK Compakt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "HK Compakt.otf"; path = "../app/assets/fonts/HK Compakt.otf"; sourceTree = "<group>"; };
 		1637D7071DD15E2A00306CED /* Roboto Condensed.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto Condensed.ttf"; path = "../app/assets/fonts/Roboto Condensed.ttf"; sourceTree = "<group>"; };
+		3C5D34101DF9EAED00740867 /* purple-train-512x512@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "purple-train-512x512@2x.png"; sourceTree = "<group>"; };
+		3C5D34111DF9EAED00740867 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -333,6 +337,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3C5D34111DF9EAED00740867 /* Default-568h@2x.png */,
+				3C5D34101DF9EAED00740867 /* purple-train-512x512@2x.png */,
 				1637D7051DD15E2A00306CED /* HK Compakt_bold.otf */,
 				1637D7061DD15E2A00306CED /* HK Compakt.otf */,
 				1637D7071DD15E2A00306CED /* Roboto Condensed.ttf */,
@@ -575,10 +581,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C5D34121DF9EAED00740867 /* purple-train-512x512@2x.png in Resources */,
 				1637D7081DD15E2A00306CED /* HK Compakt_bold.otf in Resources */,
 				1637D7091DD15E2A00306CED /* HK Compakt.otf in Resources */,
 				1637D70A1DD15E2A00306CED /* Roboto Condensed.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				3C5D34131DF9EAED00740867 /* Default-568h@2x.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
