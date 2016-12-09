@@ -6,6 +6,7 @@ import Json.Decode as Decode
 import Model exposing (..)
 import Message exposing (..)
 import Types exposing (..)
+import Api exposing (..)
 
 
 fetchSchedule : Direction -> Stop -> Cmd Msg
@@ -16,7 +17,8 @@ fetchSchedule direction stop =
 getSchedule : Direction -> Stop -> Http.Request Schedule
 getSchedule direction stop =
     Http.get
-        ("https://commuter-api-production.herokuapp.com/api/v2/stops/"
+        (baseUrl
+            ++ "/api/v2/stops/"
             ++ (Http.encodeUri stop)
             ++ "/"
             ++ toString direction

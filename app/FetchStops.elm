@@ -4,6 +4,7 @@ import Http
 import Json.Decode as Decode
 import Message exposing (..)
 import Types exposing (..)
+import Api exposing (..)
 
 
 fetchStops : Cmd Msg
@@ -14,7 +15,7 @@ fetchStops =
 getStops : Http.Request Stops
 getStops =
     Http.get
-        "https://commuter-api-production.herokuapp.com/api/v2/stops"
+        (baseUrl ++ "/api/v2/stops")
         decodeStops
 
 

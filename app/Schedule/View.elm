@@ -3,7 +3,6 @@ module Schedule.View exposing (view)
 import NativeUi as Ui exposing (Node, Property)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
-import Date.Extra.Duration as Duration
 import Date exposing (Date)
 import App.Color as Color
 import App.Font as Font
@@ -191,68 +190,58 @@ maybePrediction now model =
 prediction : Date -> Date -> Date -> Node Msg
 prediction now predictedDeparture scheduledDeparture =
     let
-        predictionDiff =
-            (Duration.diff predictedDeparture scheduledDeparture)
-
         minutesLate =
-            predictedMinutesLate predictionDiff
-
-        displayedDeparture =
-            if minutesLate == Nothing then
-                scheduledDeparture
-            else
-                predictedDeparture
+            predictedMinutesLateText <| minutesFrom scheduledDeparture predictedDeparture
 
         predictionString =
-            predictionText now minutesLate displayedDeparture
+            predictionText now minutesLate predictedDeparture
     in
         nextTrainMetadataRowWithColor predictionString (predictionColor minutesLate)
+
+
+predictedMinutesLateText : Int -> Maybe String
+predictedMinutesLateText minutesLate =
+    if minutesLate >= 2 then
+        Just <| (toString minutesLate) ++ "m late,"
+    else
+        Nothing
 
 
 predictionText : Date -> Maybe String -> Date -> String
 predictionText now minutesLate predictedDeparture =
     joinMaybe
         [ minutesLate
-        , Just <| prettyDuration <| Duration.diff predictedDeparture now
+        , Just <| prettyDuration <| minutesFrom now predictedDeparture
         ]
 
 
-prettyDuration : Duration.DeltaRecord -> String
-prettyDuration { year, month, day, hour, minute } =
+minutesFrom : Date -> Date -> Int
+minutesFrom fromDate toDate =
     let
-        unitSum =
-            year + month + day + hour + minute
+        fromMinutes =
+            floor <| (Date.toTime fromDate) / 1000 / 60
+
+        toMinutes =
+            floor <| (Date.toTime toDate) / 1000 / 60
     in
-        if unitSum < 0 then
-            "departed"
-        else if unitSum == 0 then
-            "departing now"
-        else if year + month + day > 0 then
-            "departs in more than a day"
-        else
-            joinMaybe
-                [ Just "departs in"
-                , prettyDurationUnit hour "h"
-                , prettyDurationUnit minute "m"
-                ]
+        toMinutes - fromMinutes
+
+
+prettyDuration : Int -> String
+prettyDuration minutesFromNow =
+    if minutesFromNow == 0 then
+        "departing now"
+    else if minutesFromNow < 0 then
+        "departed"
+    else if minutesFromNow < 60 then
+        "departs in " ++ toString minutesFromNow ++ "m"
+    else
+        "departs in " ++ toString (minutesFromNow // 60) ++ "h " ++ toString (minutesFromNow % 60) ++ "m"
 
 
 joinMaybe : List (Maybe String) -> String
 joinMaybe =
     String.join " " << catMaybes
-
-
-prettyDurationUnit : Int -> String -> Maybe String
-prettyDurationUnit amount unit =
-    if amount > 0 then
-        Just <| toString amount ++ unit
-    else
-        Nothing
-
-
-predictedMinutesLate : Duration.DeltaRecord -> Maybe String
-predictedMinutesLate { minute } =
-    prettyDurationUnit minute "m late,"
 
 
 predictionColor : Maybe String -> String
