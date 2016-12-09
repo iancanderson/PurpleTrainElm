@@ -13,8 +13,7 @@ import ScrollableTabView exposing (..)
 view : List (Node Msg) -> Node Msg
 view =
     ScrollableTabView.view
-        [ Ui.on "ChangeTab" (Decode.succeed ChangeDirection)
-        , tabBarActiveTextColor Color.white
+        [ tabBarActiveTextColor Color.white
         , tabBarInactiveTextColor Color.lightHeader
         , tabBarUnderlineStyle
             [ Style.backgroundColor Color.lightHeader

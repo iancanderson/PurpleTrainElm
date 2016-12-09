@@ -7,8 +7,7 @@ import Types exposing (..)
 
 
 type alias Model =
-    { direction : Direction
-    , inboundSchedule : Loadable Schedule
+    { inboundSchedule : Loadable Schedule
     , outboundSchedule : Loadable Schedule
     , stops : Loadable Stops
     , selectedStop : Maybe Stop
@@ -19,8 +18,7 @@ type alias Model =
 
 initialModel : Model
 initialModel =
-    { direction = Inbound
-    , inboundSchedule = Loading
+    { inboundSchedule = Loading
     , outboundSchedule = Loading
     , stops = Loading
     , selectedStop = Nothing

@@ -7,8 +7,7 @@ import NativeUi.AsyncStorage as AsyncStorage
 
 
 type Msg
-    = ChangeDirection
-    | PickStop Stop
+    = PickStop Stop
     | LoadStops (Result Http.Error Stops)
     | LoadSchedule Direction (Result Http.Error Schedule)
     | ToggleStopPicker

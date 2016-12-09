@@ -75,18 +75,18 @@ topSection model direction loadableSchedule =
         , Ui.property "tabLabel" (Json.Encode.string (directionString direction))
         , key (toString direction)
         ]
-        [ scheduleOrLoading model loadableSchedule
+        [ scheduleOrLoading model direction loadableSchedule
         ]
 
 
-scheduleOrLoading : Model -> Loadable Schedule -> Node Msg
-scheduleOrLoading model loadableSchedule =
+scheduleOrLoading : Model -> Direction -> Loadable Schedule -> Node Msg
+scheduleOrLoading model direction loadableSchedule =
     case loadableSchedule of
         Loading ->
             Elements.view [] []
 
         Ready schedule ->
-            Schedule.view model schedule
+            Schedule.view model direction schedule
 
 
 directionString : Direction -> String

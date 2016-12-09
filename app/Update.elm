@@ -13,13 +13,6 @@ import NativeUi.AsyncStorage as AsyncStorage
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ChangeDirection ->
-            let
-                newDirection =
-                    toggleDirection model.direction
-            in
-                ( { model | direction = newDirection }, Cmd.none )
-
         PickStop stop ->
             ( { model
                 | selectedStop = Just stop

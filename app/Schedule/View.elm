@@ -12,8 +12,8 @@ import Message exposing (..)
 import Model exposing (..)
 
 
-view : Model -> Schedule -> Node Msg
-view { direction, now } schedule =
+view : Model -> Direction -> Schedule -> Node Msg
+view { now } direction schedule =
     Elements.view
         []
         [ nextTrainsView direction now (nextTrains schedule)
