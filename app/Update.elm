@@ -73,7 +73,7 @@ update msg model =
         ToggleStopPicker ->
             ( { model | stopPickerOpen = not model.stopPickerOpen }, Cmd.none )
 
-        Minute now ->
+        Tick now ->
             ( { model | now = Date.fromTime now }
             , Task.attempt
                 GetItem

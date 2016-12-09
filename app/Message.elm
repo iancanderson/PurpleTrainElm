@@ -13,4 +13,4 @@ type Msg
     | ToggleStopPicker
     | SetItem (Result AsyncStorage.Error ())
     | GetItem (Result AsyncStorage.Error (Maybe String))
-    | Minute Time
+    | Tick Time

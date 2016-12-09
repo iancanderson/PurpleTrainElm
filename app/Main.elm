@@ -8,20 +8,20 @@ import View exposing (view)
 import NativeUi.AsyncStorage as AsyncStorage
 import Message exposing (..)
 import Task
-import Time exposing (every, minute)
+import Time exposing (Time, every, second)
 import FetchStops exposing (..)
 
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    every minute Minute
+    every (seconds 10) Tick
 
 
 init : ( Model, Cmd Msg )
 init =
     ( initialModel
     , Cmd.batch
-        [ Task.perform Minute Time.now
+        [ Task.perform Tick Time.now
         , fetchStops
         ]
     )
@@ -35,3 +35,8 @@ main =
         , update = update
         , subscriptions = subscriptions
         }
+
+
+seconds : Float -> Time
+seconds magnitude =
+    magnitude * second
