@@ -17,6 +17,7 @@ type alias Train =
     , predictedDeparture : Maybe Date
     , track : Maybe String
     , coach : Maybe String
+    , status : Maybe String
     }
 
 

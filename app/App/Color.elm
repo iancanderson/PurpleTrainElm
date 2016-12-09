@@ -41,5 +41,5 @@ laterTrainText =
     "#F1E2FF"
 
 
-onTimePredictionText =
+trainMetadataText =
     "#798283"

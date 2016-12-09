@@ -106,41 +106,58 @@ nextTrainView direction now train =
 
 nextTrainMetadata : Direction -> Date -> Train -> Node Msg
 nextTrainMetadata direction now train =
-    Elements.view []
-        [ maybeVehicleInfo direction train
-        , maybePrediction now train
-        ]
-
-
-maybeVehicleInfo : Direction -> Train -> Node Msg
-maybeVehicleInfo direction train =
-    case ( direction, train.track, train.coach ) of
-        ( Outbound, Just track, _ ) ->
-            trackMetadata track
-
-        ( Outbound, _, Just coach ) ->
-            coachMetadata coach
-
-        ( _, _, _ ) ->
-            Elements.view [] []
-
-
-coachMetadata : String -> Node Msg
-coachMetadata coach =
     Elements.view
         []
-        [ nextTrainMetadataRow ("coach " ++ coach) ]
+        (catMaybes
+            [ trainInfo direction train
+            , Just (prediction now train)
+            ]
+        )
 
 
-trackMetadata : String -> Node Msg
-trackMetadata track =
-    Elements.view
-        []
-        [ nextTrainMetadataRow ("track " ++ track) ]
+trainInfo : Direction -> Train -> Maybe (Node Msg)
+trainInfo direction train =
+    case direction of
+        Outbound ->
+            outboundTrainInfo train
+
+        Inbound ->
+            Nothing
 
 
-nextTrainMetadataRowWithColor : String -> String -> Node Msg
-nextTrainMetadataRowWithColor string color =
+outboundTrainInfo : Train -> Maybe (Node Msg)
+outboundTrainInfo train =
+    case ( train.track, train.coach, train.status ) of
+        ( Just track, _, status ) ->
+            Just (trainMetadata <| withStatus ("track " ++ track) status)
+
+        ( _, Just coach, status ) ->
+            Just (trainMetadata <| withStatus ("coach " ++ coach) status)
+
+        ( _, _, Just status ) ->
+            Just (trainMetadata status)
+
+        _ ->
+            Nothing
+
+
+withStatus : String -> Maybe String -> String
+withStatus string maybeStatus =
+    case maybeStatus of
+        Just status ->
+            status ++ ", " ++ string
+
+        Nothing ->
+            string
+
+
+trainMetadata : String -> Node Msg
+trainMetadata string =
+    trainMetadataWithColor (String.toLower string) Color.trainMetadataText
+
+
+trainMetadataWithColor : String -> String -> Node Msg
+trainMetadataWithColor string color =
     text
         [ Ui.style
             [ Style.color color
@@ -150,11 +167,6 @@ nextTrainMetadataRowWithColor string color =
             ]
         ]
         [ Ui.string <| string ]
-
-
-nextTrainMetadataRow : String -> Node Msg
-nextTrainMetadataRow string =
-    nextTrainMetadataRowWithColor string Color.onTimePredictionText
 
 
 laterTrainView : Date -> Train -> Node Msg
@@ -177,26 +189,20 @@ laterTrainView now train =
         ]
 
 
-maybePrediction : Date -> Train -> Node Msg
-maybePrediction now model =
-    case model.predictedDeparture of
-        Nothing ->
-            prediction now model.scheduledDeparture model.scheduledDeparture
-
-        Just predictedDeparture ->
-            prediction now predictedDeparture model.scheduledDeparture
-
-
-prediction : Date -> Date -> Date -> Node Msg
-prediction now predictedDeparture scheduledDeparture =
+prediction : Date -> Train -> Node Msg
+prediction now train =
     let
+        predictedDeparture =
+            Maybe.withDefault train.scheduledDeparture train.predictedDeparture
+
         minutesLate =
-            predictedMinutesLateText <| minutesFrom scheduledDeparture predictedDeparture
+            predictedMinutesLateText <|
+                minutesFrom train.scheduledDeparture predictedDeparture
 
         predictionString =
             predictionText now minutesLate predictedDeparture
     in
-        nextTrainMetadataRowWithColor predictionString (predictionColor minutesLate)
+        trainMetadataWithColor predictionString (predictionColor minutesLate)
 
 
 predictedMinutesLateText : Int -> Maybe String
@@ -248,7 +254,7 @@ predictionColor : Maybe String -> String
 predictionColor minutesLate =
     case minutesLate of
         Nothing ->
-            Color.onTimePredictionText
+            Color.trainMetadataText
 
         Just _ ->
             Color.red
