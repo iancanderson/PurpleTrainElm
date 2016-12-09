@@ -5,6 +5,7 @@ import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Events exposing (..)
 import NativeUi.Properties exposing (..)
+import Http
 import Json.Encode
 import App.Color as Color
 import App.Font as Font
@@ -64,7 +65,7 @@ welcomeScreen =
         [ Ui.string "Purple Train" ]
 
 
-topSection : Model -> Direction -> Loadable Schedule -> Node Msg
+topSection : Model -> Direction -> Loadable (Result Http.Error Schedule) -> Node Msg
 topSection model direction loadableSchedule =
     Elements.view
         [ Ui.style
@@ -79,13 +80,35 @@ topSection model direction loadableSchedule =
         ]
 
 
-scheduleOrLoading : Model -> Direction -> Loadable Schedule -> Node Msg
+scheduleOrLoading : Model -> Direction -> Loadable (Result Http.Error Schedule) -> Node Msg
 scheduleOrLoading model direction loadableSchedule =
     case loadableSchedule of
         Loading ->
             Elements.view [] []
 
-        Ready schedule ->
+        Ready (Err _) ->
+            Elements.view
+                [ Ui.style
+                    [ Style.flex 1
+                    , Style.flexDirection "column"
+                    , Style.justifyContent "center"
+                    ]
+                ]
+                [ text
+                    [ Ui.style
+                        [ Style.backgroundColor Color.white
+                        , Style.borderRadius 10
+                        , Style.padding 20
+                        , Style.margin 20
+                        , Style.textAlign "center"
+                        , Style.fontSize 20
+                        , Style.color Color.red
+                        ]
+                    ]
+                    [ Ui.string "Error while connecting to server" ]
+                ]
+
+        Ready (Ok schedule) ->
             Schedule.view model direction schedule
 
 

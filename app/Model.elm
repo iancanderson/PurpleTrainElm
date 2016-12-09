@@ -2,14 +2,15 @@ module Model exposing (..)
 
 import Date.Format as Date
 import Date exposing (Date)
+import Http
 import Time exposing (Time)
 import Types exposing (..)
 
 
 type alias Model =
-    { inboundSchedule : Loadable Schedule
-    , outboundSchedule : Loadable Schedule
-    , stops : Loadable Stops
+    { inboundSchedule : Loadable (Result Http.Error Schedule)
+    , outboundSchedule : Loadable (Result Http.Error Schedule)
+    , stops : Loadable (Result Http.Error Stops)
     , selectedStop : Maybe Stop
     , stopPickerOpen : Bool
     , now : Date

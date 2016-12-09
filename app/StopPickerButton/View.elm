@@ -7,6 +7,7 @@ import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
 import App.Color as Color
 import App.Font as Font
+import App.Maybe exposing (..)
 import Model exposing (..)
 import Types exposing (..)
 import Message exposing (..)
@@ -26,15 +27,44 @@ view model =
 
 picker : Model -> List (Node Msg)
 picker model =
-    let
-        buttonLabel =
-            stopPickerLabelText model
-    in
-        List.filterMap
-            identity
-            [ maybeStopPicker model
-            , Just <| stopPickerButton buttonLabel
+    case model.stops of
+        Loading ->
+            [ stopPickerButton "Loading" ]
+
+        Ready (Err _) ->
+            [ pickerError ]
+
+        Ready (Ok stops) ->
+            catMaybes
+                [ maybeStopPicker model stops
+                , Just <| stopPickerButton <| stopPickerLabelText model
+                ]
+
+
+pickerError : Node Msg
+pickerError =
+    Elements.view
+        [ Ui.style
+            [ Style.backgroundColor Color.red
+            , Style.borderRadius 40
+            , Style.height 56
+            , Style.justifyContent "center"
+            , Style.alignItems "center"
+            , Style.position "absolute"
+            , Style.bottom 20
+            , Style.width 270
             ]
+        , underlayColor Color.stopPickerButton
+        ]
+        [ text
+            [ Ui.style
+                [ Style.color Color.white
+                , Style.fontFamily Font.hkCompakt
+                , Style.fontWeight "500"
+                ]
+            ]
+            [ Ui.string "Error connecting to server" ]
+        ]
 
 
 stopPickerLabelText : Model -> String
@@ -50,22 +80,12 @@ stopPickerLabelText { stopPickerOpen, selectedStop } =
             stop
 
 
-maybeStopPicker : Model -> Maybe (Node Msg)
-maybeStopPicker model =
+maybeStopPicker : Model -> Stops -> Maybe (Node Msg)
+maybeStopPicker model stops =
     if model.stopPickerOpen then
-        Just <| stopPicker model
+        Just <| StopPicker.view stops
     else
         Nothing
-
-
-stopPicker : Model -> Node Msg
-stopPicker model =
-    case model.stops of
-        Loading ->
-            Elements.view [] []
-
-        Ready stops ->
-            StopPicker.view stops
 
 
 stopPickerButton : String -> Node Msg

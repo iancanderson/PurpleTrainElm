@@ -7,6 +7,7 @@ import Date.Extra.Duration as Duration
 import Date exposing (Date)
 import App.Color as Color
 import App.Font as Font
+import App.Maybe exposing (..)
 import Types exposing (..)
 import Message exposing (..)
 import Model exposing (..)
@@ -239,11 +240,6 @@ prettyDuration { year, month, day, hour, minute } =
 joinMaybe : List (Maybe String) -> String
 joinMaybe =
     String.join " " << catMaybes
-
-
-catMaybes : List (Maybe a) -> List a
-catMaybes =
-    List.filterMap identity
 
 
 prettyDurationUnit : Int -> String -> Maybe String

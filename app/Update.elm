@@ -5,6 +5,7 @@ import Date exposing (Date)
 import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
+import FetchStops exposing (..)
 import FetchSchedule exposing (..)
 import String
 import NativeUi.AsyncStorage as AsyncStorage
@@ -50,35 +51,30 @@ update msg model =
                     ( model, Cmd.none )
 
         LoadStops result ->
-            case result of
-                Ok stops ->
-                    ( { model | stops = Ready stops }, Cmd.none )
-
-                Result.Err _ ->
-                    ( model, Cmd.none )
+            ( { model | stops = Ready result }, Cmd.none )
 
         LoadSchedule direction result ->
-            case result of
-                Ok schedule ->
-                    case direction of
-                        Inbound ->
-                            ( { model | inboundSchedule = Ready schedule }, Cmd.none )
+            case direction of
+                Inbound ->
+                    ( { model | inboundSchedule = Ready result }, Cmd.none )
 
-                        Outbound ->
-                            ( { model | outboundSchedule = Ready schedule }, Cmd.none )
-
-                Result.Err _ ->
-                    ( model, Cmd.none )
+                Outbound ->
+                    ( { model | outboundSchedule = Ready result }, Cmd.none )
 
         ToggleStopPicker ->
             ( { model | stopPickerOpen = not model.stopPickerOpen }, Cmd.none )
 
         Tick now ->
-            ( { model | now = Date.fromTime now }
-            , Task.attempt
-                GetItem
-                (AsyncStorage.getItem stopKey)
-            )
+            let
+                task =
+                    case model.stops of
+                        Ready (Err _) ->
+                            fetchStops
+
+                        _ ->
+                            Task.attempt GetItem (AsyncStorage.getItem stopKey)
+            in
+                ( { model | now = Date.fromTime now }, task )
 
 
 stopKey : String
