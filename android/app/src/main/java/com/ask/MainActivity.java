@@ -1,4 +1,4 @@
-package com.ask;
+package com.thoughtbot.purpletrain;
 
 import com.facebook.react.ReactActivity;
 

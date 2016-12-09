@@ -1,4 +1,4 @@
-package com.ask;
+package com.thoughtbot.purpletrain;
 
 import android.app.Application;
 import android.util.Log;
