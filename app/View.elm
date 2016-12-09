@@ -84,7 +84,18 @@ scheduleOrLoading : Model -> Direction -> Loadable (Result Http.Error Schedule) 
 scheduleOrLoading model direction loadableSchedule =
     case loadableSchedule of
         Loading ->
-            Elements.view [] []
+            Elements.view
+                [ Ui.style
+                    [ Style.flex 1
+                    , Style.flexDirection "column"
+                    , Style.alignSelf "stretch"
+                    , Style.justifyContent "center"
+                    ]
+                ]
+                [ Elements.activityIndicator
+                    [ Ui.style [ Style.alignSelf "stretch" ] ]
+                    []
+                ]
 
         Ready (Err _) ->
             Elements.view

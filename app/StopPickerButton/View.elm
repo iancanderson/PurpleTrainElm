@@ -29,7 +29,7 @@ picker : Model -> List (Node Msg)
 picker model =
     case model.stops of
         Loading ->
-            [ stopPickerButton "Loading" ]
+            [ loadingButton ]
 
         Ready (Err _) ->
             [ pickerError ]
@@ -91,16 +91,7 @@ maybeStopPicker model stops =
 stopPickerButton : String -> Node Msg
 stopPickerButton buttonLabel =
     Elements.touchableHighlight
-        [ Ui.style
-            [ Style.backgroundColor Color.stopPickerButton
-            , Style.borderRadius 40
-            , Style.height 56
-            , Style.justifyContent "center"
-            , Style.alignItems "center"
-            , Style.position "absolute"
-            , Style.bottom 20
-            , Style.width 270
-            ]
+        [ buttonStyles
         , onPress ToggleStopPicker
         , underlayColor Color.stopPickerButton
         ]
@@ -112,4 +103,30 @@ stopPickerButton buttonLabel =
                 ]
             ]
             [ Ui.string buttonLabel ]
+        ]
+
+
+loadingButton : Node Msg
+loadingButton =
+    Elements.touchableHighlight
+        [ buttonStyles
+        , underlayColor Color.stopPickerButton
+        ]
+        [ Elements.activityIndicator
+            [ Ui.style [ Style.alignSelf "stretch" ] ]
+            []
+        ]
+
+
+buttonStyles : Ui.Property Msg
+buttonStyles =
+    Ui.style
+        [ Style.backgroundColor Color.stopPickerButton
+        , Style.borderRadius 40
+        , Style.height 56
+        , Style.justifyContent "center"
+        , Style.alignItems "center"
+        , Style.position "absolute"
+        , Style.bottom 20
+        , Style.width 270
         ]
