@@ -28,11 +28,6 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>commuter-api-production.herokuapp.com</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<string></string>
-			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
