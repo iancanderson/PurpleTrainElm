@@ -2,4 +2,4 @@ module Api exposing (..)
 
 
 baseUrl =
-    "https://commuter-api-production.herokuapp.com"
+    "https://purpletrainapp.com"
