@@ -1,9 +1,10 @@
 module Schedule.View exposing (view)
 
+import Http
 import NativeUi as Ui exposing (Node, Property)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
-import NativeUi.Events exposing (onPress)
+import NativeUi.Events exposing (..)
 import Json.Encode
 import Date exposing (Date)
 import App.Color as Color
@@ -12,15 +13,19 @@ import App.Maybe exposing (..)
 import Types exposing (..)
 import Message exposing (..)
 import Model exposing (..)
+import Schedule.Alerts.View as Alerts
 
 
 view : Model -> Direction -> Schedule -> Node Msg
 view ({ now } as model) direction schedule =
     Elements.view
         []
-        [ nextTrainsView direction now (nextTrains schedule)
-        , laterTrainsView model direction (laterTrains schedule)
-        ]
+        (catMaybes
+            [ Alerts.view model
+            , Just <| nextTrainsView direction now (nextTrains schedule)
+            , Just <| laterTrainsView model direction (laterTrains schedule)
+            ]
+        )
 
 
 nextTrainsView : Direction -> Date -> Schedule -> Node Msg

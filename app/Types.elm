@@ -21,6 +21,17 @@ type alias Train =
     }
 
 
+type alias Alert =
+    { id : Int
+    , effectName : String
+    , headerText : String
+    }
+
+
+type alias Alerts =
+    List Alert
+
+
 type alias Stops =
     List Stop
 

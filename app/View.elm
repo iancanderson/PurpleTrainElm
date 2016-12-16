@@ -9,6 +9,7 @@ import Http
 import Json.Encode
 import App.Color as Color
 import App.Font as Font
+import App.Maybe exposing (..)
 import Model exposing (..)
 import Message exposing (..)
 import Types exposing (..)
@@ -42,12 +43,21 @@ mainView model =
             ]
 
         Just _ ->
-            [ DirectionPicker.view
-                [ topSection model Inbound model.inboundSchedule
-                , topSection model Outbound model.outboundSchedule
-                ]
-            , StopPickerButton.view model
-            ]
+            let
+                maybeStopPickerButton =
+                    if model.alertsAreExpanded then
+                        Nothing
+                    else
+                        Just <| StopPickerButton.view model
+            in
+                catMaybes
+                    [ Just <|
+                        DirectionPicker.view
+                            [ topSection model Inbound model.inboundSchedule
+                            , topSection model Outbound model.outboundSchedule
+                            ]
+                    , maybeStopPickerButton
+                    ]
 
 
 welcomeScreen : Node Msg

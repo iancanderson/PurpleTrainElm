@@ -1,7 +1,7 @@
 {
     "elm-lang/http": "1.0.0", 
     "elm-lang/virtual-dom": "2.0.1", 
-    "elm-lang/html": "2.0.0", 
+    "ohanhi/elm-native-ui": "2.0.0", 
     "elm-lang/core": "5.0.0", 
-    "elm-native-ui/elm-native-ui": "2.0.0"
+    "elm-lang/html": "2.0.0"
 }

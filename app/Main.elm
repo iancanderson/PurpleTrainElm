@@ -17,14 +17,34 @@ subscriptions _ =
     every (seconds 10) Tick
 
 
+dismissedAlertsKey : String
+dismissedAlertsKey =
+    "dismissed_alert_ids"
+
+
+stopKey : String
+stopKey =
+    "stop"
+
+
+loadSettings : Cmd Msg
+loadSettings =
+    Task.attempt ReceiveSettings (AsyncStorage.multiGet [ stopKey, dismissedAlertsKey ])
+
+
 init : ( Model, Cmd Msg )
 init =
     ( initialModel
     , Cmd.batch
-        [ Task.perform Tick Time.now
+        [ loadSettings
+        , Task.perform Tick Time.now
         , fetchStops
         ]
     )
+
+
+id a =
+    a
 
 
 main : Program Never Model Msg

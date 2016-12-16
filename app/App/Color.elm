@@ -25,6 +25,10 @@ lightGray =
     "#f8f8f8"
 
 
+darkGray =
+    "#c8c8c8"
+
+
 lightHeader =
     "#9F8AB3"
 

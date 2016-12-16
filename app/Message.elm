@@ -1,9 +1,15 @@
 module Message exposing (..)
 
 import Http
+import Dict exposing (..)
 import Time exposing (Time)
 import Types exposing (..)
 import NativeUi.AsyncStorage as AsyncStorage
+
+
+type alias SettingsResult =
+    -- Result AsyncStorage.Error (List ( String, Maybe String ))
+    Result AsyncStorage.Error (Dict String (Maybe String))
 
 
 type Msg
@@ -16,3 +22,7 @@ type Msg
     | Tick Time
     | ReportIssue Direction (Maybe Stop)
     | IssueResponse (Result Http.Error ())
+    | ToggleAlerts
+    | LoadAlerts (Result Http.Error Alerts)
+    | DismissAlert Alert
+    | ReceiveSettings SettingsResult

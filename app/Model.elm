@@ -14,6 +14,9 @@ type alias Model =
     , selectedStop : Maybe Stop
     , stopPickerOpen : Bool
     , now : Date
+    , alerts : Loadable (Result Http.Error Alerts)
+    , alertsAreExpanded : Bool
+    , dismissedAlertIds : List Int
     }
 
 
@@ -25,6 +28,9 @@ initialModel =
     , selectedStop = Nothing
     , stopPickerOpen = False
     , now = Date.fromTime 0
+    , alerts = Loading
+    , alertsAreExpanded = False
+    , dismissedAlertIds = []
     }
 
 
@@ -46,3 +52,25 @@ nextTrains =
 laterTrains : Schedule -> Schedule
 laterTrains =
     List.drop nextTrainCount
+
+
+visibleAlerts : List Alert -> List Int -> List Alert
+visibleAlerts allAlerts dismissedIds =
+    let
+        isNotDismissed alert =
+            not <| List.member alert.id dismissedIds
+    in
+        List.filter isNotDismissed allAlerts
+
+
+visibleAlertsExist : Model -> Bool
+visibleAlertsExist { alerts, dismissedAlertIds } =
+    case alerts of
+        Loading ->
+            False
+
+        Ready (Err _) ->
+            False
+
+        Ready (Ok loadedAlerts) ->
+            not <| List.isEmpty <| visibleAlerts loadedAlerts dismissedAlertIds

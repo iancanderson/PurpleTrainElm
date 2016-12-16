@@ -42,12 +42,12 @@ of `elm-native-ui`:
    installed `elm-native-ui`.
 
    ```
-   rm -rf elm-stuff/packages/elm-native-ui/elm-native-ui/2.0.0/.git
-   rm -rf elm-stuff/packages/elm-native-ui/elm-native-ui/2.0.0/examples
-   rm -rf elm-stuff/packages/elm-native-ui/elm-native-ui/2.0.0/node_modules
+   rm -rf elm-stuff/packages/ohanhi/elm-native-ui/2.0.0/.git
+   rm -rf elm-stuff/packages/ohanhi/elm-native-ui/2.0.0/examples
+   rm -rf elm-stuff/packages/ohanhi/elm-native-ui/2.0.0/node_modules
    ```
 
-[elm-native-ui]: https://github.com/ohani/elm-native-ui
+[elm-native-ui]: https://github.com/ohanhi/elm-native-ui
 [elm-ops-tooling]: https://github.com/NoRedInk/elm-ops-tooling)
 
 ## Installing new versions of packages in the Elm Package index

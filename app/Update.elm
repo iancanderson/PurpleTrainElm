@@ -2,14 +2,17 @@ module Update exposing (..)
 
 import Task
 import Date exposing (Date)
+import Dict exposing (..)
 import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
+import FetchAlerts exposing (..)
 import FetchStops exposing (..)
 import FetchSchedule exposing (..)
 import ReportIssue
 import String
 import NativeUi.AsyncStorage as AsyncStorage
+import App.Maybe exposing (..)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -29,8 +32,8 @@ update msg model =
                 [ Task.attempt
                     SetItem
                     (AsyncStorage.setItem stopKey stop)
+                , fetchAlertsAndSchedules stop
                 ]
-                    ++ fetchSchedules stop
             )
 
         GetItem result ->
@@ -40,7 +43,7 @@ update msg model =
 
                 Ok (Just stop) ->
                     ( { model | selectedStop = Just stop }
-                    , Cmd.batch <| fetchSchedules stop
+                    , fetchAlertsAndSchedules stop
                     )
 
                 Result.Err _ ->
@@ -53,6 +56,9 @@ update msg model =
 
                 Result.Err a ->
                     ( model, Cmd.none )
+
+        LoadAlerts result ->
+            ( { model | alerts = Ready result }, Cmd.none )
 
         LoadStops result ->
             ( { model | stops = Ready result }, Cmd.none )
@@ -70,15 +76,25 @@ update msg model =
 
         Tick now ->
             let
-                task =
+                fetchStopsOrLoadCurrentStop =
                     case model.stops of
                         Ready (Err _) ->
                             fetchStops
 
                         _ ->
                             Task.attempt GetItem (AsyncStorage.getItem stopKey)
+
+                tickCommand =
+                    case model.selectedStop of
+                        Nothing ->
+                            fetchStopsOrLoadCurrentStop
+
+                        Just selectedStop ->
+                            fetchAlertsAndSchedules selectedStop
             in
-                ( { model | now = Date.fromTime now }, task )
+                ( { model | now = Date.fromTime now }
+                , tickCommand
+                )
 
         ReportIssue direction mstop ->
             let
@@ -91,6 +107,61 @@ update msg model =
                             ReportIssue.report direction stop
             in
                 ( model, cmd )
+
+        ToggleAlerts ->
+            ( { model | alertsAreExpanded = not model.alertsAreExpanded }, Cmd.none )
+
+        DismissAlert alert ->
+            let
+                newDismissedAlertIds =
+                    alert.id :: model.dismissedAlertIds
+
+                command =
+                    saveDismissedAlertsCommand newDismissedAlertIds
+
+                modelWithDismissedAlert =
+                    { model | dismissedAlertIds = newDismissedAlertIds }
+            in
+                if visibleAlertsExist modelWithDismissedAlert then
+                    ( modelWithDismissedAlert, command )
+                else
+                    ( { modelWithDismissedAlert | alertsAreExpanded = False }, command )
+
+        ReceiveSettings settingsResult ->
+            case settingsResult of
+                Result.Err _ ->
+                    ( model, Cmd.none )
+
+                Result.Ok settings ->
+                    let
+                        stop =
+                            join <| Dict.get stopKey settings
+
+                        dismissedAlertIdsCsv =
+                            join <| Dict.get dismissedAlertsKey settings
+
+                        dismissedAlertIds =
+                            (Maybe.map (String.split ",") dismissedAlertIdsCsv)
+                                |> Maybe.withDefault []
+                                |> List.filterMap (Result.toMaybe << String.toInt)
+                    in
+                        ( { model | dismissedAlertIds = dismissedAlertIds, selectedStop = stop }, Cmd.none )
+
+
+saveDismissedAlertsCommand : List Int -> Cmd Msg
+saveDismissedAlertsCommand dismissedAlertIds =
+    let
+        dismissedAlertIdsCsv =
+            String.join "," <| List.map toString dismissedAlertIds
+    in
+        Task.attempt
+            SetItem
+            (AsyncStorage.setItem dismissedAlertsKey dismissedAlertIdsCsv)
+
+
+dismissedAlertsKey : String
+dismissedAlertsKey =
+    "dismissed_alert_ids"
 
 
 stopKey : String
@@ -108,8 +179,10 @@ toggleDirection direction =
             Inbound
 
 
-fetchSchedules : Stop -> List (Cmd Msg)
-fetchSchedules stop =
-    [ fetchSchedule Inbound stop
-    , fetchSchedule Outbound stop
-    ]
+fetchAlertsAndSchedules : Stop -> Cmd Msg
+fetchAlertsAndSchedules stop =
+    Cmd.batch
+        [ fetchSchedule Inbound stop
+        , fetchSchedule Outbound stop
+        , fetchAlerts stop
+        ]
