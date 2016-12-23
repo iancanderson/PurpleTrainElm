@@ -18,7 +18,7 @@ set it up to format your Elm files when automatically saving them.
 Run `yarn run start` to start the react native packager, which will serve the
 javascript bundle to the device simulators.
 
-Open the `ios/App.xcodeproj` and run the project to launch an iPhone simulator.
+Open the `ios/PurpleTrain.xcodeproj` and run the project to launch an iPhone simulator.
 
 ## Installing new versions of Elm Native UI (and other unsupported packages)
 
