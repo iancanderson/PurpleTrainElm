@@ -2,8 +2,8 @@
 
 ## Setup
 
-Make sure you have [elm v0.18](https://guide.elm-lang.org/install.html) installed
-Run `bin/setup`
+* Make sure you have [elm v0.18](https://guide.elm-lang.org/install.html) installed
+* Run `bin/setup`
 
 ## Developing
 
