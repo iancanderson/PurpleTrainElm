@@ -3,6 +3,8 @@ module Schedule.View exposing (view)
 import NativeUi as Ui exposing (Node, Property)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
+import NativeUi.Events exposing (onPress)
+import Json.Encode
 import Date exposing (Date)
 import App.Color as Color
 import App.Font as Font
@@ -13,11 +15,11 @@ import Model exposing (..)
 
 
 view : Model -> Direction -> Schedule -> Node Msg
-view { now } direction schedule =
+view ({ now } as model) direction schedule =
     Elements.view
         []
         [ nextTrainsView direction now (nextTrains schedule)
-        , laterTrainsView now (laterTrains schedule)
+        , laterTrainsView model direction (laterTrains schedule)
         ]
 
 
@@ -45,8 +47,8 @@ nextTrainsView direction now schedule =
         )
 
 
-laterTrainsView : Date -> Schedule -> Node Msg
-laterTrainsView now schedule =
+laterTrainsView : Model -> Direction -> Schedule -> Node Msg
+laterTrainsView ({ now } as model) direction schedule =
     let
         sectionLabel =
             if List.isEmpty schedule then
@@ -70,6 +72,8 @@ laterTrainsView now schedule =
                         , Style.paddingTop 18
                         , Style.textAlign "center"
                         ]
+                    , suppressHighlighting True
+                    , onPress <| ReportIssue direction model.selectedStop
                     ]
                     [ Ui.string sectionLabel ]
                 ]
@@ -258,3 +262,8 @@ predictionColor minutesLate =
 
         Just _ ->
             Color.red
+
+
+suppressHighlighting : Bool -> Property msg
+suppressHighlighting =
+    Ui.property "suppressHighlighting" << Json.Encode.bool

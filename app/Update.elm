@@ -7,6 +7,7 @@ import Model exposing (..)
 import Message exposing (..)
 import FetchStops exposing (..)
 import FetchSchedule exposing (..)
+import ReportIssue
 import String
 import NativeUi.AsyncStorage as AsyncStorage
 
@@ -14,6 +15,9 @@ import NativeUi.AsyncStorage as AsyncStorage
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        IssueResponse _ ->
+            ( model, Cmd.none )
+
         PickStop stop ->
             ( { model
                 | selectedStop = Just stop
@@ -75,6 +79,18 @@ update msg model =
                             Task.attempt GetItem (AsyncStorage.getItem stopKey)
             in
                 ( { model | now = Date.fromTime now }, task )
+
+        ReportIssue direction mstop ->
+            let
+                cmd =
+                    case mstop of
+                        Nothing ->
+                            Cmd.none
+
+                        Just stop ->
+                            ReportIssue.report direction stop
+            in
+                ( model, cmd )
 
 
 stopKey : String

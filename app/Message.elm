@@ -14,3 +14,5 @@ type Msg
     | SetItem (Result AsyncStorage.Error ())
     | GetItem (Result AsyncStorage.Error (Maybe String))
     | Tick Time
+    | ReportIssue Direction (Maybe Stop)
+    | IssueResponse (Result Http.Error ())
