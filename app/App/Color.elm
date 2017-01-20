@@ -41,6 +41,14 @@ defaultUnderlay =
     "rgba(0,0,0,0.05)"
 
 
+stopViewDefaultBackground =
+    "white"
+
+
+stopViewHighlightBackground =
+    "#F5DEFF"
+
+
 stopPickerButton =
     "#674982"
 

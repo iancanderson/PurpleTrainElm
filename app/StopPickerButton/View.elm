@@ -83,7 +83,7 @@ stopPickerLabelText { stopPickerOpen, selectedStop } =
 maybeStopPicker : Model -> Stops -> Maybe (Node Msg)
 maybeStopPicker model stops =
     if model.stopPickerOpen then
-        Just <| StopPicker.view stops
+        Just <| StopPicker.view stops model.selectedStop
     else
         Nothing
 
