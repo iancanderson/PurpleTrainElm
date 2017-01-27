@@ -2,7 +2,6 @@ module Update exposing (..)
 
 import Task
 import Date exposing (Date)
-import Dict exposing (..)
 import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
@@ -12,7 +11,7 @@ import FetchSchedule exposing (..)
 import ReportIssue
 import String
 import NativeUi.AsyncStorage as AsyncStorage
-import App.Maybe exposing (..)
+import App.Settings as Settings
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -31,7 +30,7 @@ update msg model =
             , Cmd.batch <|
                 [ Task.attempt
                     SetItem
-                    (AsyncStorage.setItem stopKey stop)
+                    (AsyncStorage.setItem Settings.stopKey stop)
                 , fetchAlertsAndSchedules stop
                 ]
             )
@@ -82,7 +81,7 @@ update msg model =
                             fetchStops
 
                         _ ->
-                            Task.attempt GetItem (AsyncStorage.getItem stopKey)
+                            Task.attempt GetItem (AsyncStorage.getItem Settings.stopKey)
 
                 tickCommand =
                     case model.selectedStop of
@@ -135,15 +134,10 @@ update msg model =
                 Result.Ok settings ->
                     let
                         stop =
-                            join <| Dict.get stopKey settings
-
-                        dismissedAlertIdsCsv =
-                            join <| Dict.get dismissedAlertsKey settings
+                            Settings.stop settings
 
                         dismissedAlertIds =
-                            (Maybe.map (String.split ",") dismissedAlertIdsCsv)
-                                |> Maybe.withDefault []
-                                |> List.filterMap (Result.toMaybe << String.toInt)
+                            Settings.dismissedAlertIds settings
                     in
                         ( { model | dismissedAlertIds = dismissedAlertIds, selectedStop = stop }, Cmd.none )
 
@@ -156,17 +150,7 @@ saveDismissedAlertsCommand dismissedAlertIds =
     in
         Task.attempt
             SetItem
-            (AsyncStorage.setItem dismissedAlertsKey dismissedAlertIdsCsv)
-
-
-dismissedAlertsKey : String
-dismissedAlertsKey =
-    "dismissed_alert_ids"
-
-
-stopKey : String
-stopKey =
-    "stop"
+            (AsyncStorage.setItem Settings.dismissedAlertsKey dismissedAlertIdsCsv)
 
 
 toggleDirection : Direction -> Direction

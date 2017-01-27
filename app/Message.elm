@@ -1,15 +1,14 @@
 module Message exposing (..)
 
 import Http
-import Dict exposing (..)
 import Time exposing (Time)
 import Types exposing (..)
 import NativeUi.AsyncStorage as AsyncStorage
+import App.Settings exposing (Settings)
 
 
 type alias SettingsResult =
-    -- Result AsyncStorage.Error (List ( String, Maybe String ))
-    Result AsyncStorage.Error (Dict String (Maybe String))
+    Result AsyncStorage.Error Settings
 
 
 type Msg

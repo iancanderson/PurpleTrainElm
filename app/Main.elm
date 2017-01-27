@@ -10,6 +10,7 @@ import Message exposing (..)
 import Task
 import Time exposing (Time, every, second)
 import FetchStops exposing (..)
+import App.Settings as Settings
 
 
 subscriptions : Model -> Sub Msg
@@ -17,19 +18,11 @@ subscriptions _ =
     every (seconds 10) Tick
 
 
-dismissedAlertsKey : String
-dismissedAlertsKey =
-    "dismissed_alert_ids"
-
-
-stopKey : String
-stopKey =
-    "stop"
-
-
 loadSettings : Cmd Msg
 loadSettings =
-    Task.attempt ReceiveSettings (AsyncStorage.multiGet [ stopKey, dismissedAlertsKey ])
+    AsyncStorage.multiGet Settings.allKeys
+        |> Task.map Settings.fromDict
+        |> Task.attempt ReceiveSettings
 
 
 init : ( Model, Cmd Msg )
@@ -41,10 +34,6 @@ init =
         , fetchStops
         ]
     )
-
-
-id a =
-    a
 
 
 main : Program Never Model Msg
