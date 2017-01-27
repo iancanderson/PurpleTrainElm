@@ -5,6 +5,7 @@ import Maybe exposing (..)
 import NativeUi as Ui exposing (Node)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Events exposing (..)
+import NativeUi.Properties exposing (..)
 import NativeUi.Style as Style
 import App.Color as Color
 import App.Maybe exposing (..)
@@ -47,20 +48,39 @@ renderAlerts alertsAreExpanded allAlerts dismissedAlertIds =
 
 alertsBanner : Bool -> Int -> Node Msg
 alertsBanner alertsAreExpanded alertCount =
-    text
+    Elements.touchableOpacity
         [ Ui.style
-            [ Style.backgroundColor Color.lightGray
-            , Style.color Color.red
-            , Style.fontSize 9
-            , Style.fontWeight "700"
-            , Style.letterSpacing 0.25
-            , Style.paddingBottom 18
-            , Style.paddingTop 18
-            , Style.textAlign "center"
+            [ Style.backgroundColor Color.red
+            , Style.paddingHorizontal 8
+            , Style.paddingVertical 18
+            , Style.flexDirection "row"
+            , Style.alignItems "center"
             ]
         , onPress ToggleAlerts
+        , activeOpacity 0.7
         ]
-        [ Ui.string <| alertsBannerText alertsAreExpanded alertCount ]
+        [ text
+            [ Ui.style
+                [ Style.flex 1
+                , Style.color "#fff"
+                ]
+            ]
+            [ Ui.string <| arrowCharacter alertsAreExpanded ]
+        , text
+            [ Ui.style
+                [ Style.color Color.lightGray
+                , Style.fontSize 14
+                , Style.fontWeight "700"
+                , Style.letterSpacing 0.25
+                , Style.textAlign "center"
+                , Style.flex 2
+                ]
+            ]
+            [ Ui.string <| alertsBannerText alertCount ]
+        , Elements.view
+            [ Ui.style [ Style.flex 1 ] ]
+            []
+        ]
 
 
 maybeExpandedAlerts : Bool -> Alerts -> Maybe (Node Msg)
@@ -80,8 +100,8 @@ expandedAlert : Alert -> Node Msg
 expandedAlert alert =
     Elements.view
         [ Ui.style
-            [ Style.borderTopWidth 1
-            , Style.borderTopColor Color.darkGray
+            [ Style.borderBottomWidth 1
+            , Style.borderBottomColor Color.darkGray
             , Style.paddingHorizontal 18
             , Style.paddingVertical 18
             ]
@@ -91,6 +111,7 @@ expandedAlert alert =
                 [ Style.flex 1
                 , Style.flexDirection "row"
                 , Style.marginBottom 4
+                , Style.alignItems "center"
                 ]
             ]
             [ text
@@ -98,24 +119,22 @@ expandedAlert alert =
                     [ Style.fontWeight "700"
                     , Style.fontSize 14
                     , Style.flex 1
+                    , Style.lineHeight 30
                     ]
                 ]
                 [ Ui.string alert.effectName ]
             , Elements.view
                 [ Ui.style
-                    [ Style.borderWidth 1
-                    , Style.borderColor Color.purple
-                    , Style.borderRadius 3
-                    , Style.padding 2
+                    [ Style.padding 2
                     ]
                 ]
                 [ text
                     [ onPress <| DismissAlert alert
                     , Ui.style
-                        [ Style.color Color.purple
+                        [ Style.color Color.dismissColor
                         ]
                     ]
-                    [ Ui.string "Dismiss" ]
+                    [ Ui.string "dismiss" ]
                 ]
             ]
         , text
@@ -124,15 +143,9 @@ expandedAlert alert =
         ]
 
 
-alertsBannerText : Bool -> Int -> String
-alertsBannerText alertsAreExpanded alertCount =
+alertsBannerText : Int -> String
+alertsBannerText alertCount =
     let
-        arrowCharacter =
-            if alertsAreExpanded then
-                "▲"
-            else
-                "▼"
-
         pluralizedDescription =
             if alertCount == 1 then
                 "ALERT"
@@ -141,8 +154,14 @@ alertsBannerText alertsAreExpanded alertCount =
     in
         String.join
             " "
-            [ arrowCharacter
-            , toString alertCount
+            [ toString alertCount
             , pluralizedDescription
-            , arrowCharacter
             ]
+
+
+arrowCharacter : Bool -> String
+arrowCharacter alertsAreExpanded =
+    if alertsAreExpanded then
+        "▼"
+    else
+        "▶"

@@ -17,12 +17,17 @@ view =
         , tabBarInactiveTextColor Color.lightHeader
         , tabBarUnderlineStyle
             [ Style.backgroundColor Color.lightHeader
-            , Style.height 1
+            , Style.height 0
             ]
         , tabBarTextStyle
             [ Style.fontFamily Font.hkCompakt
             , Style.fontWeight "400"
             , Style.fontSize 20
             ]
-        , Ui.style [ Style.marginTop 20 ]
+        , tabBarStyle
+            [ Style.borderBottomWidth 0
+            ]
+        , Ui.style
+            [ Style.marginTop 20
+            ]
         ]

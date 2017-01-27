@@ -90,10 +90,10 @@ maybeStopPicker model stops =
 
 stopPickerButton : String -> Node Msg
 stopPickerButton buttonLabel =
-    Elements.touchableHighlight
+    Elements.touchableOpacity
         [ buttonStyles
         , onPress ToggleStopPicker
-        , underlayColor Color.stopPickerButton
+        , activeOpacity 0.7
         ]
         [ text
             [ Ui.style
@@ -108,9 +108,9 @@ stopPickerButton buttonLabel =
 
 loadingButton : Node Msg
 loadingButton =
-    Elements.touchableHighlight
+    Elements.touchableOpacity
         [ buttonStyles
-        , underlayColor Color.stopPickerButton
+        , activeOpacity 0.7
         ]
         [ Elements.activityIndicator
             [ Ui.style [ Style.alignSelf "stretch" ] ]

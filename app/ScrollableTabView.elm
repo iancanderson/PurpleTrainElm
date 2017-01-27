@@ -5,6 +5,7 @@ module ScrollableTabView
         , tabBarInactiveTextColor
         , tabBarUnderlineStyle
         , tabBarTextStyle
+        , tabBarStyle
         )
 
 import NativeUi as NativeUi exposing (Property, Node)
@@ -36,3 +37,8 @@ tabBarUnderlineStyle =
 tabBarTextStyle : List Style.Style -> Property msg
 tabBarTextStyle =
     NativeUi.property "tabBarTextStyle" << Style.encode
+
+
+tabBarStyle : List Style.Style -> Property msg
+tabBarStyle =
+    NativeUi.property "tabBarStyle" << Style.encode

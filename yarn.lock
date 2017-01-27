@@ -3955,6 +3955,12 @@ react-native-scrollable-tab-view@^0.7.0:
   dependencies:
     react-timer-mixin "^0.13.3"
 
+"react-native-scrollable-tab-view@https://github.com/iancanderson/react-native-scrollable-tab-view.git#ia-tabbar-style-prop":
+  version "0.7.1"
+  resolved "https://github.com/iancanderson/react-native-scrollable-tab-view.git#651581d0887e9ca42909e102c75cec896e501964"
+  dependencies:
+    react-timer-mixin "^0.13.3"
+
 react-native@0.36.0:
   version "0.36.0"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.36.0.tgz#3ce19cebcf99e2dc5a889cbb74201ef63ecb6a55"

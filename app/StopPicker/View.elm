@@ -15,10 +15,7 @@ import ViewHelpers exposing (..)
 
 view : Stops -> Node Msg
 view stops =
-    pickerContainer
-        [ pickerHeader "Select home stop"
-        , stopOptions stops
-        ]
+    pickerContainer [ stopOptions stops ]
 
 
 stopOptions : Stops -> Node Msg
@@ -37,30 +34,10 @@ pickerOptions =
     Elements.scrollView
         [ Ui.style
             [ Style.backgroundColor Color.white
-            , Style.borderBottomLeftRadius 10
-            , Style.borderBottomRightRadius 10
+            , Style.borderRadius 10
+            , Style.borderRadius 10
             , Style.height 252
             ]
-        ]
-
-
-pickerHeader : String -> Node Msg
-pickerHeader label =
-    Elements.view
-        [ Ui.style
-            [ Style.backgroundColor Color.red
-            , Style.borderTopLeftRadius 10
-            , Style.borderTopRightRadius 10
-            , Style.padding 10
-            ]
-        ]
-        [ text
-            [ Ui.style
-                [ Style.color Color.white
-                , Style.fontFamily Font.hkCompakt
-                ]
-            ]
-            [ Ui.string label ]
         ]
 
 

@@ -1,6 +1,10 @@
 module App.Color exposing (..)
 
 
+dismissColor =
+    "#acacac"
+
+
 purple =
     "#5C4570"
 
