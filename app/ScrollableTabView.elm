@@ -1,6 +1,7 @@
 module ScrollableTabView
     exposing
         ( view
+        , initialPage
         , tabBarActiveTextColor
         , tabBarInactiveTextColor
         , tabBarUnderlineStyle
@@ -17,6 +18,11 @@ import Json.Encode
 view : List (Property msg) -> List (Node msg) -> Node msg
 view =
     NativeUi.customNode "ScrollableTabView" Native.ScrollableTabView.view
+
+
+initialPage : Int -> Property msg
+initialPage =
+    NativeUi.property "initialPage" << Json.Encode.int
 
 
 tabBarActiveTextColor : String -> Property msg

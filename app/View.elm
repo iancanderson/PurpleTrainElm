@@ -53,6 +53,7 @@ mainView model =
                 catMaybes
                     [ Just <|
                         DirectionPicker.view
+                            model
                             [ topSection model Inbound model.inboundSchedule
                             , topSection model Outbound model.outboundSchedule
                             ]

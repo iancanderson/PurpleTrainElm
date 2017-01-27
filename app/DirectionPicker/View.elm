@@ -4,16 +4,19 @@ import NativeUi as Ui exposing (Node, Property)
 import NativeUi.Style as Style
 import Json.Decode as Decode
 import Json.Encode
+import Date exposing (Date)
 import App.Color as Color
 import App.Font as Font
 import Message exposing (..)
 import ScrollableTabView exposing (..)
+import Model exposing (Model)
 
 
-view : List (Node Msg) -> Node Msg
-view =
+view : Model -> List (Node Msg) -> Node Msg
+view { now } =
     ScrollableTabView.view
-        [ tabBarActiveTextColor Color.white
+        [ initialPage <| getInitialPageIndex now
+        , tabBarActiveTextColor Color.white
         , tabBarInactiveTextColor Color.lightHeader
         , tabBarUnderlineStyle
             [ Style.backgroundColor Color.lightHeader
@@ -31,3 +34,23 @@ view =
             [ Style.marginTop 20
             ]
         ]
+
+
+getInitialPageIndex : Date -> Int
+getInitialPageIndex date =
+    let
+        inboundTabIndex =
+            0
+
+        outboundTabIndex =
+            1
+    in
+        if isTimeToGoHome date then
+            outboundTabIndex
+        else
+            inboundTabIndex
+
+
+isTimeToGoHome : Date -> Bool
+isTimeToGoHome date =
+    Date.hour date >= 13
