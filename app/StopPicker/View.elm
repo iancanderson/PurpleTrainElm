@@ -93,7 +93,8 @@ highlightPickerButton message label =
         ]
         [ Elements.view
             []
-            [ [ buttonTextStyle ]
+            [ text
+                [ buttonTextStyle ]
                 [ Ui.string label ]
             ]
         ]
