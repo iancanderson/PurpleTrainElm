@@ -22,33 +22,21 @@ Open the `ios/PurpleTrain.xcodeproj` and run the project to launch an iPhone sim
 
 ## Installing new versions of Elm Native UI (and other unsupported packages)
 
-Elm Native Ui is not in the Elm Package index, meaning it has to be installed by
-hand.
+Elm Native UI is not in the Elm Package index, meaning it has to be installed by
+hand (done automatically in `bin/setup`):
 
-At some point, we should either fix the tooling around this or at least write a
-script to automate this. For now, here are the steps to install a newer version
-of `elm-native-ui`:
+```
+bin/sync-elm-native-ui
+```
 
-1. Clone [elm-native-ui] to a **sibling** directory.
-1. Clone [elm-ops-tooling] to a **sibling** directory.
-1. Run the `self_publish` script from the **parent** directory to install the
-   `elm-native-ui` into the `PurpleTrain` app:
+The script will do one of three things:
 
-   ```
-   python elm-ops-tooling/elm_self_publish.py ./elm-native-ui ./PurpleTrainElm
-   ```
-
-1. Remove the `.git`, `examples`, and `node_modules` directories from the
-   installed `elm-native-ui`.
-
-   ```
-   rm -rf elm-stuff/packages/ohanhi/elm-native-ui/2.0.0/.git
-   rm -rf elm-stuff/packages/ohanhi/elm-native-ui/2.0.0/examples
-   rm -rf elm-stuff/packages/ohanhi/elm-native-ui/2.0.0/node_modules
-   ```
-
-[elm-native-ui]: https://github.com/ohanhi/elm-native-ui
-[elm-ops-tooling]: https://github.com/NoRedInk/elm-ops-tooling)
+1. If you have a symlinked Elm Native UI dependency (because you are working on
+   the Elm Native UI library), it will do nothing.
+1. If you don't have the dependency it will clone it to the appropriate
+   directory.
+1. If you have the dependency, it will update the dependency to the version
+   specified in `.elm-native-ui-version`.
 
 ## Installing new versions of packages in the Elm Package index
 

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -e
+
+echoerr() {
+  echo "$@" 1>&2;
+}
+
+get_elm_native_version() {
+  cut -d' ' -f1 .elm-native-ui-version
+}
+
+commit=$(get_elm_native_version)
+parent_dir="elm-stuff/packages/ohanhi/elm-native-ui"
+clone_path="$parent_dir/2.0.0/"
+repo="https://github.com/ohanhi/elm-native-ui"
+
+mkdir -p $parent_dir
+
+if [[ -h "$clone_path" ]]; then
+  echoerr "Ignoring symlinked directory"
+elif [[ -d "$clone_path" ]]; then
+  echoerr "Updating Elm Native UI"
+  git -C "$clone_path" fetch
+  git -C "$clone_path" checkout "$commit"
+else
+  echoerr "Cloning Elm Native UI"
+  git clone "$repo" "$clone_path"
+  git -C "$clone_path" checkout "$commit"
+fi
