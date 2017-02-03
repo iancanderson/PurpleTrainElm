@@ -9,44 +9,56 @@ import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
 import App.Color as Color
 import App.Font as Font
+import Model exposing (..)
 import Types exposing (..)
 import Message exposing (..)
 import ViewHelpers exposing (..)
+import ListView
 
 
-view : Stops -> Maybe Stop -> Node Msg
-view stops highlightStop =
-    pickerContainer [ stopOptions stops highlightStop ]
+view : Model -> Node Msg
+view model =
+    pickerContainer
+        [ pickerHeader "Select home stop"
+        , stopOptions model
+        ]
 
 
-stopOptions : Stops -> Maybe Stop -> Node Msg
-stopOptions stops stop =
-    pickerOptions <|
-        List.map (stopButton stop) stops
-
-
-stopButton : Maybe Stop -> Stop -> Node Msg
-stopButton highlightStop stop =
-    case highlightStop of
-        Nothing ->
-            pickerButton (PickStop stop) stop
-
-        Just pickedStop ->
-            if stop == pickedStop then
-                highlightPickerButton (PickStop stop) stop
-            else
-                pickerButton (PickStop stop) stop
-
-
-pickerOptions : List (Node Msg) -> Node Msg
-pickerOptions =
-    ScrollWrapper.view
+stopOptions : Model -> Node Msg
+stopOptions model =
+    ListView.view
+        model.stopPickerDataSource
+        stopButton
         [ Ui.style
             [ Style.backgroundColor Color.white
             , Style.borderRadius 10
-            , Style.borderRadius 10
             , Style.height 252
             ]
+        ]
+
+
+stopButton : Stop -> Node Msg
+stopButton stop =
+    pickerButton (PickStop stop) stop
+
+
+pickerHeader : String -> Node Msg
+pickerHeader label =
+    Elements.view
+        [ Ui.style
+            [ Style.backgroundColor Color.red
+            , Style.borderTopLeftRadius 10
+            , Style.borderTopRightRadius 10
+            , Style.padding 10
+            ]
+        ]
+        [ text
+            [ Ui.style
+                [ Style.color Color.white
+                , Style.fontFamily Font.hkCompakt
+                ]
+            ]
+            [ Ui.string label ]
         ]
 
 

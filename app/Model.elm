@@ -1,5 +1,6 @@
 module Model exposing (..)
 
+import ListView exposing (DataSource, emptyDataSource)
 import Date.Format as Date
 import Date exposing (Date)
 import Http
@@ -17,6 +18,7 @@ type alias Model =
     , alerts : Loadable (Result Http.Error Alerts)
     , alertsAreExpanded : Bool
     , dismissedAlertIds : List Int
+    , stopPickerDataSource : DataSource Stop
     }
 
 
@@ -31,6 +33,7 @@ initialModel =
     , alerts = Loading
     , alertsAreExpanded = False
     , dismissedAlertIds = []
+    , stopPickerDataSource = emptyDataSource
     }
 
 

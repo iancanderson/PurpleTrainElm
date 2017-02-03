@@ -34,9 +34,9 @@ picker model =
         Ready (Err _) ->
             [ pickerError ]
 
-        Ready (Ok stops) ->
+        Ready (Ok _) ->
             catMaybes
-                [ maybeStopPicker model stops
+                [ maybeStopPicker model
                 , Just <| stopPickerButton <| stopPickerLabelText model
                 ]
 
@@ -80,10 +80,10 @@ stopPickerLabelText { stopPickerOpen, selectedStop } =
             stop
 
 
-maybeStopPicker : Model -> Stops -> Maybe (Node Msg)
-maybeStopPicker model stops =
+maybeStopPicker : Model -> Maybe (Node Msg)
+maybeStopPicker model =
     if model.stopPickerOpen then
-        Just <| StopPicker.view stops model.selectedStop
+        Just <| StopPicker.view model
     else
         Nothing
 

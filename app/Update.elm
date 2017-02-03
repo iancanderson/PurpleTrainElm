@@ -12,6 +12,7 @@ import ReportIssue
 import String
 import NativeUi.AsyncStorage as AsyncStorage
 import App.Settings as Settings
+import ListView exposing (updateDataSource)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -60,7 +61,17 @@ update msg model =
             ( { model | alerts = Ready result }, Cmd.none )
 
         LoadStops result ->
-            ( { model | stops = Ready result }, Cmd.none )
+            let
+                stopPickerDataSource =
+                    case result of
+                        Ok stops ->
+                            updateDataSource model.stopPickerDataSource <|
+                                stops
+
+                        _ ->
+                            model.stopPickerDataSource
+            in
+                ( { model | stops = Ready result, stopPickerDataSource = stopPickerDataSource }, Cmd.none )
 
         LoadSchedule direction result ->
             case direction of
