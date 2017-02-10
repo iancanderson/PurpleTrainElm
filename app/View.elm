@@ -3,7 +3,6 @@ module View exposing (view)
 import NativeUi as Ui exposing (Node, Property)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
-import NativeUi.Events exposing (..)
 import NativeUi.Properties exposing (..)
 import Http
 import Json.Encode
@@ -13,11 +12,9 @@ import App.Maybe exposing (..)
 import Model exposing (..)
 import Message exposing (..)
 import Types exposing (..)
-import Update exposing (..)
 import DirectionPicker.View as DirectionPicker
 import StopPickerButton.View as StopPickerButton
 import Schedule.View as Schedule
-import ViewHelpers exposing (..)
 
 
 view : Model -> Node Msg

@@ -1,6 +1,5 @@
 module Schedule.View exposing (view)
 
-import Http
 import NativeUi as Ui exposing (Node, Property)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)

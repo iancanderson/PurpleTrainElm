@@ -1,6 +1,5 @@
 module Schedule.Alerts.View exposing (view)
 
-import Http
 import Maybe exposing (..)
 import NativeUi as Ui exposing (Node)
 import NativeUi.Elements as Elements exposing (..)
