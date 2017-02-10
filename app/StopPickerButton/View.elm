@@ -97,7 +97,7 @@ stopPickerButton buttonLabel =
         ]
         [ text
             [ Ui.style
-                [ Style.color "#C9B8D7"
+                [ Style.color Color.currentStopText
                 , Style.fontFamily Font.hkCompakt
                 , Style.fontWeight "500"
                 ]

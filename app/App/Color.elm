@@ -1,6 +1,14 @@
 module App.Color exposing (..)
 
 
+introHeadingText =
+    "#301d41"
+
+
+currentStopText =
+    "#C9B8D7"
+
+
 dismissColor =
     "#acacac"
 

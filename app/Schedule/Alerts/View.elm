@@ -61,7 +61,7 @@ alertsBanner alertsAreExpanded alertCount =
         [ text
             [ Ui.style
                 [ Style.flex 1
-                , Style.color "#fff"
+                , Style.color Color.white
                 ]
             ]
             [ Ui.string <| arrowCharacter alertsAreExpanded ]
