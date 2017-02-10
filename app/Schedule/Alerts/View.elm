@@ -129,7 +129,6 @@ expandedAlert alert =
                     [ Style.color Color.dismissColor
                     , Style.padding 5
                     ]
-                , suppressHighlighting True
                 ]
                 [ Ui.string "dismiss" ]
             ]
