@@ -17,9 +17,9 @@ view { now } =
     ScrollableTabView.view
         [ initialPage <| getInitialPageIndex now
         , tabBarActiveTextColor Color.white
-        , tabBarInactiveTextColor Color.lightHeader
+        , tabBarInactiveTextColor Color.lightPurple
         , tabBarUnderlineStyle
-            [ Style.backgroundColor Color.lightHeader
+            [ Style.backgroundColor Color.lightPurple
             , Style.height 0
             ]
         , tabBarTextStyle

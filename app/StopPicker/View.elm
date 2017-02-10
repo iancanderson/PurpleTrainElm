@@ -56,7 +56,7 @@ pickerContainer =
         [ Ui.style
             [ Style.width 270
             , Style.position "absolute"
-            , Style.bottom 96
+            , Style.bottom 88
             , Style.shadowColor "rgb(49, 33, 64)"
             , Style.shadowOpacity 0.2
             , Style.shadowRadius 3
@@ -70,7 +70,7 @@ pickerButton message label =
     Elements.touchableHighlight
         [ onPress message
         , underlayColor Color.defaultUnderlay
-        , buttonStyle Color.stopViewDefaultBackground
+        , buttonStyle Color.white
         , key label
         ]
         [ Elements.view
@@ -87,7 +87,7 @@ highlightPickerButton message label =
     Elements.touchableHighlight
         [ onPress message
         , underlayColor Color.defaultUnderlay
-        , buttonStyle Color.stopViewHighlightBackground
+        , buttonStyle Color.lighterPurple
         , key label
         , property "scrollTarget" (Json.Encode.bool True)
         ]
@@ -114,5 +114,5 @@ buttonTextStyle =
     Ui.style
         [ Style.fontFamily Font.hkCompakt
         , Style.fontWeight "400"
-        , Style.color Color.purple
+        , Style.color Color.darkestPurple
         ]

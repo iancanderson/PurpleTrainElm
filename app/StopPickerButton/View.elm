@@ -54,7 +54,7 @@ pickerError =
             , Style.bottom 20
             , Style.width 270
             ]
-        , underlayColor Color.stopPickerButton
+        , underlayColor Color.purple
         ]
         [ text
             [ Ui.style
@@ -97,7 +97,7 @@ stopPickerButton buttonLabel =
         ]
         [ text
             [ Ui.style
-                [ Style.color Color.currentStopText
+                [ Style.color Color.lighterPurple
                 , Style.fontFamily Font.hkCompakt
                 , Style.fontWeight "500"
                 ]
@@ -121,7 +121,7 @@ loadingButton =
 buttonStyles : Ui.Property Msg
 buttonStyles =
     Ui.style
-        [ Style.backgroundColor Color.stopPickerButton
+        [ Style.backgroundColor Color.purple
         , Style.borderRadius 40
         , Style.height 56
         , Style.justifyContent "center"

@@ -1,24 +1,28 @@
 module App.Color exposing (..)
 
 
-introHeadingText =
+darkestPurple =
     "#301d41"
-
-
-currentStopText =
-    "#C9B8D7"
-
-
-dismissColor =
-    "#acacac"
-
-
-purple =
-    "#5C4570"
 
 
 darkPurple =
     "#402D51"
+
+
+purple =
+    "#674982"
+
+
+lightPurple =
+    "#9F8AB3"
+
+
+lighterPurple =
+    "#C9B8D7"
+
+
+lightestPurple =
+    "#F1E2FF"
 
 
 red =
@@ -33,37 +37,21 @@ black =
     "#000"
 
 
-lightGray =
-    "#f8f8f8"
+darkestGray =
+    "#798283"
+
+
+darkerGray =
+    "#acacac"
 
 
 darkGray =
     "#c8c8c8"
 
 
-lightHeader =
-    "#9F8AB3"
+lightGray =
+    "#f8f8f8"
 
 
 defaultUnderlay =
     "rgba(0,0,0,0.05)"
-
-
-stopViewDefaultBackground =
-    "white"
-
-
-stopViewHighlightBackground =
-    "#F5DEFF"
-
-
-stopPickerButton =
-    "#674982"
-
-
-laterTrainText =
-    "#F1E2FF"
-
-
-trainMetadataText =
-    "#798283"

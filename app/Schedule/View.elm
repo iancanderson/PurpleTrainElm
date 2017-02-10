@@ -37,7 +37,7 @@ nextTrainsView direction now schedule =
             [ text
                 [ Ui.style
                     [ Style.backgroundColor Color.white
-                    , Style.color Color.lightHeader
+                    , Style.color Color.lightPurple
                     , Style.fontSize 9
                     , Style.fontWeight "700"
                     , Style.letterSpacing 0.25
@@ -69,7 +69,7 @@ laterTrainsView ({ now } as model) direction schedule =
             (List.append
                 [ text
                     [ Ui.style
-                        [ Style.color Color.lightHeader
+                        [ Style.color Color.lightPurple
                         , Style.fontSize 9
                         , Style.fontWeight "700"
                         , Style.letterSpacing 0.25
@@ -161,7 +161,7 @@ withStatus string maybeStatus =
 
 trainMetadata : String -> Node Msg
 trainMetadata string =
-    trainMetadataWithColor (String.toLower string) Color.trainMetadataText
+    trainMetadataWithColor (String.toLower string) Color.darkestGray
 
 
 trainMetadataWithColor : String -> String -> Node Msg
@@ -188,7 +188,7 @@ laterTrainView now train =
         ]
         [ text
             [ Ui.style
-                [ Style.color Color.laterTrainText
+                [ Style.color Color.lightestPurple
                 , Style.fontSize 22
                 , Style.fontFamily Font.roboto
                 ]
@@ -262,7 +262,7 @@ predictionColor : Maybe String -> String
 predictionColor minutesLate =
     case minutesLate of
         Nothing ->
-            Color.trainMetadataText
+            Color.darkestGray
 
         Just _ ->
             Color.red

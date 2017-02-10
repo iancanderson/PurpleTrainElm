@@ -62,7 +62,7 @@ welcomeScreen : Node Msg
 welcomeScreen =
     text
         [ Ui.style
-            [ Style.color Color.introHeadingText
+            [ Style.color Color.darkestPurple
             , Style.fontFamily Font.hkCompakt
             , Style.textAlign "center"
             , Style.fontWeight "800"

@@ -125,7 +125,7 @@ expandedAlert alert =
             , text
                 [ onPress <| DismissAlert alert
                 , Ui.style
-                    [ Style.color Color.dismissColor
+                    [ Style.color Color.darkerGray
                     , Style.padding 5
                     ]
                 ]
