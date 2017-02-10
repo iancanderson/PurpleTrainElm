@@ -123,19 +123,15 @@ expandedAlert alert =
                     ]
                 ]
                 [ Ui.string alert.effectName ]
-            , Elements.view
-                [ Ui.style
-                    [ Style.padding 2
+            , text
+                [ onPress <| DismissAlert alert
+                , Ui.style
+                    [ Style.color Color.dismissColor
+                    , Style.padding 5
                     ]
+                , suppressHighlighting True
                 ]
-                [ text
-                    [ onPress <| DismissAlert alert
-                    , Ui.style
-                        [ Style.color Color.dismissColor
-                        ]
-                    ]
-                    [ Ui.string "dismiss" ]
-                ]
+                [ Ui.string "dismiss" ]
             ]
         , text
             []
