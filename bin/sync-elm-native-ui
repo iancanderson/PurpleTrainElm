@@ -13,7 +13,7 @@ get_elm_native_version() {
 commit=$(get_elm_native_version)
 parent_dir="elm-stuff/packages/ohanhi/elm-native-ui"
 clone_path="$parent_dir/2.0.0/"
-repo="https://github.com/ohanhi/elm-native-ui"
+repo="https://github.com/thoughtbot/elm-native-ui"
 
 mkdir -p $parent_dir
 
