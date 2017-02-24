@@ -1,7 +1,6 @@
 module StopPicker.View exposing (view)
 
 import Json.Encode
-import ScrollWrapper
 import NativeUi as Ui exposing (Node, Property, property)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
