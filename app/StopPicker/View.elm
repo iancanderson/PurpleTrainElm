@@ -7,13 +7,13 @@ import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
+import NativeUi.ListView exposing (listView)
 import App.Color as Color
 import App.Font as Font
 import Model exposing (..)
 import Types exposing (..)
 import Message exposing (..)
 import ViewHelpers exposing (..)
-import ListView
 
 
 view : Model -> Node Msg
@@ -26,7 +26,7 @@ view model =
 
 stopOptions : Model -> Node Msg
 stopOptions model =
-    ListView.view
+    listView
         model.stopPickerDataSource
         stopButton
         [ Ui.style

@@ -11,8 +11,8 @@ import FetchSchedule exposing (..)
 import ReportIssue
 import String
 import NativeUi.AsyncStorage as AsyncStorage
+import NativeUi.ListView exposing (updateDataSource)
 import App.Settings as Settings
-import ListView exposing (updateDataSource)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

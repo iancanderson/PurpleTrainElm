@@ -1,6 +1,6 @@
 module Model exposing (..)
 
-import ListView exposing (DataSource, emptyDataSource)
+import NativeUi.ListView exposing (DataSource, emptyDataSource)
 import Date.Format as Date
 import Date exposing (Date)
 import Http
