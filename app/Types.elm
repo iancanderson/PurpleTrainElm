@@ -42,4 +42,5 @@ type alias Stop =
 
 type Loadable a
     = Loading
+    | Error
     | Ready a

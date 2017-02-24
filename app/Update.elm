@@ -13,6 +13,7 @@ import String
 import NativeUi.AsyncStorage as AsyncStorage
 import NativeUi.ListView exposing (updateDataSource, emptyDataSource)
 import App.Settings as Settings
+import Http
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -58,33 +59,33 @@ update msg model =
                     ( model, Cmd.none )
 
         LoadAlerts result ->
-            ( { model | alerts = Ready result }, Cmd.none )
+            ( { model | alerts = toLoadable result }, Cmd.none )
 
         LoadStops result ->
             let
                 stopPickerDataSource =
                     case ( result, model.stopPickerDataSource ) of
-                        ( Ok stops, Ready (Ok originalDataSource) ) ->
-                            Ready (Ok <| updateDataSource originalDataSource stops)
+                        ( Ok stops, Ready originalDataSource ) ->
+                            Ready <| updateDataSource originalDataSource stops
 
                         ( Ok stops, _ ) ->
-                            Ready (Ok <| updateDataSource emptyDataSource stops)
+                            Ready <| updateDataSource emptyDataSource stops
 
-                        ( Err _, Ready (Ok originalDataSource) ) ->
+                        ( Err _, Ready originalDataSource ) ->
                             model.stopPickerDataSource
 
                         ( Err e, _ ) ->
-                            Ready (Err e)
+                            Error
             in
                 ( { model | stopPickerDataSource = stopPickerDataSource }, Cmd.none )
 
         LoadSchedule direction result ->
             case direction of
                 Inbound ->
-                    ( { model | inboundSchedule = Ready result }, Cmd.none )
+                    ( { model | inboundSchedule = toLoadable result }, Cmd.none )
 
                 Outbound ->
-                    ( { model | outboundSchedule = Ready result }, Cmd.none )
+                    ( { model | outboundSchedule = toLoadable result }, Cmd.none )
 
         ToggleStopPicker ->
             ( { model | stopPickerOpen = not model.stopPickerOpen }, Cmd.none )
@@ -93,7 +94,7 @@ update msg model =
             let
                 fetchStopsOrLoadCurrentStop =
                     case model.stopPickerDataSource of
-                        Ready (Err _) ->
+                        Error ->
                             fetchStops
 
                         _ ->
@@ -186,3 +187,13 @@ fetchAlertsAndSchedules stop =
         , fetchSchedule Outbound stop
         , fetchAlerts stop
         ]
+
+
+toLoadable : Result Http.Error a -> Loadable a
+toLoadable result =
+    case result of
+        Ok a ->
+            Ready a
+
+        Err _ ->
+            Error

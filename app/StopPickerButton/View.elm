@@ -32,10 +32,10 @@ picker model =
         Loading ->
             [ loadingButton ]
 
-        Ready (Err _) ->
+        Error ->
             [ pickerError ]
 
-        Ready (Ok dataSource) ->
+        Ready dataSource ->
             catMaybes
                 [ maybeStopPicker model dataSource
                 , Just <| stopPickerButton <| stopPickerLabelText model

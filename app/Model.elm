@@ -9,15 +9,15 @@ import Types exposing (..)
 
 
 type alias Model =
-    { inboundSchedule : Loadable (Result Http.Error Schedule)
-    , outboundSchedule : Loadable (Result Http.Error Schedule)
+    { inboundSchedule : Loadable Schedule
+    , outboundSchedule : Loadable Schedule
     , selectedStop : Maybe Stop
     , stopPickerOpen : Bool
     , now : Date
-    , alerts : Loadable (Result Http.Error Alerts)
+    , alerts : Loadable Alerts
     , alertsAreExpanded : Bool
     , dismissedAlertIds : List Int
-    , stopPickerDataSource : Loadable (Result Http.Error (DataSource Stop))
+    , stopPickerDataSource : Loadable (DataSource Stop)
     }
 
 
@@ -67,11 +67,8 @@ visibleAlerts allAlerts dismissedIds =
 visibleAlertsExist : Model -> Bool
 visibleAlertsExist { alerts, dismissedAlertIds } =
     case alerts of
-        Loading ->
-            False
-
-        Ready (Err _) ->
-            False
-
-        Ready (Ok loadedAlerts) ->
+        Ready loadedAlerts ->
             not <| List.isEmpty <| visibleAlerts loadedAlerts dismissedAlertIds
+
+        _ ->
+            False

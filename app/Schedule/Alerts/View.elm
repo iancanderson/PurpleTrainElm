@@ -16,14 +16,11 @@ import Types exposing (..)
 view : Model -> Maybe (Node Msg)
 view { alertsAreExpanded, alerts, dismissedAlertIds } =
     case alerts of
-        Loading ->
-            Nothing
-
-        Ready (Err _) ->
-            Nothing
-
-        Ready (Ok loadedAlerts) ->
+        Ready loadedAlerts ->
             renderAlerts alertsAreExpanded loadedAlerts dismissedAlertIds
+
+        _ ->
+            Nothing
 
 
 renderAlerts : Bool -> List Alert -> List Int -> Maybe (Node Msg)

@@ -73,7 +73,7 @@ welcomeScreen =
         [ Ui.string "Purple Train" ]
 
 
-topSection : Model -> Direction -> Loadable (Result Http.Error Schedule) -> Node Msg
+topSection : Model -> Direction -> Loadable Schedule -> Node Msg
 topSection model direction loadableSchedule =
     Elements.view
         [ Ui.style
@@ -88,7 +88,7 @@ topSection model direction loadableSchedule =
         ]
 
 
-scheduleOrLoading : Model -> Direction -> Loadable (Result Http.Error Schedule) -> Node Msg
+scheduleOrLoading : Model -> Direction -> Loadable Schedule -> Node Msg
 scheduleOrLoading model direction loadableSchedule =
     case loadableSchedule of
         Loading ->
@@ -105,7 +105,7 @@ scheduleOrLoading model direction loadableSchedule =
                     []
                 ]
 
-        Ready (Err _) ->
+        Error ->
             Elements.view
                 [ Ui.style
                     [ Style.flex 1
@@ -127,7 +127,7 @@ scheduleOrLoading model direction loadableSchedule =
                     [ Ui.string "Error while connecting to server" ]
                 ]
 
-        Ready (Ok schedule) ->
+        Ready schedule ->
             Schedule.view model direction schedule
 
 
