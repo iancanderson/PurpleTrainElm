@@ -1,6 +1,7 @@
 module DirectionPicker.View exposing (view)
 
 import NativeUi as Ui exposing (Node, Property)
+import NativeApi.Platform as Platform exposing (OS(..))
 import NativeUi.Style as Style
 import Json.Decode as Decode
 import Json.Encode
@@ -10,6 +11,16 @@ import App.Font as Font
 import Message exposing (..)
 import ScrollableTabView exposing (..)
 import Model exposing (Model)
+
+
+topMargin : Float
+topMargin =
+    case Platform.os of
+        Android ->
+            10
+
+        IOS ->
+            20
 
 
 view : Model -> List (Node Msg) -> Node Msg
@@ -31,7 +42,7 @@ view { now } =
             [ Style.borderBottomWidth 0
             ]
         , Ui.style
-            [ Style.marginTop 20
+            [ Style.marginTop topMargin
             ]
         ]
 
