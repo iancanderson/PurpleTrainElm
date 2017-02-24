@@ -6,7 +6,7 @@ import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
-import NativeUi.ListView exposing (listView)
+import NativeUi.ListView exposing (DataSource, listView)
 import App.Color as Color
 import App.Font as Font
 import Model exposing (..)
@@ -15,18 +15,18 @@ import Message exposing (..)
 import ViewHelpers exposing (..)
 
 
-view : Model -> Node Msg
-view model =
+view : DataSource Stop -> Node Msg
+view dataSource =
     pickerContainer
         [ pickerHeader "Select home stop"
-        , stopOptions model
+        , stopOptions dataSource
         ]
 
 
-stopOptions : Model -> Node Msg
-stopOptions model =
+stopOptions : DataSource Stop -> Node Msg
+stopOptions dataSource =
     listView
-        model.stopPickerDataSource
+        dataSource
         stopButton
         [ Ui.style
             [ Style.backgroundColor Color.white

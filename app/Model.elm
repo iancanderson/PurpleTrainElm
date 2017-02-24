@@ -11,14 +11,13 @@ import Types exposing (..)
 type alias Model =
     { inboundSchedule : Loadable (Result Http.Error Schedule)
     , outboundSchedule : Loadable (Result Http.Error Schedule)
-    , stops : Loadable (Result Http.Error Stops)
     , selectedStop : Maybe Stop
     , stopPickerOpen : Bool
     , now : Date
     , alerts : Loadable (Result Http.Error Alerts)
     , alertsAreExpanded : Bool
     , dismissedAlertIds : List Int
-    , stopPickerDataSource : DataSource Stop
+    , stopPickerDataSource : Loadable (Result Http.Error (DataSource Stop))
     }
 
 
@@ -26,14 +25,13 @@ initialModel : Model
 initialModel =
     { inboundSchedule = Loading
     , outboundSchedule = Loading
-    , stops = Loading
     , selectedStop = Nothing
     , stopPickerOpen = False
     , now = Date.fromTime 0
     , alerts = Loading
     , alertsAreExpanded = False
     , dismissedAlertIds = []
-    , stopPickerDataSource = emptyDataSource
+    , stopPickerDataSource = Loading
     }
 
 

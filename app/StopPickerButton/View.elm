@@ -5,6 +5,7 @@ import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
+import NativeUi.ListView exposing (DataSource)
 import App.Color as Color
 import App.Font as Font
 import App.Maybe exposing (..)
@@ -27,16 +28,16 @@ view model =
 
 picker : Model -> List (Node Msg)
 picker model =
-    case model.stops of
+    case model.stopPickerDataSource of
         Loading ->
             [ loadingButton ]
 
         Ready (Err _) ->
             [ pickerError ]
 
-        Ready (Ok _) ->
+        Ready (Ok dataSource) ->
             catMaybes
-                [ maybeStopPicker model
+                [ maybeStopPicker model dataSource
                 , Just <| stopPickerButton <| stopPickerLabelText model
                 ]
 
@@ -80,10 +81,10 @@ stopPickerLabelText { stopPickerOpen, selectedStop } =
             stop
 
 
-maybeStopPicker : Model -> Maybe (Node Msg)
-maybeStopPicker model =
+maybeStopPicker : Model -> DataSource Stop -> Maybe (Node Msg)
+maybeStopPicker model dataSource =
     if model.stopPickerOpen then
-        Just <| StopPicker.view model
+        Just <| StopPicker.view dataSource
     else
         Nothing
 

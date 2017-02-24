@@ -11,7 +11,7 @@ import FetchSchedule exposing (..)
 import ReportIssue
 import String
 import NativeUi.AsyncStorage as AsyncStorage
-import NativeUi.ListView exposing (updateDataSource)
+import NativeUi.ListView exposing (updateDataSource, emptyDataSource)
 import App.Settings as Settings
 
 
@@ -63,15 +63,20 @@ update msg model =
         LoadStops result ->
             let
                 stopPickerDataSource =
-                    case result of
-                        Ok stops ->
-                            updateDataSource model.stopPickerDataSource <|
-                                stops
+                    case ( result, model.stopPickerDataSource ) of
+                        ( Ok stops, Ready (Ok originalDataSource) ) ->
+                            Ready (Ok <| updateDataSource originalDataSource stops)
 
-                        _ ->
+                        ( Ok stops, _ ) ->
+                            Ready (Ok <| updateDataSource emptyDataSource stops)
+
+                        ( Err _, Ready (Ok originalDataSource) ) ->
                             model.stopPickerDataSource
+
+                        ( Err e, _ ) ->
+                            Ready (Err e)
             in
-                ( { model | stops = Ready result, stopPickerDataSource = stopPickerDataSource }, Cmd.none )
+                ( { model | stopPickerDataSource = stopPickerDataSource }, Cmd.none )
 
         LoadSchedule direction result ->
             case direction of
@@ -87,7 +92,7 @@ update msg model =
         Tick now ->
             let
                 fetchStopsOrLoadCurrentStop =
-                    case model.stops of
+                    case model.stopPickerDataSource of
                         Ready (Err _) ->
                             fetchStops
 
