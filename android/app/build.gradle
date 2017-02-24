@@ -90,8 +90,8 @@ android {
         applicationId "com.thoughtbot.purpletrain"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 11
-        versionName "2.0"
+        versionCode 12
+        versionName "2.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
