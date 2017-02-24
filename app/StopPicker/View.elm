@@ -31,7 +31,8 @@ stopOptions model =
         stopButton
         [ Ui.style
             [ Style.backgroundColor Color.white
-            , Style.borderRadius 10
+            , Style.borderBottomLeftRadius 10
+            , Style.borderBottomRightRadius 10
             , Style.height 252
             ]
         ]
