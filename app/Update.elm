@@ -1,54 +1,25 @@
 module Update exposing (..)
 
-import Task
-import Date exposing (Date)
 import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
-import FetchAlerts exposing (..)
-import FetchStops exposing (..)
-import FetchSchedule exposing (..)
 import ReportIssue
-import String
-import NativeUi.AsyncStorage as AsyncStorage
-import NativeUi.ListView exposing (updateDataSource, emptyDataSource)
-import App.Settings as Settings
+import App.Settings.Update exposing (receiveSettings)
 import Http
+import Schedule.Alerts.Update exposing (dismissAlert)
+import Stops.Update exposing (receiveStops, pickStop)
+import Tick.Update exposing (tick)
+import App.Maybe exposing (maybeToCommand)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        IssueResponse _ ->
+        ReceiveIssueResponse _ ->
             ( model, Cmd.none )
 
         PickStop stop ->
-            ( { model
-                | selectedStop = Just stop
-                , stopPickerOpen = False
-                , inboundSchedule = Loading
-                , outboundSchedule = Loading
-              }
-            , Cmd.batch <|
-                [ Task.attempt
-                    SetItem
-                    (AsyncStorage.setItem Settings.stopKey stop)
-                , fetchAlertsAndSchedules stop
-                ]
-            )
-
-        GetItem result ->
-            case result of
-                Ok Nothing ->
-                    ( model, Cmd.none )
-
-                Ok (Just stop) ->
-                    ( { model | selectedStop = Just stop }
-                    , fetchAlertsAndSchedules stop
-                    )
-
-                Result.Err _ ->
-                    ( model, Cmd.none )
+            pickStop model stop
 
         SetItem result ->
             case result of
@@ -58,28 +29,13 @@ update msg model =
                 Result.Err a ->
                     ( model, Cmd.none )
 
-        LoadAlerts result ->
+        ReceiveAlerts result ->
             ( { model | alerts = toLoadable result }, Cmd.none )
 
-        LoadStops result ->
-            let
-                stopPickerDataSource =
-                    case ( result, model.stopPickerDataSource ) of
-                        ( Ok stops, Ready originalDataSource ) ->
-                            Ready <| updateDataSource originalDataSource stops
+        ReceiveStops result ->
+            receiveStops model result
 
-                        ( Ok stops, _ ) ->
-                            Ready <| updateDataSource emptyDataSource stops
-
-                        ( Err _, Ready originalDataSource ) ->
-                            model.stopPickerDataSource
-
-                        ( Err e, _ ) ->
-                            Error
-            in
-                ( { model | stopPickerDataSource = stopPickerDataSource }, Cmd.none )
-
-        LoadSchedule direction result ->
+        ReceiveSchedule direction result ->
             case direction of
                 Inbound ->
                     ( { model | inboundSchedule = toLoadable result }, Cmd.none )
@@ -91,102 +47,21 @@ update msg model =
             ( { model | stopPickerOpen = not model.stopPickerOpen }, Cmd.none )
 
         Tick now ->
-            let
-                fetchStopsOrLoadCurrentStop =
-                    case model.stopPickerDataSource of
-                        Error ->
-                            fetchStops
-
-                        _ ->
-                            Task.attempt GetItem (AsyncStorage.getItem Settings.stopKey)
-
-                tickCommand =
-                    case model.selectedStop of
-                        Nothing ->
-                            fetchStopsOrLoadCurrentStop
-
-                        Just selectedStop ->
-                            fetchAlertsAndSchedules selectedStop
-            in
-                ( { model | now = Date.fromTime now }
-                , tickCommand
-                )
+            tick model now
 
         ReportIssue direction mstop ->
-            let
-                cmd =
-                    case mstop of
-                        Nothing ->
-                            Cmd.none
-
-                        Just stop ->
-                            ReportIssue.report direction stop
-            in
-                ( model, cmd )
+            ( model, maybeToCommand (ReportIssue.report direction) mstop )
 
         ToggleAlerts ->
-            ( { model | alertsAreExpanded = not model.alertsAreExpanded }, Cmd.none )
+            ( { model | alertsAreExpanded = not model.alertsAreExpanded }
+            , Cmd.none
+            )
 
         DismissAlert alert ->
-            let
-                newDismissedAlertIds =
-                    alert.id :: model.dismissedAlertIds
-
-                command =
-                    saveDismissedAlertsCommand newDismissedAlertIds
-
-                modelWithDismissedAlert =
-                    { model | dismissedAlertIds = newDismissedAlertIds }
-            in
-                if visibleAlertsExist modelWithDismissedAlert then
-                    ( modelWithDismissedAlert, command )
-                else
-                    ( { modelWithDismissedAlert | alertsAreExpanded = False }, command )
+            dismissAlert model alert
 
         ReceiveSettings settingsResult ->
-            case settingsResult of
-                Result.Err _ ->
-                    ( model, Cmd.none )
-
-                Result.Ok settings ->
-                    let
-                        stop =
-                            Settings.stop settings
-
-                        dismissedAlertIds =
-                            Settings.dismissedAlertIds settings
-                    in
-                        ( { model | dismissedAlertIds = dismissedAlertIds, selectedStop = stop }, Cmd.none )
-
-
-saveDismissedAlertsCommand : List Int -> Cmd Msg
-saveDismissedAlertsCommand dismissedAlertIds =
-    let
-        dismissedAlertIdsCsv =
-            String.join "," <| List.map toString dismissedAlertIds
-    in
-        Task.attempt
-            SetItem
-            (AsyncStorage.setItem Settings.dismissedAlertsKey dismissedAlertIdsCsv)
-
-
-toggleDirection : Direction -> Direction
-toggleDirection direction =
-    case direction of
-        Inbound ->
-            Outbound
-
-        Outbound ->
-            Inbound
-
-
-fetchAlertsAndSchedules : Stop -> Cmd Msg
-fetchAlertsAndSchedules stop =
-    Cmd.batch
-        [ fetchSchedule Inbound stop
-        , fetchSchedule Outbound stop
-        , fetchAlerts stop
-        ]
+            receiveSettings model settingsResult
 
 
 toLoadable : Result Http.Error a -> Loadable a

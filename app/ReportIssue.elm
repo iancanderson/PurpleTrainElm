@@ -10,7 +10,7 @@ import Json.Encode as Encode
 
 report : Direction -> Stop -> Cmd Msg
 report direction =
-    Http.send IssueResponse << postReport direction
+    Http.send ReceiveIssueResponse << postReport direction
 
 
 reportUrlEndpoint : String

@@ -1,16 +1,15 @@
-module FetchAlerts exposing (..)
+module FetchAlerts exposing (fetchAlerts)
 
 import Http
 import Json.Decode as Decode
 import Message exposing (..)
-import Model exposing (..)
 import Types exposing (..)
 import Api exposing (..)
 
 
 fetchAlerts : Stop -> Cmd Msg
 fetchAlerts stop =
-    Http.send LoadAlerts <| getAlerts stop
+    Http.send ReceiveAlerts <| getAlerts stop
 
 
 getAlerts : String -> Http.Request Alerts

@@ -1,4 +1,6 @@
-module App.Maybe exposing (catMaybes, join)
+module App.Maybe exposing (catMaybes, join, maybeToCommand)
+
+import Message exposing (Msg)
 
 
 catMaybes : List (Maybe a) -> List a
@@ -14,3 +16,9 @@ join mx =
 
         Nothing ->
             Nothing
+
+
+maybeToCommand : (a -> Cmd Msg) -> Maybe a -> Cmd Msg
+maybeToCommand toCommand m =
+    Maybe.map toCommand m
+        |> Maybe.withDefault Cmd.none

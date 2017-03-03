@@ -3,7 +3,6 @@ module FetchSchedule exposing (fetchSchedule)
 import Http
 import Date exposing (Date)
 import Json.Decode as Decode
-import Model exposing (..)
 import Message exposing (..)
 import Types exposing (..)
 import Api exposing (..)
@@ -11,7 +10,7 @@ import Api exposing (..)
 
 fetchSchedule : Direction -> Stop -> Cmd Msg
 fetchSchedule direction stop =
-    Http.send (LoadSchedule direction) (getSchedule direction stop)
+    Http.send (ReceiveSchedule direction) (getSchedule direction stop)
 
 
 getSchedule : Direction -> Stop -> Http.Request Schedule

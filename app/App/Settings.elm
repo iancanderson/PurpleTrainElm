@@ -6,15 +6,11 @@ module App.Settings
         , stopKey
         , stop
         , dismissedAlertIds
-        , Settings
         )
 
 import Dict exposing (Dict)
 import App.Maybe exposing (join)
-
-
-type Settings
-    = Settings (Dict String (Maybe String))
+import Types exposing (..)
 
 
 fromDict : Dict String (Maybe String) -> Settings

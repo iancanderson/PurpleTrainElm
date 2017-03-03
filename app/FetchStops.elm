@@ -9,7 +9,7 @@ import Api exposing (..)
 
 fetchStops : Cmd Msg
 fetchStops =
-    Http.send LoadStops getStops
+    Http.send ReceiveStops getStops
 
 
 getStops : Http.Request Stops

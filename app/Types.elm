@@ -1,6 +1,8 @@
 module Types exposing (..)
 
 import Date exposing (Date)
+import NativeUi.AsyncStorage as AsyncStorage
+import Dict exposing (Dict)
 
 
 type Direction
@@ -44,3 +46,11 @@ type Loadable a
     = Loading
     | Error
     | Ready a
+
+
+type Settings
+    = Settings (Dict String (Maybe String))
+
+
+type alias SettingsResult =
+    Result AsyncStorage.Error Settings
