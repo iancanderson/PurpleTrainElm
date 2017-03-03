@@ -59,6 +59,7 @@ alertsBanner alertsAreExpanded alertCount =
             [ Ui.style
                 [ Style.flex 1
                 , Style.color Color.white
+                , Style.fontSize 26
                 ]
             ]
             [ Ui.string <| arrowCharacter alertsAreExpanded ]
@@ -153,6 +154,6 @@ alertsBannerText alertCount =
 arrowCharacter : Bool -> String
 arrowCharacter alertsAreExpanded =
     if alertsAreExpanded then
-        "▼"
+        "⇣"
     else
-        "▶"
+        "⇢"
