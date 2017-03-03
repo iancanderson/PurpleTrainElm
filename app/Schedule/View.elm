@@ -12,6 +12,7 @@ import App.Maybe exposing (..)
 import Types exposing (..)
 import Message exposing (..)
 import Model exposing (..)
+import ResponsiveHelpers exposing (scale)
 import Schedule.Alerts.View as Alerts
 
 
@@ -38,10 +39,10 @@ nextTrainsView direction now schedule =
                 [ Ui.style
                     [ Style.backgroundColor Color.white
                     , Style.color Color.lightPurple
-                    , Style.fontSize 9
+                    , Style.fontSize <| scale 9
                     , Style.fontWeight "700"
                     , Style.letterSpacing 0.25
-                    , Style.paddingTop 18
+                    , Style.paddingTop <| scale 18
                     , Style.textAlign "center"
                     ]
                 ]
@@ -70,10 +71,10 @@ laterTrainsView ({ now } as model) direction schedule =
                 [ text
                     [ Ui.style
                         [ Style.color Color.lightPurple
-                        , Style.fontSize 9
+                        , Style.fontSize <| scale 9
                         , Style.fontWeight "700"
                         , Style.letterSpacing 0.25
-                        , Style.paddingTop 18
+                        , Style.paddingTop <| scale 18
                         , Style.textAlign "center"
                         ]
                     , suppressHighlighting True
@@ -93,7 +94,7 @@ nextTrainView direction now train =
             , Style.alignItems "flex-end"
             , Style.justifyContent "space-between"
             , Style.backgroundColor "white"
-            , Style.padding 20
+            , Style.padding <| scale 20
             , Style.borderBottomWidth 1
             , Style.borderColor Color.lightGray
             ]
@@ -101,7 +102,7 @@ nextTrainView direction now train =
         [ text
             [ Ui.style
                 [ Style.color Color.darkPurple
-                , Style.fontSize 36
+                , Style.fontSize <| scale 36
                 , Style.fontWeight "400"
                 , Style.marginBottom -1
                 , Style.fontFamily Font.roboto
@@ -169,8 +170,8 @@ trainMetadataWithColor string color =
     text
         [ Ui.style
             [ Style.color color
-            , Style.marginBottom 5
-            , Style.fontSize 12
+            , Style.marginBottom <| scale 5
+            , Style.fontSize <| scale 12
             , Style.textAlign "right"
             ]
         ]
@@ -182,14 +183,14 @@ laterTrainView now train =
     Elements.view
         [ Ui.style
             [ Style.alignItems "center"
-            , Style.paddingTop 12
+            , Style.paddingTop <| scale 12
             , Style.width 200
             ]
         ]
         [ text
             [ Ui.style
                 [ Style.color Color.lightestPurple
-                , Style.fontSize 22
+                , Style.fontSize <| scale 22
                 , Style.fontFamily Font.roboto
                 ]
             ]

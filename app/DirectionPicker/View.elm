@@ -3,8 +3,6 @@ module DirectionPicker.View exposing (view)
 import NativeUi as Ui exposing (Node, Property)
 import NativeApi.Platform as Platform exposing (OS(..))
 import NativeUi.Style as Style
-import Json.Decode as Decode
-import Json.Encode
 import Date exposing (Date)
 import App.Color as Color
 import App.Font as Font

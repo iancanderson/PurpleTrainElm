@@ -10,6 +10,7 @@ import App.Color as Color
 import App.Maybe exposing (..)
 import Message exposing (..)
 import Model exposing (..)
+import ResponsiveHelpers exposing (scale)
 import Types exposing (..)
 
 
@@ -47,8 +48,8 @@ alertsBanner alertsAreExpanded alertCount =
     Elements.touchableOpacity
         [ Ui.style
             [ Style.backgroundColor Color.red
-            , Style.paddingHorizontal 8
-            , Style.paddingVertical 18
+            , Style.paddingHorizontal <| scale 8
+            , Style.paddingVertical <| scale 18
             , Style.flexDirection "row"
             , Style.alignItems "center"
             ]
@@ -59,14 +60,14 @@ alertsBanner alertsAreExpanded alertCount =
             [ Ui.style
                 [ Style.flex 1
                 , Style.color Color.white
-                , Style.fontSize 26
+                , Style.fontSize <| scale 26
                 ]
             ]
             [ Ui.string <| arrowCharacter alertsAreExpanded ]
         , text
             [ Ui.style
                 [ Style.color Color.lightGray
-                , Style.fontSize 14
+                , Style.fontSize <| scale 14
                 , Style.fontWeight "700"
                 , Style.letterSpacing 0.25
                 , Style.textAlign "center"
@@ -99,24 +100,24 @@ expandedAlert alert =
         [ Ui.style
             [ Style.borderBottomWidth 1
             , Style.borderBottomColor Color.darkGray
-            , Style.paddingHorizontal 18
-            , Style.paddingVertical 18
+            , Style.paddingHorizontal <| scale 18
+            , Style.paddingVertical <| scale 18
             ]
         ]
         [ Elements.view
             [ Ui.style
                 [ Style.flex 1
                 , Style.flexDirection "row"
-                , Style.marginBottom 4
+                , Style.marginBottom <| scale 4
                 , Style.alignItems "center"
                 ]
             ]
             [ text
                 [ Ui.style
                     [ Style.fontWeight "700"
-                    , Style.fontSize 14
+                    , Style.fontSize <| scale 14
                     , Style.flex 1
-                    , Style.lineHeight 30
+                    , Style.lineHeight <| scale 30
                     ]
                 ]
                 [ Ui.string alert.effectName ]
@@ -124,13 +125,14 @@ expandedAlert alert =
                 [ onPress <| DismissAlert alert
                 , Ui.style
                     [ Style.color Color.darkerGray
-                    , Style.padding 5
+                    , Style.padding <| scale 5
+                    , Style.fontSize <| scale 14
                     ]
                 ]
                 [ Ui.string "dismiss" ]
             ]
         , text
-            []
+            [ Ui.style [ Style.fontSize <| scale 14 ] ]
             [ Ui.string alert.headerText ]
         ]
 
