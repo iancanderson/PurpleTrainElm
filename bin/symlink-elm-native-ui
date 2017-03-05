@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: symlink-elm-native-ui /my-local-repos/elm-native-ui"
+  exit 1
+fi
+
+SOURCE=$1
+DESTINATION=elm-stuff/packages/thoughtbot/elm-native-ui/2.0.0
+
+rm -rf $DESTINATION
+ln -s $SOURCE $DESTINATION
+echo "Now using elm-native-ui version from $SOURCE"

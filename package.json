@@ -8,6 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "elm-github-install": "^0.3.1",
     "react": "15.3.2",
     "react-native": "0.36.0",
     "react-native-scrollable-tab-view": "https://github.com/iancanderson/react-native-scrollable-tab-view.git#ia-tabbar-style-prop"

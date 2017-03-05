@@ -7,5 +7,4 @@ if ! command -v yarn >/dev/null; then
 fi
 
 yarn install
-
-./bin/sync-elm-native-ui
+yarn run elm-github-install

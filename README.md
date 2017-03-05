@@ -20,35 +20,24 @@ javascript bundle to the device simulators.
 
 Open the `ios/PurpleTrain.xcodeproj` and run the project to launch an iPhone simulator.
 
-## Installing new versions of Elm Native UI (and other unsupported packages)
+## Installing new elm packages
 
-Elm Native UI is not in the Elm Package index, meaning it has to be installed by
-hand (done automatically in `bin/setup`):
+Elm Native UI is not in the Elm Package index, meaning we cannot use
+`elm-package install`. Instead, we use `elm-github-install`, which can be
+invoked with:
 
 ```
-bin/sync-elm-native-ui
+yarn run elm-github-install
 ```
 
-The script will do one of three things:
+We run in via `yarn` so you don't need to install `elm-github-install` as a
+global npm package.
 
-1. If you have a symlinked Elm Native UI dependency (because you are working on
-   the Elm Native UI library), it will do nothing.
-1. If you don't have the dependency it will clone it to the appropriate
-   directory.
-1. If you have the dependency, it will update the dependency to the version
-   specified in `.elm-native-ui-version`.
+If you need to update our version of `elm-native-ui`, update the
+`dependency-sources` section in `elm-package.json`.
 
-## Installing new versions of packages in the Elm Package index
-
-Since the `elm-package.json` and `elm-stuff/exact-dependencies.json` both
-include packages that are not in the Elm Package index, you have to do some
-juggling to install new packages that _are_ in the index (otherwise it complains
-about "corrupt" packages).
-
-1. Delete the `elm-native-ui` package (and any other self published packages)
-   from `elm-package.json` and `elm-stuff/exact-dependencies.json`.
-1. Run `elm-package install`
-1. Re-add the deleted lines to both files.
+If you need to install a new elm package, add it to `elm-package.json` manually,
+then re-run `yarn run elm-github-install`
 
 ## Releasing a new version
 
