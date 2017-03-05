@@ -1,11 +1,11 @@
 module ResponsiveHelpers exposing (scale)
 
-import NativeApi.Dimensions exposing (windowSize, WindowSize)
+import NativeApi.Dimensions exposing (window)
 
 
 windowHeight : Float
 windowHeight =
-    windowSize.height
+    window.height
 
 
 iPhone5Height =
