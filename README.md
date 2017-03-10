@@ -84,3 +84,25 @@ This creates a new APK here: `android/app/build/outputs/apk/app-release.apk`
 
 Upload the signed apk to the Google Play developer console and release the new
 version from there.
+
+## License
+
+Purple Train is Copyright (c) 2016-2017 Josh Steiner, Ian C. Anderson, and
+thoughtbot, inc. It is free software, and may be redistributed under the GPL
+license detailed in the [LICENSE] file.
+
+[LICENSE]: /LICENSE
+
+## About thoughtbot
+
+![thoughtbot](http://presskit.thoughtbot.com/images/thoughtbot-logo-for-readmes.svg)
+
+Purple Train is maintained and funded by thoughtbot, inc.
+The names and logos for thoughtbot are trademarks of thoughtbot, inc.
+
+We love open source software, Elm, and React Native. [Work with thoughtbot's
+React Native development team][react-native] to design, develop, and grow your
+product.
+
+[react-native]:
+https://thoughtbot.com/services/react?utm_source=github

@@ -2,6 +2,7 @@
   "name": "PurpleTrain",
   "version": "0.0.1",
   "private": true,
+  "license": "GPL-3.0",
   "scripts": {
     "watch": "chokidar '**/*.elm' 'app/**/*.js' -c 'elm make app/Main.elm --output elm.js' --initial",
     "start": "node node_modules/react-native/local-cli/cli.js start",
