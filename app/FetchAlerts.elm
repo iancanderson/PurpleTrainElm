@@ -15,7 +15,11 @@ fetchAlerts stop =
 getAlerts : String -> Http.Request Alerts
 getAlerts stopId =
     Http.get
-        (baseUrl ++ "/api/v2/stops/" ++ stopId ++ "/alerts")
+        (baseUrl
+            ++ "/api/v2/stops/"
+            ++ (Http.encodeUri stopId)
+            ++ "/alerts"
+        )
         decodeAlerts
 
 
