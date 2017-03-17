@@ -1,89 +1,69 @@
-# Purple Train 2: Elm Boogaloo
+# Purple Train
+
+[Purple Train] is a mobile app that provides schedules, predictions, and alerts
+for [MBTA Commuter Rail] riders.
+
+The app is written in the [elm] language, using the experimental [elm-native-ui]
+library. See the [Elm Native UI in Production] blog post about why we are
+excited about writing mobile apps in elm.
+
+[Purple Train]: https://purpletrainapp.com
+[MBTA Commuter Rail]: http://www.mbta.com/schedules_and_maps/rail/
+[elm]: http://elm-lang.org
+[elm-native-ui]: https://github.com/ohanhi/elm-native-ui
+[Elm Native UI in Production]: https://robots.thoughtbot.com/elm-native-ui-in-production
 
 ## Setup
 
-* Make sure you have [elm v0.18](https://guide.elm-lang.org/install.html) installed
+* Make sure you have [elm v0.18](https://guide.elm-lang.org/install.html)
+  installed
 * Run `bin/setup`
 
-## Developing
+## Development
 
-Run `yarn run watch` to start a watch server, which will recompile the elm files
-when they are saved.
+Run `yarn run watch`
 
-Use [elm-format](https://github.com/avh4/elm-format) with your editor. You can
-set it up to format your Elm files when automatically saving them.
+This will start a watch server, which will recompile the elm files when they are
+saved.
+
+We recommend using [elm-format](https://github.com/avh4/elm-format) with your
+editor. You can set it up to format your Elm files when automatically saving
+them.
 
 ## Running the app
 
 Run `yarn run start` to start the react native packager, which will serve the
-javascript bundle to the device simulators.
+javascript bundle to your mobile devices and simulators.
 
-Open the `ios/PurpleTrain.xcodeproj` and run the project to launch an iPhone simulator.
+### iOS
 
-## Installing new versions of Elm Native UI (and other unsupported packages)
-
-Elm Native UI is not in the Elm Package index, meaning it has to be installed by
-hand (done automatically in `bin/setup`):
-
-```
-bin/sync-elm-native-ui
-```
-
-The script will do one of three things:
-
-1. If you have a symlinked Elm Native UI dependency (because you are working on
-   the Elm Native UI library), it will do nothing.
-1. If you don't have the dependency it will clone it to the appropriate
-   directory.
-1. If you have the dependency, it will update the dependency to the version
-   specified in `.elm-native-ui-version`.
-
-## Installing new versions of packages in the Elm Package index
-
-Since the `elm-package.json` and `elm-stuff/exact-dependencies.json` both
-include packages that are not in the Elm Package index, you have to do some
-juggling to install new packages that _are_ in the index (otherwise it complains
-about "corrupt" packages).
-
-1. Delete the `elm-native-ui` package (and any other self published packages)
-   from `elm-package.json` and `elm-stuff/exact-dependencies.json`.
-1. Run `elm-package install`
-1. Re-add the deleted lines to both files.
-
-## Releasing a new version
+Open `ios/PurpleTrain.xcodeproj` and run the project to launch an iPhone
+simulator.
 
 ### Android
 
-#### One-time setup
-To build a production version of the app, you need to add these lines to your
-`~/.gradle/gradle.properties`:
+Follow the [React Native Getting Started guide] to create and run a virtual
+Android device.
 
-```
-PURPLE_TRAIN_RELEASE_STORE_FILE=prod.keystore
-PURPLE_TRAIN_RELEASE_KEY_ALIAS=purpletrain
-PURPLE_TRAIN_RELEASE_STORE_PASSWORD=GET_FROM_1PASSWORD
-PURPLE_TRAIN_RELEASE_KEY_PASSWORD=GET_FROM_1PASSWORD
-```
+[React Native Getting Started guide]:
+https://facebook.github.io/react-native/docs/getting-started.html
 
-Fill in the values marked GET_FROM_1PASSWORD with the values from the "Purple
-Train release information" secure note.
+## Contributing
 
-Move the `prod.keystore` file from the 1Password note to the `android/app`
-directory.
+See the [CONTRIBUTING] document.
+Thank you, [contributors]!
 
-Ask the Google Play developer account owner (Melissa Xie) to add you to the
-account so you can create new releases.
+[CONTRIBUTING]: CONTRIBUTING.md
+[contributors]: https://github.com/thoughtbot/PurpleTrainElm/graphs/contributors
 
-#### For each release
+## Updating dependencies
 
-Build the signed APK:
-```
-cd android && ./gradlew assembleRelease
-```
-This creates a new APK here: `android/app/build/outputs/apk/app-release.apk`
+Updating elm packages for this project is more complicated than most. See
+[DEPENDENCIES.md](/DEPENDENCIES.md) for detailed instructions.
 
-Upload the signed apk to the Google Play developer console and release the new
-version from there.
+## Releasing a new version
+
+See [RELEASING.md](/RELEASING.md)
 
 ## License
 
