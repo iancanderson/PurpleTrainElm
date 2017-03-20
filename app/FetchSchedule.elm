@@ -33,8 +33,9 @@ decodeSchedule =
 
 decodeTrain : Decode.Decoder Train
 decodeTrain =
-    Decode.map5 Train
+    Decode.map6 Train
         (Decode.field "scheduled_departure_utc" stringToDate)
+        (Decode.field "scheduled_arrival_utc" stringToDate)
         (Decode.maybe (Decode.field "predicted_departure_utc" stringToDate))
         (Decode.maybe (Decode.field "track" Decode.string))
         (Decode.maybe (Decode.field "coach_number" Decode.string))

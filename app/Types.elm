@@ -16,6 +16,7 @@ type alias Schedule =
 
 type alias Train =
     { scheduledDeparture : Date
+    , scheduledArrival : Date
     , predictedDeparture : Maybe Date
     , track : Maybe String
     , coach : Maybe String

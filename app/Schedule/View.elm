@@ -120,6 +120,7 @@ nextTrainMetadata direction now train =
         (catMaybes
             [ trainInfo direction train
             , Just (prediction now train)
+            , Just (arrival now train)
             ]
         )
 
@@ -168,14 +169,18 @@ trainMetadata string =
 trainMetadataWithColor : String -> String -> Node Msg
 trainMetadataWithColor string color =
     text
-        [ Ui.style
-            [ Style.color color
-            , Style.marginBottom <| scale 5
-            , Style.fontSize <| scale 12
-            , Style.textAlign "right"
-            ]
-        ]
+        [ metadataStyle color ]
         [ Ui.string <| string ]
+
+
+metadataStyle : String -> Property Msg
+metadataStyle color =
+    Ui.style
+        [ Style.color color
+        , Style.marginBottom <| scale 5
+        , Style.fontSize <| scale 12
+        , Style.textAlign "right"
+        ]
 
 
 laterTrainView : Date -> Train -> Node Msg
@@ -267,6 +272,16 @@ predictionColor minutesLate =
 
         Just _ ->
             Color.red
+
+
+arrival : Date -> Train -> Node Msg
+arrival date train =
+    trainMetadata ("arrives at" ++ arrivalTime train)
+
+
+arrivalTime : Train -> String
+arrivalTime train =
+    prettyTime train.scheduledArrival
 
 
 suppressHighlighting : Bool -> Property msg
