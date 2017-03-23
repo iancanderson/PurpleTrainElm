@@ -117,48 +117,9 @@ nextTrainMetadata : Direction -> Date -> Train -> Node Msg
 nextTrainMetadata direction now train =
     Elements.view
         []
-        (catMaybes
-            [ trainInfo direction train
-            , Just (prediction now train)
-            , Just (arrival now train)
-            ]
-        )
-
-
-trainInfo : Direction -> Train -> Maybe (Node Msg)
-trainInfo direction train =
-    case direction of
-        Outbound ->
-            outboundTrainInfo train
-
-        Inbound ->
-            Nothing
-
-
-outboundTrainInfo : Train -> Maybe (Node Msg)
-outboundTrainInfo train =
-    case ( train.track, train.coach, train.status ) of
-        ( Just track, _, status ) ->
-            Just (trainMetadata <| withStatus ("track " ++ track) status)
-
-        ( _, Just coach, status ) ->
-            Just (trainMetadata <| withStatus ("coach " ++ coach) status)
-
-        ( _, _, Just status ) ->
-            Just (trainMetadata status)
-
-        _ ->
-            Nothing
-
-
-withStatus : String -> Maybe String -> String
-withStatus string maybeStatus =
-    case maybeStatus of
-        Just status ->
-            status ++ ", " ++ string
-
-        Nothing ->
-            string
+        [ prediction now direction train
+        , arrival now train
+        ]
 
 
 trainMetadata : String -> Node Msg
@@ -203,40 +164,76 @@ laterTrainView now train =
         ]
 
 
-prediction : Date -> Train -> Node Msg
-prediction now train =
+prediction : Date -> Direction -> Train -> Node Msg
+prediction now direction train =
     let
-        predictedDeparture =
+        actualDeparture =
             Maybe.withDefault train.scheduledDeparture train.predictedDeparture
 
+        minutesUntilDeparture =
+            minutesBetween now actualDeparture
+
         minutesLate =
-            predictedMinutesLateText <|
-                minutesFrom train.scheduledDeparture predictedDeparture
+            minutesBetween train.scheduledDeparture actualDeparture
+
+        minutesLateString =
+            predictedMinutesLateText minutesLate
 
         predictionString =
-            predictionText now minutesLate predictedDeparture
+            joinMaybeWith ", "
+                [ minutesLateString
+                , Just <| prettyDuration minutesUntilDeparture
+                , trainInfo direction train
+                ]
     in
-        trainMetadataWithColor predictionString (predictionColor minutesLate)
+        trainMetadataWithColor predictionString (predictionColor minutesLateString)
+
+
+trainInfo : Direction -> Train -> Maybe String
+trainInfo direction train =
+    case direction of
+        Outbound ->
+            let
+                status =
+                    outboundTrainInfo train
+            in
+                case status of
+                    Just "On Time" ->
+                        Nothing
+
+                    _ ->
+                        status
+
+        Inbound ->
+            Nothing
+
+
+outboundTrainInfo : Train -> Maybe String
+outboundTrainInfo train =
+    case ( train.track, train.coach, train.status ) of
+        ( Just track, _, _ ) ->
+            Just <| "track " ++ track
+
+        ( _, Just coach, _ ) ->
+            Just <| "coach " ++ coach
+
+        ( _, _, Just status ) ->
+            Just status
+
+        _ ->
+            Nothing
 
 
 predictedMinutesLateText : Int -> Maybe String
 predictedMinutesLateText minutesLate =
     if minutesLate >= 2 then
-        Just <| (toString minutesLate) ++ "m late,"
+        Just <| (toString minutesLate) ++ "m late"
     else
         Nothing
 
 
-predictionText : Date -> Maybe String -> Date -> String
-predictionText now minutesLate predictedDeparture =
-    joinMaybe
-        [ minutesLate
-        , Just <| prettyDuration <| minutesFrom now predictedDeparture
-        ]
-
-
-minutesFrom : Date -> Date -> Int
-minutesFrom fromDate toDate =
+minutesBetween : Date -> Date -> Int
+minutesBetween fromDate toDate =
     let
         fromMinutes =
             floor <| (Date.toTime fromDate) / 1000 / 60
@@ -259,9 +256,14 @@ prettyDuration minutesFromNow =
         "departs in " ++ toString (minutesFromNow // 60) ++ "h " ++ toString (minutesFromNow % 60) ++ "m"
 
 
+joinMaybeWith : String -> List (Maybe String) -> String
+joinMaybeWith separator =
+    String.join separator << catMaybes
+
+
 joinMaybe : List (Maybe String) -> String
 joinMaybe =
-    String.join " " << catMaybes
+    joinMaybeWith " "
 
 
 predictionColor : Maybe String -> String
@@ -280,8 +282,8 @@ arrival date train =
 
 
 arrivalTime : Train -> String
-arrivalTime train =
-    prettyTime train.scheduledArrival
+arrivalTime =
+    prettyTime << .scheduledArrival
 
 
 suppressHighlighting : Bool -> Property msg
