@@ -43,6 +43,7 @@ nextTrainsView direction now schedule =
                     , Style.fontWeight "700"
                     , Style.letterSpacing 0.25
                     , Style.paddingTop <| scale 18
+                    , Style.paddingBottom <| scale 3
                     , Style.textAlign "center"
                     ]
                 ]
@@ -95,6 +96,8 @@ nextTrainView direction now train =
             , Style.justifyContent "space-between"
             , Style.backgroundColor "white"
             , Style.padding <| scale 20
+            , Style.paddingTop <| scale 0
+            , Style.height <| scale 85
             , Style.borderBottomWidth 1
             , Style.borderColor Color.lightGray
             ]
@@ -117,9 +120,48 @@ nextTrainMetadata : Direction -> Date -> Train -> Node Msg
 nextTrainMetadata direction now train =
     Elements.view
         []
-        [ prediction now direction train
-        , arrival now train
-        ]
+        (catMaybes
+            [ trainInfo direction train
+            , Just (prediction now train)
+            , Just (arrival train)
+            ]
+        )
+
+
+trainInfo : Direction -> Train -> Maybe (Node Msg)
+trainInfo direction train =
+    case direction of
+        Outbound ->
+            outboundTrainInfo train
+
+        Inbound ->
+            Nothing
+
+
+outboundTrainInfo : Train -> Maybe (Node Msg)
+outboundTrainInfo train =
+    case ( train.track, train.coach, train.status ) of
+        ( Just track, _, status ) ->
+            Just (trainMetadata <| withStatus ("track " ++ track) status)
+
+        ( _, Just coach, status ) ->
+            Just (trainMetadata <| withStatus ("coach " ++ coach) status)
+
+        ( _, _, Just status ) ->
+            Just (trainMetadata status)
+
+        _ ->
+            Nothing
+
+
+withStatus : String -> Maybe String -> String
+withStatus string maybeStatus =
+    case maybeStatus of
+        Just status ->
+            status ++ ", " ++ string
+
+        Nothing ->
+            string
 
 
 trainMetadata : String -> Node Msg
@@ -130,18 +172,14 @@ trainMetadata string =
 trainMetadataWithColor : String -> String -> Node Msg
 trainMetadataWithColor string color =
     text
-        [ metadataStyle color ]
-        [ Ui.string <| string ]
-
-
-metadataStyle : String -> Property Msg
-metadataStyle color =
-    Ui.style
-        [ Style.color color
-        , Style.marginBottom <| scale 5
-        , Style.fontSize <| scale 12
-        , Style.textAlign "right"
+        [ Ui.style
+            [ Style.color color
+            , Style.marginBottom <| scale 5
+            , Style.fontSize <| scale 12
+            , Style.textAlign "right"
+            ]
         ]
+        [ Ui.string <| string ]
 
 
 laterTrainView : Date -> Train -> Node Msg
@@ -164,76 +202,40 @@ laterTrainView now train =
         ]
 
 
-prediction : Date -> Direction -> Train -> Node Msg
-prediction now direction train =
+prediction : Date -> Train -> Node Msg
+prediction now train =
     let
-        actualDeparture =
+        predictedDeparture =
             Maybe.withDefault train.scheduledDeparture train.predictedDeparture
 
-        minutesUntilDeparture =
-            minutesBetween now actualDeparture
-
         minutesLate =
-            minutesBetween train.scheduledDeparture actualDeparture
-
-        minutesLateString =
-            predictedMinutesLateText minutesLate
+            predictedMinutesLateText <|
+                minutesFrom train.scheduledDeparture predictedDeparture
 
         predictionString =
-            joinMaybeWith ", "
-                [ minutesLateString
-                , Just <| prettyDuration minutesUntilDeparture
-                , trainInfo direction train
-                ]
+            predictionText now minutesLate predictedDeparture
     in
-        trainMetadataWithColor predictionString (predictionColor minutesLateString)
-
-
-trainInfo : Direction -> Train -> Maybe String
-trainInfo direction train =
-    case direction of
-        Outbound ->
-            let
-                status =
-                    outboundTrainInfo train
-            in
-                case status of
-                    Just "On Time" ->
-                        Nothing
-
-                    _ ->
-                        status
-
-        Inbound ->
-            Nothing
-
-
-outboundTrainInfo : Train -> Maybe String
-outboundTrainInfo train =
-    case ( train.track, train.coach, train.status ) of
-        ( Just track, _, _ ) ->
-            Just <| "track " ++ track
-
-        ( _, Just coach, _ ) ->
-            Just <| "coach " ++ coach
-
-        ( _, _, Just status ) ->
-            Just status
-
-        _ ->
-            Nothing
+        trainMetadataWithColor predictionString (predictionColor minutesLate)
 
 
 predictedMinutesLateText : Int -> Maybe String
 predictedMinutesLateText minutesLate =
     if minutesLate >= 2 then
-        Just <| (toString minutesLate) ++ "m late"
+        Just <| (toString minutesLate) ++ "m late,"
     else
         Nothing
 
 
-minutesBetween : Date -> Date -> Int
-minutesBetween fromDate toDate =
+predictionText : Date -> Maybe String -> Date -> String
+predictionText now minutesLate predictedDeparture =
+    joinMaybe
+        [ minutesLate
+        , Just <| prettyDuration <| minutesFrom now predictedDeparture
+        ]
+
+
+minutesFrom : Date -> Date -> Int
+minutesFrom fromDate toDate =
     let
         fromMinutes =
             floor <| (Date.toTime fromDate) / 1000 / 60
@@ -256,14 +258,9 @@ prettyDuration minutesFromNow =
         "departs in " ++ toString (minutesFromNow // 60) ++ "h " ++ toString (minutesFromNow % 60) ++ "m"
 
 
-joinMaybeWith : String -> List (Maybe String) -> String
-joinMaybeWith separator =
-    String.join separator << catMaybes
-
-
 joinMaybe : List (Maybe String) -> String
 joinMaybe =
-    joinMaybeWith " "
+    String.join " " << catMaybes
 
 
 predictionColor : Maybe String -> String
@@ -276,8 +273,8 @@ predictionColor minutesLate =
             Color.red
 
 
-arrival : Date -> Train -> Node Msg
-arrival date train =
+arrival : Train -> Node Msg
+arrival train =
     trainMetadata ("arrives at " ++ arrivalTime train)
 
 
