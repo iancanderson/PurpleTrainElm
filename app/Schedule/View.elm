@@ -278,7 +278,7 @@ predictionColor minutesLate =
 
 arrival : Date -> Train -> Node Msg
 arrival date train =
-    trainMetadata ("arrives at" ++ arrivalTime train)
+    trainMetadata ("arrives at " ++ arrivalTime train)
 
 
 arrivalTime : Train -> String
