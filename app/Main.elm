@@ -1,9 +1,9 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import NativeUi
 import Model exposing (Model, initialModel)
 import Update exposing (update)
-import Message exposing (Msg)
+import Message exposing (Msg(..))
 import View exposing (view)
 import NativeUi.AsyncStorage as AsyncStorage
 import Message exposing (..)
@@ -13,9 +13,15 @@ import FetchStops exposing (..)
 import App.Settings as Settings
 
 
+port deviceTokenChanged : (String -> msg) -> Sub msg
+
+
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    every (seconds 10) Tick
+    Sub.batch
+        [ every (seconds 10) Tick
+        , deviceTokenChanged DeviceTokenChanged
+        ]
 
 
 loadSettings : Cmd Msg

@@ -23,8 +23,10 @@
 		1637D7081DD15E2A00306CED /* HK Compakt_bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1637D7051DD15E2A00306CED /* HK Compakt_bold.otf */; };
 		1637D7091DD15E2A00306CED /* HK Compakt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1637D7061DD15E2A00306CED /* HK Compakt.otf */; };
 		1637D70A1DD15E2A00306CED /* Roboto Condensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1637D7071DD15E2A00306CED /* Roboto Condensed.ttf */; };
+		3C28CF631EB3CD6100DE28CD /* whendovescryriff.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3C28CF501EB3CC9900DE28CD /* whendovescryriff.caf */; };
 		3C5D34121DF9EAED00740867 /* purple-train-512x512@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5D34101DF9EAED00740867 /* purple-train-512x512@2x.png */; };
 		3C5D34131DF9EAED00740867 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5D34111DF9EAED00740867 /* Default-568h@2x.png */; };
+		3CDAAF1B1E981F3100F143C1 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CDAAF1A1E981F0A00F143C1 /* libRCTPushNotification.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +136,13 @@
 			remoteGlobalIDString = 2D2A28131D9B038B00D4039D;
 			remoteInfo = "React-tvOS";
 		};
+		3CDAAF191E981F0A00F143C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3CDAAF151E981F0A00F143C1 /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTPushNotification;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -172,8 +181,11 @@
 		1637D7051DD15E2A00306CED /* HK Compakt_bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "HK Compakt_bold.otf"; path = "../app/assets/fonts/HK Compakt_bold.otf"; sourceTree = "<group>"; };
 		1637D7061DD15E2A00306CED /* HK Compakt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "HK Compakt.otf"; path = "../app/assets/fonts/HK Compakt.otf"; sourceTree = "<group>"; };
 		1637D7071DD15E2A00306CED /* Roboto Condensed.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto Condensed.ttf"; path = "../app/assets/fonts/Roboto Condensed.ttf"; sourceTree = "<group>"; };
+		3C28CF501EB3CC9900DE28CD /* whendovescryriff.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = whendovescryriff.caf; sourceTree = "<group>"; };
 		3C5D34101DF9EAED00740867 /* purple-train-512x512@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "purple-train-512x512@2x.png"; sourceTree = "<group>"; };
 		3C5D34111DF9EAED00740867 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		3CDAAF0E1E9811F100F143C1 /* PurpleTrain.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = PurpleTrain.entitlements; path = PurpleTrain/PurpleTrain.entitlements; sourceTree = "<group>"; };
+		3CDAAF151E981F0A00F143C1 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -193,6 +205,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				3CDAAF1B1E981F3100F143C1 /* libRCTPushNotification.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +292,7 @@
 		13B07FAE1A68108700A75B9A /* PurpleTrain */ = {
 			isa = PBXGroup;
 			children = (
+				3CDAAF0E1E9811F100F143C1 /* PurpleTrain.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -299,6 +313,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		3CDAAF161E981F0A00F143C1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3CDAAF1A1E981F0A00F143C1 /* libRCTPushNotification.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,6 +333,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				3CDAAF151E981F0A00F143C1 /* RCTPushNotification.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -337,6 +360,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3C28CF501EB3CC9900DE28CD /* whendovescryriff.caf */,
 				3C5D34111DF9EAED00740867 /* Default-568h@2x.png */,
 				3C5D34101DF9EAED00740867 /* purple-train-512x512@2x.png */,
 				1637D7051DD15E2A00306CED /* HK Compakt_bold.otf */,
@@ -391,6 +415,11 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 8E7TQ638ZD;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -425,6 +454,10 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
+				},
+				{
+					ProductGroup = 3CDAAF161E981F0A00F143C1 /* Products */;
+					ProjectRef = 3CDAAF151E981F0A00F143C1 /* RCTPushNotification.xcodeproj */;
 				},
 				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
@@ -560,6 +593,13 @@
 			remoteRef = 167ED5DE1DCFEB1D00E4AB86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		3CDAAF1A1E981F0A00F143C1 /* libRCTPushNotification.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTPushNotification.a;
+			remoteRef = 3CDAAF191E981F0A00F143C1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -585,6 +625,7 @@
 				1637D7081DD15E2A00306CED /* HK Compakt_bold.otf in Resources */,
 				1637D7091DD15E2A00306CED /* HK Compakt.otf in Resources */,
 				1637D70A1DD15E2A00306CED /* Roboto Condensed.ttf in Resources */,
+				3C28CF631EB3CD6100DE28CD /* whendovescryriff.caf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3C5D34131DF9EAED00740867 /* Default-568h@2x.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
@@ -639,6 +680,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon.debug;
+				CODE_SIGN_ENTITLEMENTS = PurpleTrain/PurpleTrain.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 8E7TQ638ZD;
@@ -646,6 +688,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 				);
 				INFOPLIST_FILE = PurpleTrain/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -654,7 +697,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.thoughtbot.purpletrain.debug;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thoughtbot.purpletrain;
 				PRODUCT_NAME = PurpleTrain;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -664,12 +707,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon.release;
+				CODE_SIGN_ENTITLEMENTS = PurpleTrain/PurpleTrain.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8E7TQ638ZD;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 				);
 				INFOPLIST_FILE = PurpleTrain/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

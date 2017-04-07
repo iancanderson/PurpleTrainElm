@@ -15,6 +15,9 @@ import App.Maybe exposing (maybeToCommand)
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        ReceiveInstallationResponse _ ->
+            ( model, Cmd.none )
+
         ReceiveIssueResponse _ ->
             ( model, Cmd.none )
 
@@ -62,6 +65,11 @@ update msg model =
 
         ReceiveSettings settingsResult ->
             receiveSettings model settingsResult
+
+        DeviceTokenChanged deviceToken ->
+            ( { model | deviceToken = Just deviceToken }
+            , Cmd.none
+            )
 
 
 toLoadable : Result Http.Error a -> Loadable a

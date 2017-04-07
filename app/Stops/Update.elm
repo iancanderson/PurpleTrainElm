@@ -6,6 +6,7 @@ import NativeUi.ListView exposing (updateDataSource, emptyDataSource)
 import Task
 import App.Settings as Settings
 import FetchAlertsAndSchedules exposing (fetchAlertsAndSchedules)
+import UpsertInstallation exposing (upsertInstallation)
 import Message exposing (Msg(..))
 import Model exposing (Model)
 import Types exposing (..)
@@ -44,5 +45,6 @@ pickStop model stop =
             SetItem
             (AsyncStorage.setItem Settings.stopKey stop)
         , fetchAlertsAndSchedules stop
+        , upsertInstallation model.deviceToken stop
         ]
     )

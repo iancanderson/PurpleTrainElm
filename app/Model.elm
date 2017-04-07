@@ -3,8 +3,6 @@ module Model exposing (..)
 import NativeUi.ListView exposing (DataSource, emptyDataSource)
 import Date.Format as Date
 import Date exposing (Date)
-import Http
-import Time exposing (Time)
 import Types exposing (..)
 
 
@@ -18,6 +16,7 @@ type alias Model =
     , alertsAreExpanded : Bool
     , dismissedAlertIds : List Int
     , stopPickerDataSource : Loadable (DataSource Stop)
+    , deviceToken : Maybe DeviceToken
     }
 
 
@@ -32,6 +31,7 @@ initialModel =
     , alertsAreExpanded = False
     , dismissedAlertIds = []
     , stopPickerDataSource = Loading
+    , deviceToken = Nothing
     }
 
 

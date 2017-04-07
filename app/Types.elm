@@ -43,6 +43,10 @@ type alias Stop =
     String
 
 
+type alias DeviceToken =
+    String
+
+
 type Loadable a
     = Loading
     | Error
