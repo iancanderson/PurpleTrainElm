@@ -13,7 +13,6 @@ import Model exposing (..)
 import Types exposing (..)
 import Message exposing (..)
 import StopPicker.View as StopPicker
-import ViewHelpers exposing (..)
 
 
 view : Model -> Node Msg

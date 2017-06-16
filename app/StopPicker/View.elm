@@ -10,10 +10,8 @@ import NativeUi.Events exposing (..)
 import NativeUi.ListView exposing (DataSource, listView)
 import App.Color as Color
 import App.Font as Font
-import Model exposing (..)
 import Types exposing (..)
 import Message exposing (..)
-import ViewHelpers exposing (..)
 
 
 view : DataSource Stop -> Node Msg

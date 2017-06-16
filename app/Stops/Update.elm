@@ -18,10 +18,10 @@ receiveStops model result =
         stopPickerDataSource =
             case ( result, model.stopPickerDataSource ) of
                 ( Ok stops, Ready originalDataSource ) ->
-                    Ready (updateDataSource originalDataSource stops)
+                    Ready (updateDataSource stops originalDataSource)
 
                 ( Ok stops, _ ) ->
-                    Ready (updateDataSource emptyDataSource stops)
+                    Ready (updateDataSource stops emptyDataSource)
 
                 ( Err _, Ready originalDataSource ) ->
                     model.stopPickerDataSource
