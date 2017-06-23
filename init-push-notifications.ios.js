@@ -1,6 +1,5 @@
 const {
   Alert,
-  AppRegistry,
   AsyncStorage,
   PushNotificationIOS,
 } = require('react-native');

@@ -7,6 +7,7 @@ module App.Settings
         , stop
         , dismissedAlertIds
         , deviceToken
+        , promptedForCancellationsNotifications
         )
 
 import Dict exposing (Dict)
@@ -68,3 +69,8 @@ dismissedAlertIds settings =
         |> Maybe.withDefault ""
         |> String.split ","
         |> List.filterMap (Result.toMaybe << String.toInt)
+
+
+promptedForCancellationsNotifications : Settings -> Bool
+promptedForCancellationsNotifications settings =
+    False

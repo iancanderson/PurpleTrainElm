@@ -7,14 +7,9 @@ import Message exposing (..)
 import Types exposing (..)
 
 
-upsertInstallation : Maybe DeviceToken -> Stop -> Cmd Msg
-upsertInstallation maybeDeviceToken stop =
-    case maybeDeviceToken of
-        Nothing ->
-            Cmd.none
-
-        Just deviceToken ->
-            Http.send ReceiveInstallationResponse <| putInstallation deviceToken stop
+upsertInstallation : DeviceToken -> Stop -> Cmd Msg
+upsertInstallation deviceToken stop =
+    Http.send ReceiveInstallationResponse <| putInstallation deviceToken stop
 
 
 upsertInstallationEndpoint : String -> String

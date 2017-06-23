@@ -45,6 +45,7 @@ pickStop model stop =
             SetItem
             (AsyncStorage.setItem Settings.stopKey stop)
         , fetchAlertsAndSchedules stop
-        , upsertInstallation model.deviceToken stop
+        , Maybe.map2 upsertInstallation model.deviceToken (Just stop)
+            |> Maybe.withDefault Cmd.none
         ]
     )

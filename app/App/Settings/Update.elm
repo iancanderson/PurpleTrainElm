@@ -35,6 +35,33 @@ onReceiveSettings settings =
             Settings.stop settings
     in
         Cmd.batch
-            [ maybeStop |> maybeToCommand fetchAlertsAndSchedules
-            , maybeStop |> maybeToCommand (upsertInstallation maybeDeviceToken)
+            [ maybePromptForPushNotifications settings
+            , maybeStop |> maybeToCommand fetchAlertsAndSchedules
+            , Maybe.map2 upsertInstallation maybeDeviceToken maybeStop
+                |> Maybe.withDefault Cmd.none
             ]
+
+
+maybePromptForPushNotifications : Settings -> Cmd Msg
+maybePromptForPushNotifications settings =
+    if Settings.promptedForCancellationsNotifications settings then
+        Cmd.none
+    else
+        prePromptForPushNotifications settings
+
+
+prePromptForPushNotifications : Settings -> Cmd Msg
+prePromptForPushNotifications settings =
+    case ( Settings.deviceToken settings, Settings.stop settings ) of
+        ( Just token, Just stop ) ->
+            Cmd.none
+
+        _ ->
+            Cmd.none
+
+
+
+-- TODO:
+-- After loading settings:
+-- If the user has not been prompted yet:
+--
