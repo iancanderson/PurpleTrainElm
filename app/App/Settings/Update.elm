@@ -44,7 +44,7 @@ onReceiveSettings settings =
 
 maybePromptForPushNotifications : Settings -> Cmd Msg
 maybePromptForPushNotifications settings =
-    if Settings.promptedForCancellationsNotifications settings then
+    if Settings.promptedForNotifications settings then
         Cmd.none
     else
         prePromptForPushNotifications settings
