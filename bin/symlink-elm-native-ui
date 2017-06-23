@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+
+rm -rf elm-stuff/packages/ohanhi/elm-native-ui
+mkdir -p elm-stuff/packages/ohanhi/elm-native-ui
+
+# Assumes you have elm-native-ui cloned one directory above PurpleTrainElm
+ln -s `pwd`/../elm-native-ui elm-stuff/packages/ohanhi/elm-native-ui/2.0.0
