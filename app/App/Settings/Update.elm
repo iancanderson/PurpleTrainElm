@@ -37,7 +37,7 @@ onReceiveSettings settings =
         Cmd.batch
             [ maybePromptForPushNotifications settings
             , maybeStop |> maybeToCommand fetchAlertsAndSchedules
-            , Maybe.map2 upsertInstallation maybeDeviceToken maybeStop
+            , Maybe.map2 upsertInstallation maybeStop maybeDeviceToken
                 |> Maybe.withDefault Cmd.none
             ]
 

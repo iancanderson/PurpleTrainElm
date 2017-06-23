@@ -77,7 +77,7 @@ stopPickerLabelText { stopPickerOpen, selectedStop } =
             "Select your home stop"
 
         ( _, Just stop ) ->
-            stop
+            stopToString stop
 
 
 maybeStopPicker : Model -> DataSource Stop -> Maybe (Node Msg)

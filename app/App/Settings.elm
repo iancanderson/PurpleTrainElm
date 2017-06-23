@@ -53,14 +53,14 @@ getValue settings key =
     join <| Dict.get key (toDict settings)
 
 
-stop : Settings -> Maybe String
+stop : Settings -> Maybe Stop
 stop settings =
-    getValue settings stopKey
+    Maybe.map Stop (getValue settings stopKey)
 
 
-deviceToken : Settings -> Maybe String
+deviceToken : Settings -> Maybe DeviceToken
 deviceToken settings =
-    getValue settings deviceTokenKey
+    Maybe.map DeviceToken (getValue settings deviceTokenKey)
 
 
 dismissedAlertIds : Settings -> List Int

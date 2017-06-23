@@ -98,19 +98,19 @@ pickerContainer =
         ]
 
 
-pickerButton : Msg -> String -> Node Msg
-pickerButton message label =
+pickerButton : Msg -> Stop -> Node Msg
+pickerButton message stop =
     Elements.touchableHighlight
         [ onPress message
         , underlayColor Color.defaultUnderlay
         , buttonStyle Color.white
-        , key label
+        , key <| stopToString stop
         ]
         [ Elements.view
             []
             [ text
                 [ buttonTextStyle ]
-                [ Ui.string label ]
+                [ Ui.string <| stopToString stop ]
             ]
         ]
 

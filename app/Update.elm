@@ -66,8 +66,8 @@ update msg model =
         ReceiveSettings settingsResult ->
             receiveSettings model settingsResult
 
-        DeviceTokenChanged deviceToken ->
-            ( { model | deviceToken = Just deviceToken }
+        DeviceTokenChanged deviceTokenString ->
+            ( { model | deviceToken = Just <| DeviceToken deviceTokenString }
             , Cmd.none
             )
 

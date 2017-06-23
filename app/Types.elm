@@ -39,12 +39,26 @@ type alias Stops =
     List Stop
 
 
-type alias Stop =
-    String
+type Stop
+    = Stop String
 
 
-type alias DeviceToken =
-    String
+stopToString : Stop -> String
+stopToString stop =
+    case stop of
+        Stop string ->
+            string
+
+
+type DeviceToken
+    = DeviceToken String
+
+
+deviceTokenToString : DeviceToken -> String
+deviceTokenToString deviceToken =
+    case deviceToken of
+        DeviceToken string ->
+            string
 
 
 type Loadable a

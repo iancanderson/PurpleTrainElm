@@ -43,9 +43,9 @@ pickStop model stop =
     , Cmd.batch <|
         [ Task.attempt
             SetItem
-            (AsyncStorage.setItem Settings.stopKey stop)
+            (AsyncStorage.setItem Settings.stopKey <| stopToString stop)
         , fetchAlertsAndSchedules stop
-        , Maybe.map2 upsertInstallation model.deviceToken (Just stop)
+        , Maybe.map (upsertInstallation stop) model.deviceToken
             |> Maybe.withDefault Cmd.none
         ]
     )
