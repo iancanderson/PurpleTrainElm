@@ -3,10 +3,12 @@ module App.Settings.Update exposing (..)
 import App.Settings as Settings
 import App.Maybe exposing (maybeToCommand)
 import FetchAlertsAndSchedules exposing (fetchAlertsAndSchedules)
+import NativeUi.Alert exposing (alert)
 import UpsertInstallation exposing (upsertInstallation)
 import Message exposing (..)
 import Model exposing (Model)
 import Types exposing (..)
+import Task
 
 
 receiveSettings : Model -> SettingsResult -> ( Model, Cmd Msg )
@@ -52,16 +54,10 @@ maybePromptForPushNotifications settings =
 
 prePromptForPushNotifications : Settings -> Cmd Msg
 prePromptForPushNotifications settings =
-    case ( Settings.deviceToken settings, Settings.stop settings ) of
-        ( Just token, Just stop ) ->
-            Cmd.none
-
-        _ ->
-            Cmd.none
-
-
-
--- TODO:
--- After loading settings:
--- If the user has not been prompted yet:
---
+    Task.attempt ReceivePushPrePromptResponse <|
+        alert
+            "This is what it sounds like when trains cry"
+            "Purple Train can send you notifications when your trains are cancelled!"
+            [ ( "Not Now", False )
+            , ( "Give Access", True )
+            ]

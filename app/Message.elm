@@ -4,6 +4,7 @@ import Http
 import Time exposing (Time)
 import Types exposing (..)
 import NativeUi.AsyncStorage as AsyncStorage
+import NativeUi.Alert
 
 
 type Msg
@@ -21,3 +22,4 @@ type Msg
     | ToggleAlerts
     | ToggleStopPicker
     | DeviceTokenChanged String
+    | ReceivePushPrePromptResponse (Result NativeUi.Alert.Error Bool)
