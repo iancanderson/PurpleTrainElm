@@ -58,6 +58,6 @@ prePromptForPushNotifications settings =
         alert
             "This is what it sounds like when trains cry"
             "Purple Train can send you notifications when your trains are cancelled!"
-            [ ( "Not Now", False )
-            , ( "Give Access", True )
+            [ { text = "Not Now", value = False }
+            , { text = "Give Access", value = True }
             ]
