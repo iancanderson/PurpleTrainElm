@@ -5,7 +5,7 @@ import Time exposing (Time)
 import Types exposing (..)
 import NativeApi.PushNotificationIOS as Push
 import NativeUi.AsyncStorage as AsyncStorage
-import NativeUi.Alert
+import NativeUi.Alert as NativeAlert
 
 
 type Msg
@@ -23,5 +23,5 @@ type Msg
     | ToggleAlerts
     | ToggleStopPicker
     | DeviceTokenChanged String
-    | ReceivePushPrePromptResponse (Result NativeUi.Alert.Error Bool)
+    | ReceivePushPrePromptResponse (Result NativeAlert.Error Bool)
     | ReceivePushToken (Result Push.Error String)
