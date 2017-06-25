@@ -11,6 +11,7 @@ import Schedule.Alerts.Update exposing (dismissAlert)
 import Stops.Update exposing (receiveStops, pickStop)
 import Tick.Update exposing (tick)
 import App.Maybe exposing (maybeToCommand)
+import NativeApi.PushNotificationIOS as NativePush
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -30,6 +31,18 @@ update msg model =
 
         ReceivePushPrePromptResponse accepted ->
             ( model, handlePushPrePromptResponse accepted )
+
+        ReceivePushToken result ->
+            case result of
+                Ok tokenString ->
+                    ( { model | deviceToken = Just (DeviceToken tokenString) }
+                    , receiveDeviceToken model.selectedStop (DeviceToken tokenString)
+                    )
+
+                Err registerError ->
+                    case registerError of
+                        NativePush.Error message ->
+                            Debug.crash message
 
         ReceiveAlerts result ->
             ( { model | alerts = toLoadable result }, Cmd.none )
