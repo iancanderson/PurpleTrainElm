@@ -4,8 +4,9 @@ import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
 import ReportIssue
-import App.Settings.Update exposing (receiveSettings)
+import App.Settings.Update exposing (receiveSettingsResult)
 import Http
+import PushNotifications.Update exposing (..)
 import Schedule.Alerts.Update exposing (dismissAlert)
 import Stops.Update exposing (receiveStops, pickStop)
 import Tick.Update exposing (tick)
@@ -24,13 +25,21 @@ update msg model =
         PickStop stop ->
             pickStop model stop
 
-        SetItem result ->
-            case result of
-                Ok _ ->
-                    ( model, Cmd.none )
+        SetItem _ ->
+            ( model, Cmd.none )
 
-                Result.Err a ->
-                    ( model, Cmd.none )
+        ReceivePushPrePromptResponse accepted ->
+            ( model, handlePushPrePromptResponse accepted )
+
+        ReceivePushToken result ->
+            case result of
+                Ok tokenString ->
+                    ( { model | deviceToken = Just (DeviceToken tokenString) }
+                    , receiveDeviceToken model.selectedStop (DeviceToken tokenString)
+                    )
+
+                Err registerError ->
+                    Debug.crash registerError
 
         ReceiveAlerts result ->
             ( { model | alerts = toLoadable result }, Cmd.none )
@@ -64,10 +73,10 @@ update msg model =
             dismissAlert model alert
 
         ReceiveSettings settingsResult ->
-            receiveSettings model settingsResult
+            receiveSettingsResult model settingsResult
 
-        DeviceTokenChanged deviceToken ->
-            ( { model | deviceToken = Just deviceToken }
+        DeviceTokenChanged deviceTokenString ->
+            ( { model | deviceToken = Just <| DeviceToken deviceTokenString }
             , Cmd.none
             )
 

@@ -12,15 +12,17 @@ fetchAlerts stop =
     Http.send ReceiveAlerts <| getAlerts stop
 
 
-getAlerts : String -> Http.Request Alerts
-getAlerts stopId =
-    Http.get
-        (baseUrl
-            ++ "/api/v2/stops/"
-            ++ (Http.encodeUri stopId)
-            ++ "/alerts"
-        )
-        decodeAlerts
+getAlerts : Stop -> Http.Request Alerts
+getAlerts stop =
+    case stop of
+        Stop stopId ->
+            Http.get
+                (baseUrl
+                    ++ "/api/v2/stops/"
+                    ++ (Http.encodeUri stopId)
+                    ++ "/alerts"
+                )
+                decodeAlerts
 
 
 decodeAlerts : Decode.Decoder Alerts

@@ -31,7 +31,7 @@ issueBody direction stop =
     Http.jsonBody <|
         Encode.object
             [ ( "direction", Encode.string <| toString direction )
-            , ( "stop_id", Encode.string stop )
+            , ( "stop_id", Encode.string <| stopToString stop )
             ]
 
 

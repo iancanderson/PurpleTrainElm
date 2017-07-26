@@ -7,10 +7,12 @@ module App.Settings
         , stop
         , dismissedAlertIds
         , deviceToken
+        , promptedForNotifications
+        , promptedForNotificationsKey
         )
 
 import Dict exposing (Dict)
-import App.Maybe exposing (join)
+import App.Maybe exposing (isSomething, join)
 import Types exposing (..)
 
 
@@ -29,6 +31,7 @@ allKeys =
     [ dismissedAlertsKey
     , stopKey
     , deviceTokenKey
+    , promptedForNotificationsKey
     ]
 
 
@@ -52,14 +55,14 @@ getValue settings key =
     join <| Dict.get key (toDict settings)
 
 
-stop : Settings -> Maybe String
+stop : Settings -> Maybe Stop
 stop settings =
-    getValue settings stopKey
+    Maybe.map Stop (getValue settings stopKey)
 
 
-deviceToken : Settings -> Maybe String
+deviceToken : Settings -> Maybe DeviceToken
 deviceToken settings =
-    getValue settings deviceTokenKey
+    Maybe.map DeviceToken (getValue settings deviceTokenKey)
 
 
 dismissedAlertIds : Settings -> List Int
@@ -68,3 +71,13 @@ dismissedAlertIds settings =
         |> Maybe.withDefault ""
         |> String.split ","
         |> List.filterMap (Result.toMaybe << String.toInt)
+
+
+promptedForNotifications : Settings -> Bool
+promptedForNotifications settings =
+    isSomething (getValue settings promptedForNotificationsKey)
+
+
+promptedForNotificationsKey : String
+promptedForNotificationsKey =
+    "promptedForCancellationsNotifications"

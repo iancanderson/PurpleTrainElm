@@ -7,22 +7,17 @@ import Message exposing (..)
 import Types exposing (..)
 
 
-upsertInstallation : Maybe DeviceToken -> Stop -> Cmd Msg
-upsertInstallation maybeDeviceToken stop =
-    case maybeDeviceToken of
-        Nothing ->
-            Cmd.none
-
-        Just deviceToken ->
-            Http.send ReceiveInstallationResponse <| putInstallation deviceToken stop
+upsertInstallation : Stop -> DeviceToken -> Cmd Msg
+upsertInstallation stop deviceToken =
+    Http.send ReceiveInstallationResponse <| putInstallation deviceToken stop
 
 
-upsertInstallationEndpoint : String -> String
+upsertInstallationEndpoint : DeviceToken -> String
 upsertInstallationEndpoint deviceToken =
-    baseUrl ++ "/api/v2/installations/" ++ deviceToken
+    baseUrl ++ "/api/v2/installations/" ++ (deviceTokenToString deviceToken)
 
 
-putInstallation : String -> Stop -> Http.Request ()
+putInstallation : DeviceToken -> Stop -> Http.Request ()
 putInstallation deviceToken stop =
     put
         (upsertInstallationEndpoint deviceToken)
@@ -34,7 +29,7 @@ installationBody stop =
     Http.jsonBody <|
         Encode.object
             [ ( "operating_system", Encode.string "ios" )
-            , ( "home_stop_id", Encode.string stop )
+            , ( "home_stop_id", Encode.string <| stopToString stop )
             , ( "push_notifications_enabled", Encode.bool True )
             ]
 

@@ -18,7 +18,7 @@ getSchedule direction stop =
     Http.get
         (baseUrl
             ++ "/api/v2/stops/"
-            ++ (Http.encodeUri stop)
+            ++ (Http.encodeUri <| stopToString stop)
             ++ "/"
             ++ toString direction
             ++ "/trips"

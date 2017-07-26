@@ -21,3 +21,5 @@ type Msg
     | ToggleAlerts
     | ToggleStopPicker
     | DeviceTokenChanged String
+    | ReceivePushPrePromptResponse (Result String Bool)
+    | ReceivePushToken (Result String String)

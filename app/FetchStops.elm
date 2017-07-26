@@ -26,4 +26,4 @@ decodeStops =
 
 decodeStop : Decode.Decoder Stop
 decodeStop =
-    Decode.string
+    Decode.map Stop Decode.string
