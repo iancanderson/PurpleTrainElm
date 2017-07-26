@@ -4,6 +4,7 @@ import App.Settings as Settings
 import App.Maybe exposing (maybeToCommand)
 import FetchAlertsAndSchedules exposing (fetchAlertsAndSchedules)
 import NativeUi.Alert exposing (alert)
+import NativeUi.AsyncStorage as AsyncStorage
 import UpsertInstallation exposing (upsertInstallation)
 import Message exposing (..)
 import Model exposing (Model)
@@ -49,7 +50,17 @@ maybePromptForPushNotifications settings =
     if Settings.promptedForNotifications settings then
         Cmd.none
     else
-        prePromptForPushNotifications
+        Cmd.batch
+            [ setPromptedForNotifications
+            , prePromptForPushNotifications
+            ]
+
+
+setPromptedForNotifications : Cmd Msg
+setPromptedForNotifications =
+    Task.attempt
+        SetItem
+        (AsyncStorage.setItem Settings.promptedForNotificationsKey "something")
 
 
 prePromptForPushNotifications : Cmd Msg

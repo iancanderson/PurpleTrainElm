@@ -8,6 +8,7 @@ module App.Settings
         , dismissedAlertIds
         , deviceToken
         , promptedForNotifications
+        , promptedForNotificationsKey
         )
 
 import Dict exposing (Dict)
