@@ -49,11 +49,11 @@ maybePromptForPushNotifications settings =
     if Settings.promptedForNotifications settings then
         Cmd.none
     else
-        prePromptForPushNotifications settings
+        prePromptForPushNotifications
 
 
-prePromptForPushNotifications : Settings -> Cmd Msg
-prePromptForPushNotifications settings =
+prePromptForPushNotifications : Cmd Msg
+prePromptForPushNotifications =
     Task.attempt ReceivePushPrePromptResponse <|
         alert
             "This is what it sounds like when trains cry"
