@@ -74,7 +74,7 @@ dismissedAlertIds settings =
 
 promptedForNotifications : Settings -> Bool
 promptedForNotifications settings =
-    isSomething (getValue settings deviceTokenKey)
+    isSomething (getValue settings promptedForNotificationsKey)
 
 
 promptedForNotificationsKey : String
