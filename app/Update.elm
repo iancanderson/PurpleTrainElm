@@ -40,9 +40,7 @@ update msg model =
                     )
 
                 Err registerError ->
-                    case registerError of
-                        NativePush.Error message ->
-                            Debug.crash message
+                    Debug.crash registerError
 
         ReceiveAlerts result ->
             ( { model | alerts = toLoadable result }, Cmd.none )
