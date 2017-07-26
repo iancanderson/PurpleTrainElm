@@ -11,7 +11,6 @@ import Schedule.Alerts.Update exposing (dismissAlert)
 import Stops.Update exposing (receiveStops, pickStop)
 import Tick.Update exposing (tick)
 import App.Maybe exposing (maybeToCommand)
-import NativeApi.PushNotificationIOS as NativePush
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
