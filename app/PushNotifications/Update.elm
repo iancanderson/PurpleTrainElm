@@ -8,7 +8,7 @@ import UpsertInstallation exposing (upsertInstallation)
 import Types exposing (..)
 
 
-handlePushPrePromptResponse : Result NativeAlert.Error Bool -> Cmd Msg
+handlePushPrePromptResponse : Result String Bool -> Cmd Msg
 handlePushPrePromptResponse result =
     case result of
         Ok True ->
