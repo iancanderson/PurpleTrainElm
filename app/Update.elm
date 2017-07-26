@@ -4,7 +4,7 @@ import Types exposing (..)
 import Model exposing (..)
 import Message exposing (..)
 import ReportIssue
-import App.Settings.Update exposing (receiveSettings)
+import App.Settings.Update exposing (receiveSettingsResult)
 import Http
 import PushNotifications.Update exposing (..)
 import Schedule.Alerts.Update exposing (dismissAlert)
@@ -76,7 +76,7 @@ update msg model =
             dismissAlert model alert
 
         ReceiveSettings settingsResult ->
-            receiveSettings model settingsResult
+            receiveSettingsResult model settingsResult
 
         DeviceTokenChanged deviceTokenString ->
             ( { model | deviceToken = Just <| DeviceToken deviceTokenString }

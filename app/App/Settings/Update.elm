@@ -12,8 +12,8 @@ import Types exposing (..)
 import Task
 
 
-receiveSettings : Model -> SettingsResult -> ( Model, Cmd Msg )
-receiveSettings model settingsResult =
+receiveSettingsResult : Model -> SettingsResult -> ( Model, Cmd Msg )
+receiveSettingsResult model settingsResult =
     case settingsResult of
         Err _ ->
             ( model, Cmd.none )
