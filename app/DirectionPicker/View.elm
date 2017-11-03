@@ -9,7 +9,7 @@ import App.Font as Font
 import Message exposing (..)
 import ScrollableTabView exposing (..)
 import Model exposing (Model)
-
+import Hacks.IPhoneX exposing(isIPhoneX)
 
 topMargin : Float
 topMargin =
@@ -18,7 +18,7 @@ topMargin =
             10
 
         IOS ->
-            20
+            if isIPhoneX then 40 else 20
 
 
 view : Model -> List (Node Msg) -> Node Msg
