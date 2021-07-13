@@ -1,13 +1,12 @@
 # Purple Train
 
-[Purple Train] is a mobile app that provides schedules, predictions, and alerts
+Purple Train is a mobile app that provides schedules, predictions, and alerts
 for [MBTA Commuter Rail] riders.
 
 The app is written in the [elm] language, using the experimental [elm-native-ui]
 library. See the [Elm Native UI in Production] blog post about why we are
 excited about writing mobile apps in elm.
 
-[Purple Train]: https://purpletrainapp.com
 [MBTA Commuter Rail]: http://www.mbta.com/schedules_and_maps/rail/
 [elm]: http://elm-lang.org
 [elm-native-ui]: https://github.com/ohanhi/elm-native-ui
